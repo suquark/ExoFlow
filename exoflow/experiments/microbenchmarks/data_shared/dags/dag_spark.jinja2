@@ -1,0 +1,33 @@
+# https://airflow.apache.org/docs/apache-airflow/stable/howto/operator/python.html
+import pendulum
+
+from airflow import DAG
+from airflow.decorators import task
+
+import requests
+
+with DAG(
+    dag_id="spark_dag_{{ dag_index }}",
+    start_date=pendulum.datetime(2021, 1, 1, tz="UTC"),
+    schedule_interval=None,
+    catchup=False,
+    tags=["spark_dag"],
+) as dag:
+    @task(task_id="generate_df")
+    def airflow_generate_df(**context):
+        conf = context["dag_run"].conf
+        host, port = conf["host"], conf["port"]
+        requests.get(f"http://{host}:{port}/generate_df")
+
+    generate_df_task = airflow_generate_df()
+
+{% for index in indices %}
+    @task(task_id="consume_df_{{ index }}")
+    def airflow_consume_df_{{ index }}(**context):
+        conf = context["dag_run"].conf
+        host, port = conf["host"], conf["port"]
+        requests.get(f"http://{host}:{port}/consume_df", {"seed": {{ index }}})
+
+    consume_df_task_{{ index }} = airflow_consume_df_{{ index }}()
+    generate_df_task >> consume_df_task_{{ index }}
+{% endfor %}

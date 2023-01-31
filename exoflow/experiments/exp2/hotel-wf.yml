@@ -1,0 +1,93 @@
+service: beldi-wf
+
+frameworkVersion: '>=1.28.0 <2.0.0'
+
+provider:
+  name: aws
+  runtime: go1.x
+  stage: dev
+  memorySize: 1024
+  timeout: 60
+  region: us-east-1
+  disableLogs: false
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "lambda:*"
+        - "logs:*"
+        - "cloudwatch:*"
+        - "dynamodb:*"
+        - "iam:GetPolicy"
+        - "iam:GetPolicyVersion"
+        - "iam:GetRole"
+        - "iam:GetRolePolicy"
+        - "iam:ListAttachedRolePolicies"
+        - "iam:ListRolePolicies"
+        - "iam:ListRoles"
+        - "iam:PassRole"
+      Resource:
+        - "*"
+
+package:
+  exclude:
+    - ./**
+  include:
+    - ./bin-workflow/hotel/*
+
+functions:
+  geo:
+    handler: bin-workflow/hotel/geo
+    maximumRetryAttempts: 0
+    maximumEventAge: 60
+  profile:
+    handler: bin-workflow/hotel/profile
+    maximumRetryAttempts: 0
+    maximumEventAge: 60
+  rate:
+    handler: bin-workflow/hotel/rate
+    maximumRetryAttempts: 0
+    maximumEventAge: 60
+  recommendation:
+    handler: bin-workflow/hotel/recommendation
+    maximumRetryAttempts: 0
+    maximumEventAge: 60
+  user:
+    handler: bin-workflow/hotel/user
+    maximumRetryAttempts: 0
+    maximumEventAge: 60
+  hotel:
+    handler: bin-workflow/hotel/hotel
+    maximumRetryAttempts: 0
+    maximumEventAge: 60
+  hotel-acquire:
+    handler: bin-workflow/hotel/hotel-acquire
+    maximumRetryAttempts: 0
+    maximumEventAge: 60
+  hotel-reserve:
+    handler: bin-workflow/hotel/hotel-reserve
+    maximumRetryAttempts: 0
+    maximumEventAge: 60
+  search:
+    handler: bin-workflow/hotel/search
+    maximumRetryAttempts: 0
+    maximumEventAge: 60
+  flight:
+    handler: bin-workflow/hotel/flight
+    maximumRetryAttempts: 0
+    maximumEventAge: 60
+  flight-acquire:
+    handler: bin-workflow/hotel/flight-acquire
+    maximumRetryAttempts: 0
+    maximumEventAge: 60
+  flight-reserve:
+    handler: bin-workflow/hotel/flight-reserve
+    maximumRetryAttempts: 0
+    maximumEventAge: 60
+  order:
+    handler: bin-workflow/hotel/order
+    maximumRetryAttempts: 0
+    maximumEventAge: 60
+  frontend:
+    handler: bin-workflow/hotel/frontend
+    maximumRetryAttempts: 0
+    maximumEventAge: 60

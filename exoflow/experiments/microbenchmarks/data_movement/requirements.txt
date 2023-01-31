@@ -1,0 +1,5 @@
+shortuuid
+tqdm
+uvicorn[standard]
+gunicorn
+fastapi
