@@ -5,7 +5,7 @@ from typing import Optional, Set
 
 import ray
 from ray._private.ray_logging import configure_log_file, get_worker_log_file_name
-from ray.workflow.common import CheckpointModeType, WorkflowStatus, LocalContext
+from exoflow.common import CheckpointModeType, WorkflowStatus, LocalContext
 
 logger = logging.getLogger(__name__)
 _local = LocalContext(context=None, in_workflow_execution=False)

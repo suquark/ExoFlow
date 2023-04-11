@@ -14,17 +14,17 @@ import ray
 from ray import cloudpickle
 from ray._private import storage
 from ray.types import ObjectRef
-from ray.workflow.common import (
+from exoflow.common import (
     TaskID,
     WorkflowStatus,
     WorkflowTaskRuntimeOptions,
     SERVICE_SEP,
 )
-from ray.workflow.exceptions import WorkflowNotFoundError
-from ray.workflow import workflow_context
-from ray.workflow import serialization_context
-from ray.workflow.workflow_state import WorkflowExecutionState
-from ray.workflow.storage import DataLoadError, DataSaveError, KeyNotFoundError
+from exoflow.exceptions import WorkflowNotFoundError
+from exoflow import workflow_context
+from exoflow import serialization_context
+from exoflow.workflow_state import WorkflowExecutionState
+from exoflow.storage import DataLoadError, DataSaveError, KeyNotFoundError
 
 logger = logging.getLogger(__name__)
 

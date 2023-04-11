@@ -8,7 +8,7 @@ from collections import defaultdict
 import ray
 from ray.exceptions import RayTaskError, RayError, ObjectLostError, RayActorError
 
-from ray.workflow.common import (
+from exoflow.common import (
     WorkflowRef,
     WorkflowExecutionMetadata,
     WorkflowStatus,
@@ -16,17 +16,17 @@ from ray.workflow.common import (
     CheckpointMode,
     SERVICE_SEP,
 )
-from ray.workflow.exceptions import WorkflowCancellationError, WorkflowExecutionError
-from ray.workflow.task_executor import _BakedWorkflowInputs, ActorController
-from ray.workflow.workflow_state import (
+from exoflow.exceptions import WorkflowCancellationError, WorkflowExecutionError
+from exoflow.task_executor import _BakedWorkflowInputs, ActorController
+from exoflow.workflow_state import (
     WorkflowExecutionState,
     TaskExecutionMetadata,
     Task,
 )
 
 if TYPE_CHECKING:
-    from ray.workflow.workflow_context import WorkflowTaskContext
-    from ray.workflow.workflow_storage import WorkflowStorage
+    from exoflow.workflow_context import WorkflowTaskContext
+    from exoflow.workflow_storage import WorkflowStorage
 
 logger = logging.getLogger(__name__)
 

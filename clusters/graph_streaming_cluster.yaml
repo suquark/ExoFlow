@@ -1,0 +1,59 @@
+cluster_name: workflow-online-offline-distributed
+
+min_workers: 2
+max_workers: 2
+
+provider:
+    type: aws
+    region: us-east-1
+    # Availability zone(s), comma-separated, that nodes may be launched in.
+    # Nodes are currently spread between zones by a round-robin approach,
+    # however this implementation detail should not be relied upon.
+    # availability_zone: us-east-1f
+    cache_stopped_nodes: False
+
+auth:
+    ssh_user: ubuntu
+
+available_node_types:
+  ray.head.default:
+      node_config:
+        InstanceType: r3.8xlarge
+#        InstanceMarketOptions:
+#          MarketType: spot
+        BlockDeviceMappings:
+            - DeviceName: /dev/sda1
+              Ebs:
+                  VolumeSize: 200
+        ImageId: ami-0bc093c9b91f2c0e2  # exoflow-artifacts-0422
+        SecurityGroupIds:
+          - "sg-3463e565"
+          - "sg-092b10044bcf1f37e"
+  ray.worker.default:
+      node_config:
+        InstanceType: r3.8xlarge
+#        InstanceMarketOptions:
+#            MarketType: spot
+        ImageId: ami-0bc093c9b91f2c0e2  # exoflow-artifacts-0422
+        SecurityGroupIds:
+          - "sg-3463e565"
+          - "sg-092b10044bcf1f37e"
+        Placement:
+            GroupName: hoplite-group
+      min_workers: 2
+      max_workers: 2
+
+setup_commands:
+    - sudo mkdir -p /exoflow
+    - sudo mount -t efs fs-0d0c1e4b4ddb1a2b3 /exoflow
+    - sudo chown ubuntu:ubuntu /exoflow
+
+# Command to start ray on the head node.
+head_start_ray_commands:
+    - ray stop
+    - "sudo ulimit -n 65536; PYTHONPATH=/exoflow/experiments/graph_streaming ray start --head --port=6379 --object-manager-port=8076 --autoscaling-config=~/ray_bootstrap_config.yaml --resources='{\"machine\": 1, \"tag:online\": 1}'"
+
+# Command to start ray on worker nodes.
+worker_start_ray_commands:
+    - ray stop
+    - "sudo ulimit -n 65536; PYTHONPATH=/exoflow/experiments/graph_streaming ray start --address=$RAY_HEAD_IP:6379 --object-manager-port=8076 --resources='{\"machine\": 1}'"

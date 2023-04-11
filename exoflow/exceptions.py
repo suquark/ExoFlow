@@ -1,5 +1,5 @@
 from ray.util.annotations import PublicAPI
-from ray.workflow.common import TaskID
+from exoflow.common import TaskID
 
 
 @PublicAPI(stability="alpha")

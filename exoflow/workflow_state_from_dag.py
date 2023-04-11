@@ -3,23 +3,23 @@ import re
 import unicodedata
 
 import ray
-from ray.workflow.common import WORKFLOW_OPTIONS
+from exoflow.common import WORKFLOW_OPTIONS
 
 from ray.dag import DAGNode, FunctionNode, InputNode
 from ray.dag.input_node import InputAttributeNode, DAGInputData
 from ray import cloudpickle
 from ray._private import signature
 from ray._private.client_mode_hook import client_mode_should_convert
-from ray.workflow import serialization_context
-from ray.workflow.common import (
+from exoflow import serialization_context
+from exoflow.common import (
     TaskType,
     WorkflowTaskRuntimeOptions,
     WorkflowRef,
     validate_user_metadata,
     WorkflowDAGInput,
 )
-from ray.workflow import workflow_context
-from ray.workflow.workflow_state import WorkflowExecutionState, Task
+from exoflow import workflow_context
+from exoflow.workflow_state import WorkflowExecutionState, Task
 
 
 def get_module(f):
@@ -98,7 +98,7 @@ def workflow_state_from_dag(
 
     # TODO(suquark): remove this cyclic importing later by changing the way of
     # task ID assignment.
-    from ray.workflow.workflow_access import get_management_actor
+    from exoflow.workflow_access import get_management_actor
 
     mgr = get_management_actor()
     context = workflow_context.get_workflow_task_context()

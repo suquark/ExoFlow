@@ -1,0 +1,5 @@
+azure_mlops_pipeline_local/
+
+distributed_training/dataset_dir/
+distributed_training/workflow_dir/
+distributed_training/start_time

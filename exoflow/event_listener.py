@@ -1,6 +1,6 @@
 import asyncio
 from ray.util.annotations import PublicAPI
-from ray.workflow.common import Event
+from exoflow.common import Event
 import time
 from typing import Callable
 
@@ -33,12 +33,12 @@ class EventListener:
 
     Example Usage
     =============
-    >>> from ray import workflow
+    >>> import exoflow
     >>> CustomEventListener = ... # doctest: +SKIP
     >>> event_task = workflow.wait_for_event( # doctest: +SKIP
     ...     CustomEventListener, "topic1", "partition2")
     >>> handle_event = ... # doctest: +SKIP
-    >>> workflow.run(handle_event.task(event_task)) # doctest: +SKIP
+    >>> exoflow.run(handle_event.task(event_task)) # doctest: +SKIP
 
     """
 

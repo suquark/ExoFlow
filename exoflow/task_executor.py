@@ -15,12 +15,12 @@ from ray.util.scheduling_strategies import NodeAffinitySchedulingStrategy
 from ray.experimental.internal_kv import _internal_kv_get
 
 from ray.dag import DAGNode
-from ray.workflow import workflow_context
-from ray.workflow.workflow_context import get_task_status_info
-from ray.workflow import serialization_context
-from ray.workflow import workflow_storage
+from exoflow import workflow_context
+from exoflow.workflow_context import get_task_status_info
+from exoflow import serialization_context
+from exoflow import workflow_storage
 
-from ray.workflow.common import (
+from exoflow.common import (
     WorkflowStatus,
     WorkflowExecutionMetadata,
     TaskID,
@@ -28,14 +28,14 @@ from ray.workflow.common import (
     CheckpointMode,
     WorkflowTaskRuntimeOptions,
 )
-from ray.workflow.workflow_state import WorkflowExecutionState
-from ray.workflow.workflow_state_from_dag import workflow_state_from_dag
+from exoflow.workflow_state import WorkflowExecutionState
+from exoflow.workflow_state_from_dag import workflow_state_from_dag
 
 # TODO(suquark): This is a temporary module.
-from ray.workflow import dynamodb
+from exoflow import dynamodb
 
 if TYPE_CHECKING:
-    from ray.workflow.workflow_context import WorkflowTaskContext
+    from exoflow.workflow_context import WorkflowTaskContext
 
 
 _USE_DYNAMODB = True
@@ -133,8 +133,8 @@ class WorkflowTaskActor:
                     ),
                     wf_store.load_task_output(tid),
                 )
-        # TODO(suquark): Unify the error from "workflow.get_output" & "workflow.run_async".
-        # Currently they could be different, because "workflow.get_output" could
+        # TODO(suquark): Unify the error from "exoflow.get_output" & "exoflow.run_async".
+        # Currently they could be different, because "exoflow.get_output" could
         # get the output from a stopped workflow, it does not may sense to raise
         # "WorkflowExecutionError" as the workflow is not running.
         raise ValueError(

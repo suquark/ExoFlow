@@ -5,9 +5,9 @@ from fastapi.responses import JSONResponse
 
 import ray
 from ray import serve
-from ray.workflow import common, workflow_context, workflow_access
-from ray.workflow.event_listener import EventListener
-from ray.workflow.common import Event
+from exoflow import common, workflow_context, workflow_access
+from exoflow.event_listener import EventListener
+from exoflow.common import Event
 
 
 import logging
@@ -69,13 +69,13 @@ class HTTPEventProvider:
 
     Example Usage
     =============
-    >>> from ray.workflow.http_event_provider import HTTPEventProvider, HTTPListener
+    >>> from exoflow.http_event_provider import HTTPEventProvider, HTTPListener
     >>> ray.init(address='auto', namespace='serve')
     >>> serve.start(detached=True)
     >>> event_node = workflow.wait_for_event( # doctest: +SKIP
     ...     HTTPListener, event_key='')
     >>> handle_event = ... # doctest: +SKIP
-    >>> workflow.run_aync(handle_event.bind(event_node)) # doctest: +SKIP
+    >>> exoflow.run_aync(handle_event.bind(event_node)) # doctest: +SKIP
     >>>
     >>> On a separate python process, it sends an event to the HTTPEventProvider.
     >>> import requests
@@ -212,13 +212,13 @@ class HTTPListener(EventListener):
 
     Example Usage
     =============
-    >>> from ray.workflow.http_event_provider import HTTPEventProvider, HTTPListener
+    >>> from exoflow.http_event_provider import HTTPEventProvider, HTTPListener
     >>> ray.init(address='auto', namespace='serve')
     >>> serve.start(detached=True)
     >>> event_node = workflow.wait_for_event( # doctest: +SKIP
     ...     HTTPListener, event_key='')
     >>> handle_event = ... # doctest: +SKIP
-    >>> workflow.run(handle_event.bind(event_node)) # doctest: +SKIP
+    >>> exoflow.run(handle_event.bind(event_node)) # doctest: +SKIP
     >>>
 
     """

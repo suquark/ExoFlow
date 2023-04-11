@@ -1,7 +1,0 @@
-uvicorn[standard]
-gunicorn
-fastapi
-shortuuid
-# redis[hiredis]
-# apache-airflow==2.4.3
-

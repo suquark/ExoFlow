@@ -1,4 +1,4 @@
-from ray.workflow.api import (
+from exoflow.api import (
     init,
     run,
     run_async,
@@ -18,13 +18,13 @@ from ray.workflow.api import (
     get_task_execution_metadata,
     options,
 )
-from ray.workflow.exceptions import (
+from exoflow.exceptions import (
     WorkflowError,
     WorkflowExecutionError,
     WorkflowCancellationError,
 )
-from ray.workflow.common import WorkflowStatus
-from ray.workflow.event_listener import EventListener
+from exoflow.common import WorkflowStatus
+from exoflow.event_listener import EventListener
 
 globals().update(WorkflowStatus.__members__)
 

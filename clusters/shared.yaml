@@ -1,0 +1,28 @@
+cluster_name: osdi23ae
+
+provider:
+    type: aws
+    region: us-east-1
+    cache_stopped_nodes: False
+
+auth:
+    ssh_user: ubuntu
+
+available_node_types:
+  ray.head.default:
+      node_config:
+        # This node is used for both a jump node and for Beldi evaluation.
+        InstanceType: r3.2xlarge
+        BlockDeviceMappings:
+            - DeviceName: /dev/sda1
+              Ebs:
+                  VolumeSize: 200
+        ImageId: ami-0bc093c9b91f2c0e2  # exoflow-artifacts-0422
+        SecurityGroupIds:
+          - "sg-3463e565"
+          - "sg-092b10044bcf1f37e"
+
+setup_commands:
+    - sudo mkdir -p /exoflow
+    - sudo mount -t efs fs-0d0c1e4b4ddb1a2b3 /exoflow
+    - sudo chown ubuntu:ubuntu /exoflow

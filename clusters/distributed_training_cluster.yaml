@@ -1,0 +1,53 @@
+cluster_name: workflow-train-distributed
+
+provider:
+    type: aws
+    region: us-east-1
+    cache_stopped_nodes: False
+
+auth:
+    ssh_user: ubuntu
+
+available_node_types:
+  ray.head.default:
+      node_config:
+        # https://aws.amazon.com/ec2/instance-types/g4/
+        InstanceType: g4dn.12xlarge  #  p3dn.24xlarge; g3.16xlarge; p3.2xlarge
+#        InstanceMarketOptions:
+#            MarketType: spot
+        BlockDeviceMappings:
+            - DeviceName: /dev/sda1
+              Ebs:
+                  VolumeSize: 200
+        ImageId: ami-0bc093c9b91f2c0e2  # exoflow-artifacts-0422
+        SecurityGroupIds:
+          - "sg-3463e565"
+          - "sg-092b10044bcf1f37e"
+  ray.worker.default:
+      node_config:
+        InstanceType: r3.2xlarge  # high-mem!
+        ImageId: ami-0bc093c9b91f2c0e2  # exoflow-artifacts-0422
+        SecurityGroupIds:
+          - "sg-3463e565"
+          - "sg-092b10044bcf1f37e"
+      min_workers: 1
+      max_workers: 1
+
+file_mounts:
+    # mount the credentials for AWS dynamodb access
+    ~/.aws: ~/.aws
+
+setup_commands:
+    - sudo mkdir -p /exoflow
+    - sudo mount -t efs fs-0d0c1e4b4ddb1a2b3 /exoflow
+    - sudo chown ubuntu:ubuntu /exoflow
+
+# Command to start ray on the head node. You don't need to change this.
+head_start_ray_commands:
+    - ray stop
+    - "sudo ulimit -n 65536; PYTHONPATH=/exoflow/experiments/distributed_training ray start --head --port=6379 --object-manager-port=8076 --autoscaling-config=~/ray_bootstrap_config.yaml --resources='{\"machine\": 1, \"tag:gpu\": 1}' --storage=s3://exoflow"
+
+# Command to start ray on worker nodes. You don't need to change this.
+worker_start_ray_commands:
+    - ray stop
+    - "sudo ulimit -n 65536; PYTHONPATH=/exoflow/experiments/distributed_training ray start --address=$RAY_HEAD_IP:6379 --object-manager-port=8076 --resources='{\"machine\": 1, \"tag:data\": 1}' --storage=s3://exoflow"

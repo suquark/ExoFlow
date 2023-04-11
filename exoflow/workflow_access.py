@@ -9,21 +9,21 @@ from typing import Dict, List, Set, Optional, TYPE_CHECKING
 import ray
 from ray.experimental.internal_kv import _internal_kv_get, _internal_kv_put
 
-from ray.workflow import common
-from ray.workflow.common import WorkflowStatus, TaskID, SERVICE_SEP
-from ray.workflow import workflow_state_from_storage
-from ray.workflow import workflow_context
-from ray.workflow import workflow_storage
-from ray.workflow.exceptions import (
+from exoflow import common
+from exoflow.common import WorkflowStatus, TaskID, SERVICE_SEP
+from exoflow import workflow_state_from_storage
+from exoflow import workflow_context
+from exoflow import workflow_storage
+from exoflow.exceptions import (
     WorkflowCancellationError,
     WorkflowNotFoundError,
     WorkflowNotResumableError,
     WorkflowStillActiveError,
 )
-from ray.workflow.task_executor import ActorController
-from ray.workflow.workflow_executor import WorkflowExecutor, TaskExecutionMetadata
-from ray.workflow.workflow_state import WorkflowExecutionState
-from ray.workflow.workflow_context import WorkflowTaskContext
+from exoflow.task_executor import ActorController
+from exoflow.workflow_executor import WorkflowExecutor, TaskExecutionMetadata
+from exoflow.workflow_state import WorkflowExecutionState
+from exoflow.workflow_context import WorkflowTaskContext
 
 if TYPE_CHECKING:
     from ray.actor import ActorHandle
@@ -45,8 +45,8 @@ def load_task_output_from_storage(workflow_id: str, task_id: Optional[TaskID]):
     tid = wf_store.inspect_output(task_id)
     if tid is not None:
         return wf_store.load_task_output(tid)
-    # TODO(suquark): Unify the error from "workflow.get_output" & "workflow.run_async".
-    # Currently they could be different, because "workflow.get_output" could
+    # TODO(suquark): Unify the error from "exoflow.get_output" & "exoflow.run_async".
+    # Currently they could be different, because "exoflow.get_output" could
     # get the output from a stopped workflow, it does not may sense to raise
     # "WorkflowExecutionError" as the workflow is not running.
     if task_id is not None:
@@ -384,7 +384,7 @@ class WorkflowManagementActor:
         try:
             ray.serve.get_deployment(common.HTTP_EVENT_PROVIDER_NAME)
         except KeyError:
-            from ray.workflow.http_event_provider import HTTPEventProvider
+            from exoflow.http_event_provider import HTTPEventProvider
 
             HTTPEventProvider.deploy()
 

@@ -6,20 +6,20 @@ import uuid
 import ray
 from ray.dag import DAGNode, DAGInputData
 
-from ray.workflow.common import asyncio_run
-from ray.workflow.workflow_executor import WorkflowExecutor
-from ray.workflow.workflow_context import workflow_task_context, WorkflowTaskContext
-from ray.workflow.workflow_storage import get_workflow_storage
+from exoflow.common import asyncio_run
+from exoflow.workflow_executor import WorkflowExecutor
+from exoflow.workflow_context import workflow_task_context, WorkflowTaskContext
+from exoflow.workflow_storage import get_workflow_storage
 
 
 def run_workflow_local(
     dag: DAGNode, workflow_id: Optional[str] = None, *args, **kwargs
 ):
     """Execute the workflow locally."""
-    from ray.workflow.workflow_state_from_dag import workflow_state_from_dag
-    from ray.workflow.task_executor import ActorController
+    from exoflow.workflow_state_from_dag import workflow_state_from_dag
+    from exoflow.task_executor import ActorController
 
-    ray.workflow.init()
+    exoflow.init()
 
     if workflow_id is None:
         # Workflow ID format: {Entry workflow UUID}.{Unix time to nanoseconds}
@@ -41,8 +41,8 @@ def run_workflow_local(
 
 def resume_workflow_local(workflow_id: str):
     """Resume the workflow locally."""
-    from ray.workflow.workflow_state_from_storage import workflow_state_from_storage
-    from ray.workflow.task_executor import ActorController
+    from exoflow.workflow_state_from_storage import workflow_state_from_storage
+    from exoflow.task_executor import ActorController
 
     job_id = ray.get_runtime_context().job_id.hex()
     context = WorkflowTaskContext(workflow_id=workflow_id)

@@ -129,3 +129,6 @@ dmypy.json
 .pyre/
 
 .DS_Store
+
+twitter_dataset/
+osdi23ae*
