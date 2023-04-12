@@ -2,7 +2,7 @@ import time
 import numpy as np
 
 import ray
-from ray import workflow
+import exoflow
 from ray.dag import InputNode
 from exoflow.api import register_service
 from exoflow.lambda_executor import ray_invoke_lambda
@@ -60,21 +60,21 @@ def register_dags():
         # Workflow + Lambdas
         with InputNode() as dag_input:
             producer_output = ray_invoke_lambda.options(
-                **workflow.options(checkpoint=option)
+                **exoflow.options(checkpoint=option)
             ).bind(
                 LAMBDAS_PREFIX + "producer",
                 trigger_time=dag_input.trigger_time,
                 size=dag_input.size,
             )
             consumer_output = ray_invoke_lambda.options(
-                **workflow.options(checkpoint=False)
+                **exoflow.options(checkpoint=False)
             ).bind(
                 LAMBDAS_PREFIX + "consumer",
                 decoder=_embed_input,
                 embed_input=producer_output,
             )
             dag = sync_checkpoint.options(
-                **workflow.options(
+                **exoflow.options(
                     checkpoint=False,
                     wait_until_committed=[LAMBDAS_PREFIX + "producer"],
                 )
@@ -85,16 +85,16 @@ def register_dags():
         # Workflow + Ray
         with InputNode() as dag_input:
             producer_output = producer.options(
-                **workflow.options(checkpoint=option, name="producer")
+                **exoflow.options(checkpoint=option, name="producer")
             ).bind(
                 trigger_time=dag_input.trigger_time,
                 size=dag_input.size,
             )
             consumer_output = consumer.options(
-                **workflow.options(checkpoint=False)
+                **exoflow.options(checkpoint=False)
             ).bind(producer_output)
             dag = sync_checkpoint.options(
-                **workflow.options(
+                **exoflow.options(
                     checkpoint=False,
                     wait_until_committed=["producer"],
                 )

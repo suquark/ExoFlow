@@ -1,4 +1,4 @@
-from ray import workflow
+import exoflow
 from exoflow.common import CheckpointModeType
 
 import etl
@@ -34,23 +34,23 @@ def generate_etl_pipeline(
         etl_checkpoint = checkpoint
 
     extract_task = etl.download.options(
-        **workflow.options(checkpoint=etl_checkpoint),
+        **exoflow.options(checkpoint=etl_checkpoint),
         **global_config.ETL_OPTIONS,
     ).bind(
         data_source, dataset_dir, force_clear=global_config.FORCE_CLEAR_DOWNLOAD_DATA
     ) | etl.extract.options(
-        **workflow.options(checkpoint=etl_checkpoint),
+        **exoflow.options(checkpoint=etl_checkpoint),
         **global_config.ETL_OPTIONS,
     )
 
     train_files = etl.get_train_files.options(
-        **workflow.options(checkpoint=etl_checkpoint),
+        **exoflow.options(checkpoint=etl_checkpoint),
         **global_config.ETL_OPTIONS,
     ).bind(dataset_dir, fraction=dataset_fraction)
     extract_task >> train_files
 
     stage_dir = etl.stage_files.options(
-        **workflow.options(checkpoint=etl_checkpoint),
+        **exoflow.options(checkpoint=etl_checkpoint),
         **global_config.ETL_OPTIONS,
     ).bind(
         dataset_dir,
@@ -60,12 +60,12 @@ def generate_etl_pipeline(
     )
 
     filtered_stage_dir = etl.filter_dataset.options(
-        **workflow.options(checkpoint=etl_checkpoint),
+        **exoflow.options(checkpoint=etl_checkpoint),
         **global_config.ETL_OPTIONS,
     ).bind(dataset_dir, "stage_2", prev_stage_path=stage_dir)
 
     dataset_chunks = etl.preprocess_dataset.options(
-        **workflow.options(
+        **exoflow.options(
             isolation=True, checkpoint=etl_checkpoint, name="preprocess"
         ),
         **global_config.ETL_OPTIONS,
@@ -113,7 +113,7 @@ def generate_train_pipeline(
         transform_checkpoint = checkpoint
 
     trainer = train.create_trainer.options(
-        **workflow.options(isolation=True), **global_config.TRAIN_OPTIONS
+        **exoflow.options(isolation=True), **global_config.TRAIN_OPTIONS
     ).bind(model_path=model_checkpoint_path, use_gpu=use_gpu)
 
     transform_tasks = []
@@ -138,7 +138,7 @@ def generate_train_pipeline(
             train_tasks[i - 2] >> n_transform_tasks
 
         shuffled_train_dataset = transform.transform_dataset.options(
-            **workflow.options(name=f"transform_{i}", checkpoint=transform_checkpoint),
+            **exoflow.options(name=f"transform_{i}", checkpoint=transform_checkpoint),
             **global_config.TRAIN_OPTIONS,
         ).bind(
             dataset_chunks,
@@ -148,7 +148,7 @@ def generate_train_pipeline(
             use_ephemeral_tasks=use_ephemeral_tasks,
         )
         trainer = train.fit.options(
-            **workflow.options(name=f"train_{i}", checkpoint=(i % 5 == 0)),
+            **exoflow.options(name=f"train_{i}", checkpoint=(i % 5 == 0)),
             **global_config.TRAIN_OPTIONS,
         ).bind(
             trainer,

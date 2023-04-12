@@ -3,7 +3,7 @@ import time
 
 import pytest
 import ray
-from ray import workflow
+import exoflow
 from exoflow.tests import utils
 
 from exoflow.tests.test_complex_workflow import (

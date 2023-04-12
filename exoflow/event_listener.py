@@ -33,7 +33,7 @@ class EventListener:
 
     Example Usage
     =============
-    >>> from ray import workflow
+    >>> import exoflow
     >>> CustomEventListener = ... # doctest: +SKIP
     >>> event_task = workflow.wait_for_event( # doctest: +SKIP
     ...     CustomEventListener, "topic1", "partition2")

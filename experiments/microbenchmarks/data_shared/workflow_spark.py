@@ -3,7 +3,7 @@ import time
 from datetime import datetime
 
 import ray
-from ray import workflow
+import exoflow
 from exoflow.api import register_service, run_service_async
 
 import shortuuid
@@ -68,17 +68,17 @@ def sync_no_shared():
 
 def register_sharedmem_dags(num_consumers: int, checkpoint: str):
     df = create_df.options(
-        **workflow.options(checkpoint=pipeline.CHECKPOINT_MAP[checkpoint])
+        **exoflow.options(checkpoint=pipeline.CHECKPOINT_MAP[checkpoint])
     ).bind()
     samples = []
     for i in range(num_consumers):
         samples.append(
             consume_df.options(
-                **workflow.options(checkpoint=False, name=f"consumer_{i}")
+                **exoflow.options(checkpoint=False, name=f"consumer_{i}")
             ).bind(df, seed=i)
         )
     dag = sync_checkpoints.options(
-        **workflow.options(
+        **exoflow.options(
             wait_until_committed=[f"consumer_{i}" for i in range(num_consumers)]
         )
     ).bind(df, samples)
@@ -86,9 +86,9 @@ def register_sharedmem_dags(num_consumers: int, checkpoint: str):
 
 
 def register_nosharedmem_dags(num_consumers: int):
-    df = create_df_no_shared.options(**workflow.options(isolation=True)).bind()
+    df = create_df_no_shared.options(**exoflow.options(isolation=True)).bind()
     samples = [
-        consume_df_no_shared.options(**workflow.options(isolation=True)).bind(i)
+        consume_df_no_shared.options(**exoflow.options(isolation=True)).bind(i)
         for i in range(num_consumers)
     ]
     df >> samples
@@ -124,7 +124,7 @@ if __name__ == "__main__":
             "local",
             storage=f"file:///tmp/ray/workflow_data/{datetime.now().isoformat()}",
         )
-        workflow.init()
+        exoflow.init()
 
         for n in range(1, N + 1):
             register_sharedmem_dags(n, "skip")

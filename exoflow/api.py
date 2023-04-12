@@ -132,7 +132,7 @@ def run(
 
     Examples:
         >>> import ray
-        >>> from ray import workflow
+        >>> import exoflow
         >>> Flight, Reservation, Trip = ... # doctest: +SKIP
         >>> @ray.remote # doctest: +SKIP
         ... def book_flight(origin: str, dest: str) -> Flight: # doctest: +SKIP
@@ -148,7 +148,7 @@ def run(
         >>> flight2 = book_flight.bind("SAN", "OAK") # doctest: +SKIP
         >>> hotel = book_hotel.bind("SAN") # doctest: +SKIP
         >>> trip = finalize_trip.bind([flight1, flight2, hotel]) # doctest: +SKIP
-        >>> result = workflow.run(trip) # doctest: +SKIP
+        >>> result = exoflow.run(trip) # doctest: +SKIP
 
     Args:
         workflow_id: A unique identifier that can be used to resume the
@@ -339,11 +339,11 @@ def resume(workflow_id: str) -> Any:
     complete, returns the result immediately.
 
     Examples:
-        >>> from ray import workflow
+        >>> import exoflow
         >>> start_trip = ... # doctest: +SKIP
         >>> trip = start_trip.bind() # doctest: +SKIP
-        >>> res1 = workflow.run_async(trip, workflow_id="trip1") # doctest: +SKIP
-        >>> res2 = workflow.resume_async("trip1") # doctest: +SKIP
+        >>> res1 = exoflow.run_async(trip, workflow_id="trip1") # doctest: +SKIP
+        >>> res2 = exoflow.resume_async("trip1") # doctest: +SKIP
         >>> assert ray.get(res1) == ray.get(res2) # doctest: +SKIP
 
     Args:
@@ -364,11 +364,11 @@ def resume_async(workflow_id: str) -> ray.ObjectRef:
     complete, returns the result immediately.
 
     Examples:
-        >>> from ray import workflow
+        >>> import exoflow
         >>> start_trip = ... # doctest: +SKIP
         >>> trip = start_trip.bind() # doctest: +SKIP
-        >>> res1 = workflow.run_async(trip, workflow_id="trip1") # doctest: +SKIP
-        >>> res2 = workflow.resume_async("trip1") # doctest: +SKIP
+        >>> res1 = exoflow.run_async(trip, workflow_id="trip1") # doctest: +SKIP
+        >>> res2 = exoflow.resume_async("trip1") # doctest: +SKIP
         >>> assert ray.get(res1) == ray.get(res2) # doctest: +SKIP
 
     Args:
@@ -405,14 +405,14 @@ def get_output(workflow_id: str, *, name: Optional[str] = None) -> Any:
             workflow.
 
     Examples:
-        >>> from ray import workflow
+        >>> import exoflow
         >>> start_trip = ... # doctest: +SKIP
         >>> trip = start_trip.options(name="trip").bind() # doctest: +SKIP
-        >>> res1 = workflow.run_async(trip, workflow_id="trip1") # doctest: +SKIP
+        >>> res1 = exoflow.run_async(trip, workflow_id="trip1") # doctest: +SKIP
         >>> # you could "get_output()" in another machine
-        >>> res2 = workflow.get_output_async("trip1") # doctest: +SKIP
+        >>> res2 = exoflow.get_output_async("trip1") # doctest: +SKIP
         >>> assert ray.get(res1) == ray.get(res2) # doctest: +SKIP
-        >>> task_output = workflow.get_output_async("trip1", "trip") # doctest: +SKIP
+        >>> task_output = exoflow.get_output_async("trip1", "trip") # doctest: +SKIP
         >>> assert ray.get(task_output) == ray.get(res1) # doctest: +SKIP
 
     Returns:
@@ -443,7 +443,7 @@ def get_output_async(
         raise ValueError(
             "Failed to connect to the workflow management "
             "actor. The workflow could have already failed. You can use "
-            "workflow.resume() or workflow.resume_async() to resume the "
+            "exoflow.resume() or exoflow.resume_async() to resume the "
             "workflow."
         ) from e
     return workflow_manager.get_output.remote(workflow_id, task_id)
@@ -466,19 +466,19 @@ def list_all(
             status is also acceptable, i.e.,
             "RUNNING"/"FAILED"/"SUCCESSFUL"/"CANCELED"/"RESUMABLE"/"PENDING".
     Examples:
-        >>> from ray import workflow
+        >>> import exoflow
         >>> long_running_job = ... # doctest: +SKIP
         >>> workflow_task = long_running_job.bind() # doctest: +SKIP
-        >>> wf = workflow.run_async(workflow_task, # doctest: +SKIP
+        >>> wf = exoflow.run_async(workflow_task, # doctest: +SKIP
         ...     workflow_id="long_running_job")
-        >>> jobs = workflow.list_all() # doctest: +SKIP
-        >>> assert jobs == [ ("long_running_job", workflow.RUNNING) ] # doctest: +SKIP
+        >>> jobs = exoflow.list_all() # doctest: +SKIP
+        >>> assert jobs == [ ("long_running_job", exoflow.RUNNING) ] # doctest: +SKIP
         >>> ray.get(wf) # doctest: +SKIP
-        >>> jobs = workflow.list_all({workflow.RUNNING}) # doctest: +SKIP
+        >>> jobs = exoflow.list_all({exoflow.RUNNING}) # doctest: +SKIP
         >>> assert jobs == [] # doctest: +SKIP
-        >>> jobs = workflow.list_all(workflow.SUCCESSFUL) # doctest: +SKIP
+        >>> jobs = exoflow.list_all(exoflow.SUCCESSFUL) # doctest: +SKIP
         >>> assert jobs == [ # doctest: +SKIP
-        ...     ("long_running_job", workflow.SUCCESSFUL)]
+        ...     ("long_running_job", exoflow.SUCCESSFUL)]
 
     Returns:
         A list of tuple with workflow id and workflow status
@@ -576,18 +576,18 @@ def resume_all(include_failed: bool = False) -> List[Tuple[str, ray.ObjectRef]]:
         include_failed: Whether to resume FAILED workflows.
 
     Examples:
-        >>> from ray import workflow
+        >>> import exoflow
         >>> failed_job = ... # doctest: +SKIP
         >>> workflow_task = failed_job.bind() # doctest: +SKIP
-        >>> output = workflow.run_async( # doctest: +SKIP
+        >>> output = exoflow.run_async( # doctest: +SKIP
         ...     workflow_task, workflow_id="failed_job")
         >>> try: # doctest: +SKIP
         >>>     ray.get(output) # doctest: +SKIP
         >>> except Exception: # doctest: +SKIP
         >>>     print("JobFailed") # doctest: +SKIP
-        >>> jobs = workflow.list_all() # doctest: +SKIP
-        >>> assert jobs == [("failed_job", workflow.FAILED)] # doctest: +SKIP
-        >>> assert workflow.resume_all( # doctest: +SKIP
+        >>> jobs = exoflow.list_all() # doctest: +SKIP
+        >>> assert jobs == [("failed_job", exoflow.FAILED)] # doctest: +SKIP
+        >>> assert exoflow.resume_all( # doctest: +SKIP
         ...    include_failed=True).get("failed_job") is not None # doctest: +SKIP
 
     Returns:
@@ -639,11 +639,11 @@ def get_status(workflow_id: str) -> WorkflowStatus:
         workflow_id: The workflow to query.
 
     Examples:
-        >>> from ray import workflow
+        >>> import exoflow
         >>> trip = ... # doctest: +SKIP
         >>> workflow_task = trip.bind() # doctest: +SKIP
-        >>> output = workflow.run(workflow_task, workflow_id="trip") # doctest: +SKIP
-        >>> assert workflow.SUCCESSFUL == workflow.get_status("trip") # doctest: +SKIP
+        >>> output = exoflow.run(workflow_task, workflow_id="trip") # doctest: +SKIP
+        >>> assert exoflow.SUCCESSFUL == exoflow.get_status("trip") # doctest: +SKIP
 
     Returns:
         The status of that workflow
@@ -662,7 +662,7 @@ def wait_for_event(
     if not issubclass(event_listener_type, EventListener):
         raise TypeError(
             f"Event listener type is {event_listener_type.__name__}"
-            ", which is not a subclass of workflow.EventListener"
+            ", which is not a subclass of exoflow.EventListener"
         )
 
     @ray.remote
@@ -723,18 +723,18 @@ def get_metadata(workflow_id: str, name: Optional[str] = None) -> Dict[str, Any]
             the metadata of the workflow.
 
     Examples:
-        >>> from ray import workflow
+        >>> import exoflow
         >>> trip = ... # doctest: +SKIP
         >>> workflow_task = trip.options( # doctest: +SKIP
-        ...     **workflow.options(name="trip", metadata={"k1": "v1"})).bind()
-        >>> workflow.run(workflow_task, # doctest: +SKIP
+        ...     **exoflow.options(name="trip", metadata={"k1": "v1"})).bind()
+        >>> exoflow.run(workflow_task, # doctest: +SKIP
         ...     workflow_id="trip1", metadata={"k2": "v2"})
-        >>> workflow_metadata = workflow.get_metadata("trip1") # doctest: +SKIP
+        >>> workflow_metadata = exoflow.get_metadata("trip1") # doctest: +SKIP
         >>> assert workflow_metadata["status"] == "SUCCESSFUL" # doctest: +SKIP
         >>> assert workflow_metadata["user_metadata"] == {"k2": "v2"} # doctest: +SKIP
         >>> assert "start_time" in workflow_metadata["stats"] # doctest: +SKIP
         >>> assert "end_time" in workflow_metadata["stats"] # doctest: +SKIP
-        >>> task_metadata = workflow.get_metadata("trip1", "trip") # doctest: +SKIP
+        >>> task_metadata = exoflow.get_metadata("trip1", "trip") # doctest: +SKIP
         >>> assert task_metadata["task_type"] == "FUNCTION" # doctest: +SKIP
         >>> assert task_metadata["user_metadata"] == {"k1": "v1"} # doctest: +SKIP
         >>> assert "start_time" in task_metadata["stats"] # doctest: +SKIP
@@ -757,20 +757,20 @@ def get_metadata(workflow_id: str, name: Optional[str] = None) -> Dict[str, Any]
 @PublicAPI(stability="alpha")
 def cancel(workflow_id: str) -> None:
     """Cancel a workflow. Workflow checkpoints will still be saved in storage. To
-       clean up saved checkpoints, see `workflow.delete()`.
+       clean up saved checkpoints, see `exoflow.delete()`.
 
     Args:
         workflow_id: The workflow to cancel.
 
     Examples:
-        >>> from ray import workflow
+        >>> import exoflow
         >>> some_job = ... # doctest: +SKIP
         >>> workflow_task = some_job.bind() # doctest: +SKIP
-        >>> output = workflow.run_async(workflow_task,  # doctest: +SKIP
+        >>> output = exoflow.run_async(workflow_task,  # doctest: +SKIP
         ...     workflow_id="some_job")
-        >>> workflow.cancel(workflow_id="some_job") # doctest: +SKIP
+        >>> exoflow.cancel(workflow_id="some_job") # doctest: +SKIP
         >>> assert [ # doctest: +SKIP
-        ...     ("some_job", workflow.CANCELED)] == workflow.list_all()
+        ...     ("some_job", exoflow.CANCELED)] == exoflow.list_all()
 
     Returns:
         None
@@ -787,7 +787,7 @@ def cancel(workflow_id: str) -> None:
 def delete(workflow_id: str) -> None:
     """Delete a workflow, its checkpoints, and other information it may have
        persisted to storage. To stop a running workflow, see
-       `workflow.cancel()`.
+       `exoflow.cancel()`.
 
     Args:
         workflow_id: The workflow to delete.
@@ -797,13 +797,13 @@ def delete(workflow_id: str) -> None:
         WorkflowNotFoundError: The workflow does not exist.
 
     Examples:
-        >>> from ray import workflow
+        >>> import exoflow
         >>> some_job = ... # doctest: +SKIP
         >>> workflow_task = some_job.bind() # doctest: +SKIP
-        >>> output = workflow.run_async(workflow_task, # doctest: +SKIP
+        >>> output = exoflow.run_async(workflow_task, # doctest: +SKIP
         ...     workflow_id="some_job")
-        >>> workflow.delete(workflow_id="some_job") # doctest: +SKIP
-        >>> assert [] == workflow.list_all() # doctest: +SKIP
+        >>> exoflow.delete(workflow_id="some_job") # doctest: +SKIP
+        >>> assert [] == exoflow.list_all() # doctest: +SKIP
     """
     _ensure_workflow_initialized()
     workflow_manager = workflow_access.get_management_actor()
@@ -857,16 +857,16 @@ class options:
 
     Examples:
         >>> import ray
-        >>> from ray import workflow
+        >>> import exoflow
         >>>
         >>> # specify workflow options with a decorator
-        >>> @workflow.options(catch_exceptions=True):
+        >>> @exoflow.options(catch_exceptions=True):
         >>> @ray.remote
         >>> def foo():
         >>>     return 1
         >>>
         >>> # speficy workflow options in ".options"
-        >>> foo_new = foo.options(**workflow.options(catch_exceptions=False))
+        >>> foo_new = foo.options(**exoflow.options(catch_exceptions=False))
     """
 
     def __init__(self, **workflow_options: Dict[str, Any]):
@@ -900,7 +900,7 @@ class options:
 
     def __call__(self, f: RemoteFunction) -> RemoteFunction:
         if not isinstance(f, RemoteFunction):
-            raise ValueError("Only apply 'workflow.options' to Ray remote functions.")
+            raise ValueError("Only apply 'exoflow.options' to Ray remote functions.")
         f._default_options.update(self.options)
         return f
 

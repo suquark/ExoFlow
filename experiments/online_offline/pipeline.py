@@ -1,5 +1,5 @@
 import ray
-from ray import workflow
+import exoflow
 
 import common
 from ingest import create_ingest_actors
@@ -21,20 +21,20 @@ def generate_pipeline(n_epochs: int, n_warmup_epochs: int, checkpoint_mode):
     extras = {}  # dict(resources={"tag:online": 0.001})
 
     actors = create_ingest_actors.options(
-        **workflow.options(checkpoint=False), **extras
+        **exoflow.options(checkpoint=False), **extras
     ).bind(common.N_INGESTION, common.N_EVENT_INTERVAL)
     online_updater = create_online_actors.options(
-        **workflow.options(checkpoint=False), **extras
+        **exoflow.options(checkpoint=False), **extras
     ).bind()
     online_output, batch_output = None, None
     for i in range(1, n_epochs + 1):
         if checkpoint_mode == "hybrid":
             if i % common.N_CHECKPOINT_INTERVAL == 0:
-                workflow_options = workflow.options(checkpoint="async")
+                workflow_options = exoflow.options(checkpoint="async")
             else:
-                workflow_options = workflow.options(checkpoint=False)
+                workflow_options = exoflow.options(checkpoint=False)
         else:
-            workflow_options = workflow.options(checkpoint=checkpoint_mode)
+            workflow_options = exoflow.options(checkpoint=checkpoint_mode)
 
         state = run_epoch.options(**workflow_options, **extras).bind(actors, state, i)
         online_output = online_update.options(**workflow_options, **extras).bind(
@@ -45,7 +45,7 @@ def generate_pipeline(n_epochs: int, n_warmup_epochs: int, checkpoint_mode):
         online_update_results.append(online_output)
         if i % common.BATCH_UPDATE_INTERVAL == 0 and i >= n_warmup_epochs:
             batch_output = compute_tunk_rank.options(
-                **workflow.options(checkpoint=True), **extras
+                **exoflow.options(checkpoint=True), **extras
             ).bind(state, i)
             if len(batch_update_results) > 0:
                 batch_update_results[-1] >> batch_output

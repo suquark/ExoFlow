@@ -2,7 +2,7 @@ import os
 import time
 
 import ray
-from ray import workflow
+import exoflow
 from exoflow.api import register_service, run_service_async
 from ray.dag import InputNode
 import shortuuid

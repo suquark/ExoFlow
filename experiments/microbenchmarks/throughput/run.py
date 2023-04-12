@@ -5,7 +5,7 @@ import time
 from datetime import datetime
 
 import ray
-from ray import workflow
+import exoflow
 from exoflow.api import register_service, run_service_async
 
 import shortuuid
@@ -14,7 +14,7 @@ import tqdm
 from config import N_TASKS, N_PARALLEL_TASKS
 
 
-@ray.remote(**workflow.options(checkpoint=False))
+@ray.remote(**exoflow.options(checkpoint=False))
 def nop():
     pass
 

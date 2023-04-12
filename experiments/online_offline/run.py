@@ -3,7 +3,7 @@ import json
 import time
 
 import ray
-from ray import workflow
+import exoflow
 from exoflow.debug_utils import run_workflow_local, resume_workflow_local
 
 import common

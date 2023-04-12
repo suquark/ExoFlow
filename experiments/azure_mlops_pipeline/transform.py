@@ -2,7 +2,7 @@ import random
 
 import numpy as np
 import ray
-from ray import workflow
+import exoflow
 import tensorflow as tf
 
 from utils import split_into_chunks, detect_and_fail

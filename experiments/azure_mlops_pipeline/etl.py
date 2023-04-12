@@ -12,7 +12,7 @@ import numpy as np
 import ray
 import tensorflow as tf
 import wget
-from ray import workflow, ObjectRef
+import exoflow, ObjectRef
 
 from utils import split_into_chunks, detect_and_fail
 import global_config

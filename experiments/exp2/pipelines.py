@@ -1,5 +1,5 @@
 import ray
-from ray import workflow
+import exoflow
 from ray.dag import InputNode
 from exoflow.api import register_service
 from exoflow.lambda_executor import ray_invoke_lambda
@@ -47,7 +47,7 @@ def search_encoder(**outputs):
 
 def register_dags(worker_id: int):
     prefix = "beldi-wf-dev-"
-    skip_ckpt = workflow.options(checkpoint=False)
+    skip_ckpt = exoflow.options(checkpoint=False)
     retry = {"retry_exceptions": True, "max_retries": 100}
 
     with InputNode() as dag_input:
@@ -183,7 +183,7 @@ def register_dags(worker_id: int):
 
     with InputNode() as dag_input:
         hotel_acquire = ray_invoke_lambda.options(
-            **retry, **workflow.options(checkpoint="async")
+            **retry, **exoflow.options(checkpoint="async")
         ).bind(
             prefix + "hotel-acquire",
             encoder=beldi_encoder,
@@ -193,7 +193,7 @@ def register_dags(worker_id: int):
             hotelId=dag_input.hotelId,
         )
         flight_acquire = ray_invoke_lambda.options(
-            **retry, **workflow.options(checkpoint="async")
+            **retry, **exoflow.options(checkpoint="async")
         ).bind(
             prefix + "flight-acquire",
             encoder=beldi_encoder,
@@ -220,7 +220,7 @@ def register_dags(worker_id: int):
         )
         dag = ray_invoke_lambda.options(
             **retry,
-            **workflow.options(
+            **exoflow.options(
                 checkpoint=False,
                 wait_until_committed=[
                     prefix + "hotel-acquire",

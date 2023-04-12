@@ -1,7 +1,7 @@
 import math
 
 import ray
-from ray import workflow
+import exoflow
 from exoflow.workflow_context import get_current_workflow_id
 
 
