@@ -21,7 +21,7 @@ def get_local_addr() -> str:
 
 
 def connect(addr: str) -> SparkSession:
-    python_path = "/home/ubuntu/anaconda3/envs/ray_workflow/bin/python"
+    python_path = "/home/ubuntu/anaconda3/envs/exoflow-dev/bin/python"
     os.environ["SPARK_HOME"] = "/spark"
     os.environ["PYSPARK_PYTHON"] = python_path
     os.environ["PYSPARK_DRIVER_PYTHON"] = python_path

@@ -14,12 +14,12 @@ EOT
 # init image: ami-02b509fb28354de85
 conda init bash
 source ~/.bashrc
-# conda create -n ray_workflow python=3.8 -y
-conda create --name ray_workflow --clone pytorch
+# conda create -n exoflow-dev python=3.8 -y
+conda create --name exoflow-dev --clone pytorch
 
 # https://unix.stackexchange.com/questions/705447/what-is-the-difference-between-cat-eof-and-cat-eot-and-when-should-i-use-it
 cat <<'EOT' >> ~/.bashrc
-conda activate ray_workflow
+conda activate exoflow-dev
 export PATH="/home/ubuntu/.bazel/bin:$PATH"
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CONDA_PREF
 EOT
