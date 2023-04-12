@@ -4,7 +4,7 @@ import pytest
 import ray
 from ray import workflow
 from ray.exceptions import GetTimeoutError
-from ray.workflow import WorkflowStatus
+from exoflow import WorkflowStatus
 
 
 def test_cancellation(tmp_path, workflow_start_regular):

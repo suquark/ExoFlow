@@ -10,8 +10,8 @@ from pydantic import BaseModel
 from starlette.middleware.base import BaseHTTPMiddleware
 
 import ray
-from ray.workflow.api import run_service_async
-from ray.workflow.workflow_access import get_management_actor
+from exoflow.api import run_service_async
+from exoflow.workflow_access import get_management_actor
 
 import pipelines
 

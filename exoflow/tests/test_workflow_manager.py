@@ -5,7 +5,7 @@ from filelock import FileLock
 
 
 def test_workflow_manager_simple(workflow_start_regular):
-    from ray.workflow.exceptions import WorkflowNotFoundError
+    from exoflow.exceptions import WorkflowNotFoundError
 
     assert [] == workflow.list_all()
     with pytest.raises(WorkflowNotFoundError):

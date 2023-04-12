@@ -4,9 +4,9 @@ import time
 import pytest
 import ray
 from ray import workflow
-from ray.workflow.tests import utils
+from exoflow.tests import utils
 
-from ray.workflow.tests.test_complex_workflow import (
+from exoflow.tests.test_complex_workflow import (
     generate_layered_dag,
     generate_random_dag,
 )
@@ -16,7 +16,7 @@ from ray.workflow.tests.test_complex_workflow import (
 def gather_and_hash_flaky(*inputs):
     import hashlib
 
-    from ray.workflow.workflow_context import get_current_task_id
+    from exoflow.workflow_context import get_current_task_id
 
     task_id = get_current_task_id()
     if utils.check_global_mark(task_id):
@@ -93,7 +93,7 @@ def test_workflow_failure_with_ref(workflow_start_regular):
     dag_1 = consumer.bind(pass_through_1.bind(create_dataset.bind()))
     dag_2 = pass_through_2.bind(create_dataset.bind())
 
-    from ray.workflow.debug_utils import execute_workflow_local
+    from exoflow.debug_utils import execute_workflow_local
 
     utils.clear_marks()
     for t in fail_tags:

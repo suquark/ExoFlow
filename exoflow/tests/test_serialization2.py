@@ -8,7 +8,7 @@ import ray
 from ray import workflow
 from ray._private.test_utils import run_string_as_driver_nonblocking
 from ray.tests.conftest import *  # noqa
-from ray.workflow import serialization, workflow_storage
+from exoflow import serialization, workflow_storage
 
 
 def get_num_uploads():
@@ -74,7 +74,7 @@ if __name__ == "__main__":
 
 
 def test_embedded_objectrefs(workflow_start_regular):
-    from ray.workflow.tests.utils import skip_client_mode_test
+    from exoflow.tests.utils import skip_client_mode_test
 
     # This test uses low-level storage APIs and restarts the cluster,
     # so it is not for client mode test

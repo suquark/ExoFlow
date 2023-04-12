@@ -24,7 +24,7 @@ def test_workflow_error_message(shutdown_only):
 
 
 def test_options_update(shutdown_only):
-    from ray.workflow.common import WORKFLOW_OPTIONS
+    from exoflow.common import WORKFLOW_OPTIONS
 
     # Options are given in decorator first, then in the first .options()
     # and finally in the second .options()

@@ -5,8 +5,8 @@ from ray.tests.conftest import *  # noqa
 import numpy as np
 from ray import workflow
 from ray._private.client_mode_hook import client_mode_wrap
-from ray.workflow import workflow_storage
-from ray.workflow.tests.utils import assert_task_checkpoints
+from exoflow import workflow_storage
+from exoflow.tests.utils import assert_task_checkpoints
 
 
 @ray.remote

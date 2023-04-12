@@ -7,14 +7,14 @@ import ray
 from ray import workflow
 from ray._private import signature
 from ray.tests.conftest import *  # noqa
-from ray.workflow import workflow_storage
-from ray.workflow.common import (
+from exoflow import workflow_storage
+from exoflow.common import (
     TaskType,
     WorkflowTaskRuntimeOptions,
 )
-from ray.workflow.exceptions import WorkflowNotFoundError
-from ray.workflow import serialization_context
-from ray.workflow.tests import utils
+from exoflow.exceptions import WorkflowNotFoundError
+from exoflow import serialization_context
+from exoflow.tests import utils
 
 
 def some_func(x):
@@ -39,7 +39,7 @@ def test_delete_1(workflow_start_regular):
 
 def test_delete_2(workflow_start_regular):
     from ray._private.storage import _storage_uri
-    from ray.workflow.tests.utils import skip_client_mode_test
+    from exoflow.tests.utils import skip_client_mode_test
 
     # This test restarts the cluster, so we cannot test under client mode.
     skip_client_mode_test()
@@ -126,7 +126,7 @@ def test_delete_2(workflow_start_regular):
 
 
 def test_workflow_storage(workflow_start_regular):
-    from ray.workflow.tests.utils import skip_client_mode_test
+    from exoflow.tests.utils import skip_client_mode_test
 
     # This test depends on raw storage, so we cannot test under client mode.
     skip_client_mode_test()

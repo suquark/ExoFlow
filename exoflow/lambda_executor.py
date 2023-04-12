@@ -5,7 +5,7 @@ import threading
 from concurrent.futures import ThreadPoolExecutor
 
 import ray
-from ray.workflow.common import WORKFLOW_OPTIONS
+from exoflow.common import WORKFLOW_OPTIONS
 
 _client = None
 _boto3_client_lock = threading.Lock()

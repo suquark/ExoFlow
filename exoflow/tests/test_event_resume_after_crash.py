@@ -6,11 +6,11 @@ import pytest
 
 import ray
 from ray import workflow, serve
-from ray.workflow.http_event_provider import HTTPListener, WorkflowEventHandleError
+from exoflow.http_event_provider import HTTPListener, WorkflowEventHandleError
 from ray.tests.conftest import *  # noqa
-from ray.workflow.tests import utils
-from ray.workflow.common import WorkflowStatus
-from ray.workflow import common, workflow_context
+from exoflow.tests import utils
+from exoflow.common import WorkflowStatus
+from exoflow import common, workflow_context
 
 import requests
 
@@ -46,7 +46,7 @@ def test_cluster_crash_before_checkpoint(workflow_start_regular_shared_serve):
                 await asyncio.sleep(10000)
 
     from ray._private import storage
-    from ray.workflow.tests.utils import skip_client_mode_test
+    from exoflow.tests.utils import skip_client_mode_test
 
     storage_uri = storage._storage_uri
 

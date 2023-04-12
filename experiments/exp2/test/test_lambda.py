@@ -6,7 +6,7 @@ import time
 import shortuuid
 
 import ray
-from ray.workflow.lambda_executor import AWSLambdaClient
+from exoflow.lambda_executor import AWSLambdaClient
 
 
 async def method_1(n):

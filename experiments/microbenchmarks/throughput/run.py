@@ -6,7 +6,7 @@ from datetime import datetime
 
 import ray
 from ray import workflow
-from ray.workflow.api import register_service, run_service_async
+from exoflow.api import register_service, run_service_async
 
 import shortuuid
 import tqdm

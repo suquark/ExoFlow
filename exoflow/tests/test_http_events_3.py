@@ -2,9 +2,9 @@ from time import sleep
 import pytest
 
 from ray import workflow, serve
-from ray.workflow.http_event_provider import HTTPListener
+from exoflow.http_event_provider import HTTPListener
 from ray.tests.conftest import *  # noqa
-from ray.workflow.tests import utils
+from exoflow.tests import utils
 
 import requests
 
@@ -25,7 +25,7 @@ def test_checkpoint_success_by_http(workflow_start_regular_shared_serve):
     class CustomHTTPListener(HTTPListener):
         async def event_checkpointed(self, event):
             key, msg = event
-            from ray.workflow import workflow_context
+            from exoflow import workflow_context
 
             if utils.check_global_mark("checkpointing_succeed"):
                 await self.handle.report_checkpointed.remote(
@@ -82,7 +82,7 @@ def test_checkpoint_failed_by_http(workflow_start_regular_shared_serve):
     class CustomHTTPListener(HTTPListener):
         async def event_checkpointed(self, event):
             key, msg = event
-            from ray.workflow import workflow_context
+            from exoflow import workflow_context
 
             if utils.check_global_mark("checkpointing_succeed"):
                 await self.handle.report_checkpointed.remote(

@@ -5,7 +5,7 @@ from fastapi import FastAPI
 import shortuuid
 
 import ray
-from ray.workflow.api import run_service_async
+from exoflow.api import run_service_async
 
 import config
 import pipelines

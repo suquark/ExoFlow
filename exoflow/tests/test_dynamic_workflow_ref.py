@@ -4,7 +4,7 @@ import pytest
 
 import ray
 from ray import workflow
-from ray.workflow.common import WorkflowRef
+from exoflow.common import WorkflowRef
 
 
 def test_dynamic_workflow_ref(workflow_start_regular_shared):

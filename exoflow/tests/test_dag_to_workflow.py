@@ -43,8 +43,8 @@ def test_dag_to_workflow_execution(workflow_start_regular_shared):
 
 
 def test_dedupe_serialization_dag(workflow_start_regular_shared):
-    from ray.workflow import serialization
-    from ray.workflow.tests.utils import skip_client_mode_test
+    from exoflow import serialization
+    from exoflow.tests.utils import skip_client_mode_test
 
     # TODO(suquark): Fix workflow with ObjectRefs as inputs under client mode.
     skip_client_mode_test()
@@ -83,7 +83,7 @@ def test_same_object_many_dags(workflow_start_regular_shared):
     """Ensure that when we dedupe uploads, we upload the object once per DAG,
     since different DAGs shouldn't look in each others object directories.
     """
-    from ray.workflow.tests.utils import skip_client_mode_test
+    from exoflow.tests.utils import skip_client_mode_test
 
     # TODO(suquark): Fix workflow with ObjectRefs as inputs under client mode.
     skip_client_mode_test()
@@ -106,7 +106,7 @@ def test_same_object_many_dags(workflow_start_regular_shared):
 
 def test_dereference_object_refs(workflow_start_regular_shared):
     """Ensure that object refs are dereferenced like in ray tasks."""
-    from ray.workflow.tests.utils import skip_client_mode_test
+    from exoflow.tests.utils import skip_client_mode_test
 
     # TODO(suquark): Fix workflow with ObjectRefs as inputs under client mode.
     skip_client_mode_test()

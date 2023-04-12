@@ -4,7 +4,7 @@ import time
 
 import ray
 from ray import workflow
-from ray.workflow.debug_utils import run_workflow_local, resume_workflow_local
+from exoflow.debug_utils import run_workflow_local, resume_workflow_local
 
 import common
 import utils

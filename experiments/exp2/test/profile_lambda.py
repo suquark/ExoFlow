@@ -3,10 +3,10 @@ import time
 
 import ray
 from ray import workflow
-from ray.workflow.api import register_service, run_service_async
+from exoflow.api import register_service, run_service_async
 from ray.dag import InputNode
 import shortuuid
-from ray.workflow.lambda_executor import ray_invoke_lambda
+from exoflow.lambda_executor import ray_invoke_lambda
 
 if __name__ == "__main__":
     import shutil
@@ -39,7 +39,7 @@ if __name__ == "__main__":
         )
     ray.get(workflows)
 
-    from ray.workflow.workflow_access import get_management_actor
+    from exoflow.workflow_access import get_management_actor
 
     mgr = get_management_actor()
     ray.get(mgr._start_profile.remote())

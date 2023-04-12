@@ -5,7 +5,7 @@ import ray
 from ray import ObjectRef
 from ray.actor import ActorHandle
 from ray.util.serialization import register_serializer, deregister_serializer
-from ray.workflow.common import WorkflowRef, WorkflowDAGInput
+from exoflow.common import WorkflowRef, WorkflowDAGInput
 
 
 def _resolve_workflow_refs(index: Tuple[int, int]) -> Any:
@@ -25,7 +25,7 @@ def _set_resolver(resolver):
 
 
 def _resolve_task_output(output_ref: ObjectRef, object_refs, actors):
-    from ray.workflow.workflow_context import get_workflow_task_context
+    from exoflow.workflow_context import get_workflow_task_context
 
     context = get_workflow_task_context()
     if context is not None:

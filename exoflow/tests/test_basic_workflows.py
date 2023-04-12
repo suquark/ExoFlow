@@ -188,7 +188,7 @@ def test_dynamic_output(workflow_start_regular_shared):
         )
     except Exception:
         pass
-    from ray.workflow.workflow_storage import get_workflow_storage
+    from exoflow.workflow_storage import get_workflow_storage
 
     from ray._private.client_mode_hook import client_mode_wrap
 

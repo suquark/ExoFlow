@@ -166,7 +166,7 @@ def detect_and_fail(name=None, delay=0):
         os.system("ray stop --force")
 
     if not name:
-        from ray.workflow.workflow_context import get_current_task_id
+        from exoflow.workflow_context import get_current_task_id
 
         name = get_current_task_id()
 

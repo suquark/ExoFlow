@@ -251,7 +251,7 @@ def create_trainer(
 
 @ray.remote
 def fit(trainers, dataset, epochs=1, batch_size=32):
-    from ray.workflow.workflow_context import get_current_task_id
+    from exoflow.workflow_context import get_current_task_id
 
     detect_and_fail()
     task_id = get_current_task_id()

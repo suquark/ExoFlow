@@ -6,7 +6,7 @@ import pytest
 import ray
 from ray import workflow
 from ray.tests.conftest import *  # noqa
-from ray.workflow.tests import utils
+from exoflow.tests import utils
 
 
 def test_sleep(workflow_start_regular_shared):

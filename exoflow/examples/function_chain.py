@@ -76,10 +76,10 @@ if __name__ == "__main__":
 
     workflow_id = "__function_chain_test"
     try:
-        ray.workflow.delete(workflow_id)
+        exoflow.delete(workflow_id)
     except Exception:
         pass
-    assert ray.workflow.run(pipeline(10), workflow_id=workflow_id) == 20
+    assert exoflow.run(pipeline(10), workflow_id=workflow_id) == 20
 
     pipeline = function_compose(
         [
@@ -96,7 +96,7 @@ if __name__ == "__main__":
 
     workflow_id = "__function_compose_test"
     try:
-        ray.workflow.delete(workflow_id)
+        exoflow.delete(workflow_id)
     except Exception:
         pass
-    assert ray.workflow.run(pipeline(10), workflow_id=workflow_id) == (14, 15, 15, 16)
+    assert exoflow.run(pipeline(10), workflow_id=workflow_id) == (14, 15, 15, 16)

@@ -8,10 +8,10 @@ from filelock import FileLock
 import ray
 from ray._private.test_utils import run_string_as_driver_nonblocking
 from ray import workflow
-from ray.workflow import workflow_storage
-from ray.workflow.storage.debug import DebugStorage
-from ray.workflow.tests import utils
-from ray.workflow.exceptions import WorkflowNotResumableError
+from exoflow import workflow_storage
+from exoflow.storage.debug import DebugStorage
+from exoflow.tests import utils
+from exoflow.exceptions import WorkflowNotResumableError
 
 
 @ray.remote

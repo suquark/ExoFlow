@@ -3,7 +3,7 @@ import pytest
 import ray
 from ray import workflow
 from ray.tests.conftest import *  # noqa
-from ray.workflow import serialization
+from exoflow import serialization
 
 
 @ray.remote
@@ -62,7 +62,7 @@ def test_dedupe_serialization(workflow_start_regular_shared):
 
 
 def test_dedupe_serialization_2(workflow_start_regular_shared):
-    from ray.workflow.tests.utils import skip_client_mode_test
+    from exoflow.tests.utils import skip_client_mode_test
 
     # TODO(suquark): Fix workflow with ObjectRefs as inputs under client mode.
     skip_client_mode_test()
@@ -89,7 +89,7 @@ def test_same_object_many_workflows(workflow_start_regular_shared):
     """Ensure that when we dedupe uploads, we upload the object once per workflow,
     since different workflows shouldn't look in each others object directories.
     """
-    from ray.workflow.tests.utils import skip_client_mode_test
+    from exoflow.tests.utils import skip_client_mode_test
 
     # TODO(suquark): Fix workflow with ObjectRefs as inputs under client mode.
     skip_client_mode_test()

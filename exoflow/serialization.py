@@ -6,7 +6,7 @@ import os
 import ray
 from ray import cloudpickle
 from ray.types import ObjectRef
-from ray.workflow import common, workflow_storage
+from exoflow import common, workflow_storage
 from typing import Any, Dict, Generator, List, Optional, Tuple, TYPE_CHECKING
 
 from collections import ChainMap

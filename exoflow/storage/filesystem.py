@@ -6,7 +6,7 @@ import pathlib
 from typing import Any, List
 import uuid
 
-from ray.workflow.storage.base import Storage, KeyNotFoundError
+from exoflow.storage.base import Storage, KeyNotFoundError
 
 import ray.cloudpickle
 

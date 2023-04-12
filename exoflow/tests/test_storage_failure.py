@@ -4,11 +4,11 @@ import tempfile
 import pytest
 import ray
 from ray import workflow
-from ray.workflow.storage.debug import DebugStorage
-from ray.workflow.workflow_storage import STEP_OUTPUTS_METADATA
-from ray.workflow.common import asyncio_run
-from ray.workflow.storage.filesystem import FilesystemStorageImpl
-from ray.workflow.tests.utils import _alter_storage
+from exoflow.storage.debug import DebugStorage
+from exoflow.workflow_storage import STEP_OUTPUTS_METADATA
+from exoflow.common import asyncio_run
+from exoflow.storage.filesystem import FilesystemStorageImpl
+from exoflow.tests.utils import _alter_storage
 
 
 @ray.remote

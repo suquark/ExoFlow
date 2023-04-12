@@ -9,7 +9,7 @@ from ray.cluster_utils import Cluster
 
 # Trigger pytest hook to automatically zip test cluster logs to archive dir on failure
 from ray.tests.conftest import pytest_runtest_makereport  # noqa
-from ray.workflow.tests import utils
+from exoflow.tests import utils
 
 
 @contextmanager

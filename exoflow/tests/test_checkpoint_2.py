@@ -5,7 +5,7 @@ from ray.tests.conftest import *  # noqa
 
 import numpy as np
 from ray import workflow
-from ray.workflow.tests import utils
+from exoflow.tests import utils
 
 
 SIZE = 2 ** 15

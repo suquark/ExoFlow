@@ -8,7 +8,7 @@ import pytest
 import ray
 from ray import workflow
 from ray.tests.conftest import *  # noqa
-from ray.workflow.tests import utils
+from exoflow.tests import utils
 
 
 def test_crash_during_event_checkpointing(workflow_start_regular):
@@ -16,7 +16,7 @@ def test_crash_during_event_checkpointing(workflow_start_regular):
     properly re-poll for the event."""
 
     from ray._private import storage
-    from ray.workflow.tests.utils import skip_client_mode_test
+    from exoflow.tests.utils import skip_client_mode_test
 
     # This test restarts the cluster, so we cannot test under client mode.
     skip_client_mode_test()
@@ -84,7 +84,7 @@ def test_crash_after_commit(workflow_start_regular):
     """
 
     from ray._private import storage
-    from ray.workflow.tests.utils import skip_client_mode_test
+    from exoflow.tests.utils import skip_client_mode_test
 
     # This test restarts the cluster, so we cannot test under client mode.
     skip_client_mode_test()

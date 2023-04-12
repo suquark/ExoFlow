@@ -10,13 +10,13 @@ from typing import List, Dict, Optional, Set, Deque, Union
 import ray
 from ray import ObjectRef
 from ray.actor import ActorHandle
-from ray.workflow.common import (
+from exoflow.common import (
     TaskID,
     WorkflowRef,
     WorkflowTaskRuntimeOptions,
 )
-from ray.workflow.workflow_context import WorkflowTaskContext
-from ray.workflow.serialization_context import _TaskOutputEncoder, _wrap_task_output
+from exoflow.workflow_context import WorkflowTaskContext
+from exoflow.serialization_context import _TaskOutputEncoder, _wrap_task_output
 
 logger = logging.getLogger(__name__)
 

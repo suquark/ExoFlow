@@ -2,7 +2,7 @@ import math
 
 import ray
 from ray import workflow
-from ray.workflow.workflow_context import get_current_workflow_id
+from exoflow.workflow_context import get_current_workflow_id
 
 
 def _clip(n, n_min, n_max):

@@ -12,18 +12,18 @@ from ray.remote_function import RemoteFunction
 
 # avoid collision with arguments & APIs
 
-from ray.workflow.common import (
+from exoflow.common import (
     WorkflowStatus,
     Event,
     asyncio_run,
     validate_user_metadata,
 )
-from ray.workflow import serialization, workflow_access, workflow_context
-from ray.workflow.event_listener import EventListener, EventListenerType, TimerListener
-from ray.workflow.workflow_storage import WorkflowStorage
-from ray.workflow.workflow_state_from_dag import workflow_state_from_dag
-from ray.workflow.common import TaskID
-from ray.workflow.workflow_state import TaskExecutionMetadata
+from exoflow import serialization, workflow_access, workflow_context
+from exoflow.event_listener import EventListener, EventListenerType, TimerListener
+from exoflow.workflow_storage import WorkflowStorage
+from exoflow.workflow_state_from_dag import workflow_state_from_dag
+from exoflow.common import TaskID
+from exoflow.workflow_state import TaskExecutionMetadata
 
 from ray.util.annotations import PublicAPI
 from ray._private.usage import usage_lib
@@ -821,7 +821,7 @@ def continuation(dag_node: "Union[DAGNode, List[DAGNode]]") -> Union["DAGNode", 
     Args:
         dag_node: The DAG to be converted.
     """
-    from ray.workflow.workflow_context import in_workflow_execution
+    from exoflow.workflow_context import in_workflow_execution
 
     if isinstance(dag_node, DAGNode):
         if in_workflow_execution():
@@ -886,7 +886,7 @@ class options:
                 f"Invalid option keywords {invalid_keywords} for workflow tasks. "
                 f"Valid ones are {valid_options}."
             )
-        from ray.workflow.common import WORKFLOW_OPTIONS
+        from exoflow.common import WORKFLOW_OPTIONS
 
         validate_user_metadata(workflow_options.get("metadata"))
 

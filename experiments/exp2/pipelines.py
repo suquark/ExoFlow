@@ -1,8 +1,8 @@
 import ray
 from ray import workflow
 from ray.dag import InputNode
-from ray.workflow.api import register_service
-from ray.workflow.lambda_executor import ray_invoke_lambda
+from exoflow.api import register_service
+from exoflow.lambda_executor import ray_invoke_lambda
 
 
 @ray.remote

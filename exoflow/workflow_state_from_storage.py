@@ -1,11 +1,11 @@
 from typing import Optional
 from collections import deque
 
-from ray.workflow import serialization
-from ray.workflow.common import TaskID, WorkflowRef
-from ray.workflow.exceptions import WorkflowTaskNotRecoverableError
-from ray.workflow.workflow_storage import TaskInspectResult, WorkflowStorage
-from ray.workflow.workflow_state import WorkflowExecutionState, Task, Entry
+from exoflow import serialization
+from exoflow.common import TaskID, WorkflowRef
+from exoflow.exceptions import WorkflowTaskNotRecoverableError
+from exoflow.workflow_storage import TaskInspectResult, WorkflowStorage
+from exoflow.workflow_state import WorkflowExecutionState, Task, Entry
 
 
 def _reconstruct_checkpointed_task(

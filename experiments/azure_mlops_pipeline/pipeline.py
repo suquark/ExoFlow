@@ -1,5 +1,5 @@
 from ray import workflow
-from ray.workflow.common import CheckpointModeType
+from exoflow.common import CheckpointModeType
 
 import etl
 import transform

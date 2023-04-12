@@ -1,8 +1,8 @@
 import pytest
 
 from ray._private.client_mode_hook import client_mode_wrap
-from ray.workflow.common import WorkflowStatus
-from ray.workflow.workflow_storage import WorkflowIndexingStorage
+from exoflow.common import WorkflowStatus
+from exoflow.workflow_storage import WorkflowIndexingStorage
 
 
 def test_workflow_status_update(workflow_start_regular):
