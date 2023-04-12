@@ -61,7 +61,7 @@ if __name__ == "__main__":
     ray.init(
         "local", storage=f"file:///tmp/ray/workflow_data/{datetime.now().isoformat()}"
     )
-    workflow.init()
+    exoflow.init()
     register_dags()
 
     durations = run_single(N_TASKS)

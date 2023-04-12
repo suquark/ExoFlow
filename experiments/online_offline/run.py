@@ -33,14 +33,14 @@ def run_with_config(config, debug: bool = False):
         if debug:
             run_workflow_local(dag, workflow_id=workflow_id)
         else:
-            workflow.run(dag, workflow_id=workflow_id)
+            exoflow.run(dag, workflow_id=workflow_id)
     else:
         with open("start_time") as f:
             start = float(f.read())
         if debug:
             resume_workflow_local(workflow_id=workflow_id)
         else:
-            workflow.resume(workflow_id=workflow_id)
+            exoflow.resume(workflow_id=workflow_id)
 
     return time.time() - start
 

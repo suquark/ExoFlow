@@ -75,7 +75,7 @@ class HTTPEventProvider:
     >>> event_node = workflow.wait_for_event( # doctest: +SKIP
     ...     HTTPListener, event_key='')
     >>> handle_event = ... # doctest: +SKIP
-    >>> workflow.run_aync(handle_event.bind(event_node)) # doctest: +SKIP
+    >>> exoflow.run_aync(handle_event.bind(event_node)) # doctest: +SKIP
     >>>
     >>> On a separate python process, it sends an event to the HTTPEventProvider.
     >>> import requests
@@ -218,7 +218,7 @@ class HTTPListener(EventListener):
     >>> event_node = workflow.wait_for_event( # doctest: +SKIP
     ...     HTTPListener, event_key='')
     >>> handle_event = ... # doctest: +SKIP
-    >>> workflow.run(handle_event.bind(event_node)) # doctest: +SKIP
+    >>> exoflow.run(handle_event.bind(event_node)) # doctest: +SKIP
     >>>
 
     """

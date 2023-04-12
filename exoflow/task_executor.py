@@ -133,8 +133,8 @@ class WorkflowTaskActor:
                     ),
                     wf_store.load_task_output(tid),
                 )
-        # TODO(suquark): Unify the error from "workflow.get_output" & "workflow.run_async".
-        # Currently they could be different, because "workflow.get_output" could
+        # TODO(suquark): Unify the error from "exoflow.get_output" & "exoflow.run_async".
+        # Currently they could be different, because "exoflow.get_output" could
         # get the output from a stopped workflow, it does not may sense to raise
         # "WorkflowExecutionError" as the workflow is not running.
         raise ValueError(

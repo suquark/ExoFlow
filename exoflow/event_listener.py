@@ -38,7 +38,7 @@ class EventListener:
     >>> event_task = workflow.wait_for_event( # doctest: +SKIP
     ...     CustomEventListener, "topic1", "partition2")
     >>> handle_event = ... # doctest: +SKIP
-    >>> workflow.run(handle_event.task(event_task)) # doctest: +SKIP
+    >>> exoflow.run(handle_event.task(event_task)) # doctest: +SKIP
 
     """
 

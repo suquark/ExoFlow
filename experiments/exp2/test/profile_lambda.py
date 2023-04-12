@@ -16,7 +16,7 @@ if __name__ == "__main__":
 
     shutil.rmtree("/tmp/ray/workflow", ignore_errors=True)
     ray.init(num_cpus=4, storage="/tmp/ray/workflow")
-    workflow.init()
+    exoflow.init()
     workflows = []
 
     with InputNode() as dag_input:

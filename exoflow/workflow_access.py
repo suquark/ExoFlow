@@ -45,8 +45,8 @@ def load_task_output_from_storage(workflow_id: str, task_id: Optional[TaskID]):
     tid = wf_store.inspect_output(task_id)
     if tid is not None:
         return wf_store.load_task_output(tid)
-    # TODO(suquark): Unify the error from "workflow.get_output" & "workflow.run_async".
-    # Currently they could be different, because "workflow.get_output" could
+    # TODO(suquark): Unify the error from "exoflow.get_output" & "exoflow.run_async".
+    # Currently they could be different, because "exoflow.get_output" could
     # get the output from a stopped workflow, it does not may sense to raise
     # "WorkflowExecutionError" as the workflow is not running.
     if task_id is not None:

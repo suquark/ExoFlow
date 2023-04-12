@@ -95,4 +95,4 @@ def transform_dataset(
         for i, chunk in enumerate(chunk_splits)
     ]
     detect_and_fail()
-    return datasets if use_ephemeral_tasks else workflow.continuation(datasets)
+    return datasets if use_ephemeral_tasks else exoflow.continuation(datasets)

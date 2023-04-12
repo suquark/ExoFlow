@@ -39,7 +39,7 @@ def test_online_recovery_of_complex_workflow():
         if i % 4 == 0:
             utils.set_global_mark(template.format(i))
     assert (
-        workflow.run(random_dag)
+        exoflow.run(random_dag)
         == "fc04fa8950c7d352cf34346d304e5eaf07a0e777a105895f41ac3971c1e74eeb"
     )
 
@@ -51,7 +51,7 @@ def test_online_recovery_of_complex_workflow():
         if i % 4 == 0:
             utils.set_global_mark(template.format(i))
     assert (
-        workflow.run(layered_dag)
+        exoflow.run(layered_dag)
         == "a2776f91cc4da2125c8ac51c31a843185cbced7b24f9d0be5471f759b5710b29"
     )
 
@@ -88,7 +88,7 @@ def test_workflow_failure_with_ref(workflow_start_regular):
 
     @ray.remote
     def pass_through_2(x):
-        return workflow.continuation(consumer.bind(x))
+        return exoflow.continuation(consumer.bind(x))
 
     dag_1 = consumer.bind(pass_through_1.bind(create_dataset.bind()))
     dag_2 = pass_through_2.bind(create_dataset.bind())
@@ -99,13 +99,13 @@ def test_workflow_failure_with_ref(workflow_start_regular):
     for t in fail_tags:
         utils.set_global_mark(t)
 
-    workflow.run(dag_1, workflow_id="test_workflow_failure_with_ref")
+    exoflow.run(dag_1, workflow_id="test_workflow_failure_with_ref")
 
     utils.clear_marks()
     for t in fail_tags:
         utils.set_global_mark(t)
 
-    workflow.run(dag_2, workflow_id="test_workflow_failure_with_ref_2")
+    exoflow.run(dag_2, workflow_id="test_workflow_failure_with_ref_2")
 
 
 if __name__ == "__main__":

@@ -12,7 +12,8 @@ import numpy as np
 import ray
 import tensorflow as tf
 import wget
-import exoflow, ObjectRef
+import exoflow
+from ray import ObjectRef
 
 from utils import split_into_chunks, detect_and_fail
 import global_config
@@ -201,7 +202,7 @@ def preprocess_dataset(
     ]
 
     detect_and_fail(delay=global_config.PREPROCESS_FAIL_DELAY)
-    return chunks if use_ephemeral_tasks else workflow.continuation(chunks)
+    return chunks if use_ephemeral_tasks else exoflow.continuation(chunks)
 
 
 @ray.remote
