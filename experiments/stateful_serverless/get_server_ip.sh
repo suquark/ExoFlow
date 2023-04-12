@@ -1,6 +1,6 @@
 #!/bin/bash
 
-instance_name="ray-workflow-exp2-head"
+instance_name="ray-workflow-stateful_serverless-head"
 aws --region us-east-1 \
   ec2 describe-instances \
   --filters \

@@ -3,8 +3,8 @@
 hotel_prepare:
 	mkdir -p ~/beldi/bin-workflow/hotel
 	mkdir -p ~/beldi/internal/hotel-workflow/main
-	cp /exp2/hotel/*.go ~/beldi/internal/hotel-workflow/main
-	cp -r /exp2/hotel/wrapper/ ~/beldi/internal/hotel-workflow/main
+	cp /stateful_serverless/hotel/*.go ~/beldi/internal/hotel-workflow/main
+	cp -r /stateful_serverless/hotel/wrapper/ ~/beldi/internal/hotel-workflow/main
 
 hotel: hotel_prepare
 	for target in geo rate search profile recommendation user frontend flight hotel order \
@@ -36,7 +36,7 @@ clean_data:
 	cd ~/beldi; go run internal/hotel/init/init.go clean beldi
 
 deploy:
-	cp /exp2/hotel-wf.yml ~/beldi
+	cp /stateful_serverless/hotel-wf.yml ~/beldi
 	cd ~/beldi; sls deploy -c hotel-wf.yml
 
 undeploy:

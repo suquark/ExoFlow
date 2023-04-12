@@ -73,8 +73,8 @@ def plot(data):
     ax.set_xlabel("Throughput (request/second)")
     ax.set_ylabel("Latency (ms)")
     fig.tight_layout()
-    fig.savefig("plots/exp2-latency.png")
-    fig.savefig("plots/exp2-latency.pdf")
+    fig.savefig("plots/stateful_serverless-latency.png")
+    fig.savefig("plots/stateful_serverless-latency.pdf")
 
 
 def plot_reserve(data):
@@ -152,8 +152,8 @@ def plot_reserve(data):
     )
     lgd.get_frame().set_linewidth(0.0)
     fig.tight_layout()
-    fig.savefig("plots/exp2-reserve-latency.png", bbox_extra_artists=(lgd,))
-    fig.savefig("plots/exp2-reserve-latency.pdf", bbox_extra_artists=(lgd,))
+    fig.savefig("plots/stateful_serverless-reserve-latency.png", bbox_extra_artists=(lgd,))
+    fig.savefig("plots/stateful_serverless-reserve-latency.pdf", bbox_extra_artists=(lgd,))
 
 
 if __name__ == "__main__":

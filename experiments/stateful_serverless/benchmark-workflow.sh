@@ -3,9 +3,9 @@
 trap 'echo Interrupted; exit' INT
 cd ~/beldi
 
-bp="http://$(/exp2/get_server_ip.sh):8080"
+bp="http://$(/stateful_serverless/get_server_ip.sh):8080"
 
-output_dir=/exp2/result
+output_dir=/stateful_serverless/result
 mkdir -p $output_dir
 rm $output_dir/*.csv &> /dev/null
 
@@ -21,7 +21,7 @@ for rate in `seq 100 100 1000`; do
   sleep 15
   rm -r $output_dir/$rate &> /dev/null
   mkdir -p $output_dir/$rate
-  mv /exp2/result/*.csv $output_dir/$rate
+  mv /stateful_serverless/result/*.csv $output_dir/$rate
   chmod -R 777 $output_dir/$rate
 echo
 done

@@ -1,4 +1,4 @@
-cluster_name: workflow-exp2
+cluster_name: workflow-stateful_serverless
 
 min_workers: 0
 max_workers: 0

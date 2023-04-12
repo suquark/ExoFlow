@@ -19,7 +19,7 @@ app = FastAPI()
 
 DEBUG = False
 worker_id = os.getpid()
-STORAGE_URL = os.path.expanduser(f"~/efs/exp2-workflows/{datetime.now().isoformat()}")
+STORAGE_URL = os.path.expanduser(f"~/efs/stateful_serverless-workflows/{datetime.now().isoformat()}")
 
 
 def _dump(s: "LatencyStats"):

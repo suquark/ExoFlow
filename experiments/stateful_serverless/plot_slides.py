@@ -54,7 +54,7 @@ def plot(data):
     ax.set_xlabel("Throughput (request/second)")
     ax.set_ylabel("Latency (ms)")
     fig.tight_layout()
-    fig.savefig("plots/exp2-latency-slides.png")
+    fig.savefig("plots/stateful_serverless-latency-slides.png")
 
 
 if __name__ == "__main__":
