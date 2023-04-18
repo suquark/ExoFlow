@@ -42,4 +42,6 @@ pip install -r requirements.txt
 conda install pytorch torchvision torchaudio pytorch-cuda=11.6 -c pytorch -c nvidia -y
 
 sudo ln -s ~/efs/spark-3.3.0-bin-hadoop3/ /spark
-python do_link.py
+
+# patch Ray
+./patch.sh
