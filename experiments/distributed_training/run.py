@@ -24,7 +24,7 @@ def run_with_config(config, debug: bool = False):
 
     dag = pipeline.generate_pipeline(
         # original: https://aiadvocate.blob.core.windows.net/public/tacodata.zip
-        data_source="https://siyuan-public.s3.us-west-2.amazonaws.com/tacodata.zip",
+        data_source="https://exoflow-dataset.s3.us-west-2.amazonaws.com/tacodata.zip",
         model_checkpoint_path=wf_dir,
         use_gpu=utils.gpu_exists(),
         dataset_dir=dataset_dir,
