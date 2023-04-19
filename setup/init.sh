@@ -1,5 +1,8 @@
 #!/bin/bash
 
+sudo mkdir /exoflow
+sudo chown ubuntu:ubuntu /exoflow
+git clone git@github.com:suquark/ExoFlow.git /exoflow
 # Ray setup will fail initially, but we can still ssh into it to perform setup.
 
 # ssh-keygen
