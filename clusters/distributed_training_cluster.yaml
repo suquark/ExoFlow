@@ -19,14 +19,14 @@ available_node_types:
             - DeviceName: /dev/sda1
               Ebs:
                   VolumeSize: 200
-        ImageId: ami-03f19bd183889be0c  # exoflow-artifacts-0418
+        ImageId: ami-0d83f8559c6480f2f  # exoflow-artifacts-0419
         SecurityGroupIds:
           - "sg-3463e565"
           - "sg-092b10044bcf1f37e"
   ray.worker.default:
       node_config:
         InstanceType: r3.2xlarge  # high-mem!
-        ImageId: ami-03f19bd183889be0c  # exoflow-artifacts-0418
+        ImageId: ami-0d83f8559c6480f2f  # exoflow-artifacts-0419
         SecurityGroupIds:
           - "sg-3463e565"
           - "sg-092b10044bcf1f37e"
