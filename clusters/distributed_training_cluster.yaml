@@ -43,9 +43,9 @@ available_node_types:
 # Command to start ray on the head node. You don't need to change this.
 head_start_ray_commands:
     - ray stop
-    - "sudo ulimit -n 65536; PYTHONPATH=~/efs/exp1 ray start --head --port=6379 --object-manager-port=8076 --autoscaling-config=~/ray_bootstrap_config.yaml --resources='{\"machine\": 1, \"tag:gpu\": 1}' --storage=s3://exoflow"
+    - "sudo ulimit -n 65536; PYTHONPATH=/exoflow/experiments/distributed_training ray start --head --port=6379 --object-manager-port=8076 --autoscaling-config=~/ray_bootstrap_config.yaml --resources='{\"machine\": 1, \"tag:gpu\": 1}' --storage=s3://exoflow"
 
 # Command to start ray on worker nodes. You don't need to change this.
 worker_start_ray_commands:
     - ray stop
-    - "sudo ulimit -n 65536; PYTHONPATH=~/efs/exp1 ray start --address=$RAY_HEAD_IP:6379 --object-manager-port=8076 --resources='{\"machine\": 1, \"tag:data\": 1}' --storage=s3://exoflow"
+    - "sudo ulimit -n 65536; PYTHONPATH=/exoflow/experiments/distributed_training ray start --address=$RAY_HEAD_IP:6379 --object-manager-port=8076 --resources='{\"machine\": 1, \"tag:data\": 1}' --storage=s3://exoflow"
