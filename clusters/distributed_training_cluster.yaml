@@ -34,11 +34,11 @@ available_node_types:
       max_workers: 1
 
 
-# setup_commands:
-#     # This replaces the standard anaconda Ray installation
-#     - mkdir -p ~/efs
-#     - sudo mount -t efs fs-d416cc55:/ ~/efs
-#     - sudo chmod 777 ~/efs
+setup_commands:
+    # This replaces the standard anaconda Ray installation
+    - mkdir -p /exoflow
+    - sudo mount -t efs fs-0d0c1e4b4ddb1a2b3 /exoflow
+    - sudo chown ubuntu:ubuntu /exoflow
 
 # Command to start ray on the head node. You don't need to change this.
 head_start_ray_commands:
