@@ -7,7 +7,7 @@ RAY_WORKER_IP=$(ray get-worker-ips ~/ray_bootstrap_config.yaml | grep -oE "\b([0
 
 # new conda: source /opt/conda/bin/activate
 ray stop --force
-ssh $RAY_WORKER_IP "source ~/anaconda3/bin/activate exoflow-dev; ray stop --force"
+ssh $RAY_WORKER_IP "source ~/anaconda3/bin/activate exoflow-dev; ray stop --force &> /dev/null"
 sleep 10
 
 PYTHONPATH=/exoflow/experiments/distributed_training ray start --head --disable-usage-stats --port=6379 --object-manager-port=8076 --autoscaling-config=~/ray_bootstrap_config.yaml --resources='{"machine": 1, "tag:gpu": 1}' --storage=s3://exoflow --num-cpus 32
