@@ -44,7 +44,13 @@ pip install -r requirements.txt
 # torchvision==0.13.1
 conda install pytorch torchvision torchaudio pytorch-cuda=11.6 -c pytorch -c nvidia -y
 
-sudo ln -s ~/efs/spark-3.3.0-bin-hadoop3/ /spark
+# Install Spark for graph processing
+sudo mkdir -p /spark
+sudo chown ubuntu:ubuntu /spark
+wget https://archive.apache.org/dist/spark/spark-3.3.0/spark-3.3.0-bin-hadoop3.tgz
+tar -xvf spark-3.3.0-bin-hadoop3.tgz
+mv spark-3.3.0-bin-hadoop3/* /spark
+rm -r spark-3.3.0-bin-hadoop3*
 
 # patch Ray
 ./patch.sh
