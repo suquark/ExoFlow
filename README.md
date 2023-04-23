@@ -24,15 +24,18 @@ https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-sso.html
 
 ### 5.1 ML training pipelines
 
-
-
-#### Figure 6 (left)
-
 To run the experiment, first start the cluster by running the following command:
 
 ```bash
-cd <Your Local ExoFlow Gtihub Repository>/clusters
+cd <Your Local ExoFlow Github Repository>/clusters
 ray up -y distributed_training_cluster.yaml
+```
+
+After the cluster is fully ready, initialize the cluster by running the following command:
+
+```bash
+cd <Your Local ExoFlow Github Repository>/clusters
+./init_s3_access.sh
 ```
 
 #### Figure 6 (left)
@@ -50,6 +53,10 @@ cd /exoflow/experiments/distributed_training
 ```
 
 ### 5.2 Stateful serverless workflows
+
+```bash
+
+```
 
 #### Figure 7(a)
 
