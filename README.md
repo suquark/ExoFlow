@@ -4,10 +4,18 @@
 
 ## Overview
 
+### Local Setup
+
+The local setup is required to launch the clusters for the experiments.
+
+We encourage using a [Conda](https://docs.conda.io/en/latest/miniconda.html) environment for the local setup for isolation. The following commands will create a Conda environment named `exoflow` and install all the dependencies.
 
 ```bash
 conda create -n exoflow python=3.8.13
 conda activate exoflow
+# Export the following environment variables if you are using Apple M1 chip and failed to install `grpcio` as a dependency of Ray.
+# export GRPC_PYTHON_BUILD_SYSTEM_OPENSSL=1
+# export GRPC_PYTHON_BUILD_SYSTEM_ZLIB=1
 pip install awscli boto3 ray==2.0.1
 ```
 
