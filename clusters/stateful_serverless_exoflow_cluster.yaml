@@ -1,0 +1,53 @@
+cluster_name: workflow-stateful_serverless
+
+min_workers: 0
+max_workers: 0
+
+provider:
+    type: aws
+    region: us-east-1
+    cache_stopped_nodes: False
+
+auth:
+    ssh_user: ubuntu
+
+available_node_types:
+  ray.head.default:
+      node_config:
+        InstanceType: m5.16xlarge
+#        InstanceMarketOptions:
+#          MarketType: spot
+        BlockDeviceMappings:
+            - DeviceName: /dev/sda1
+              Ebs:
+                  VolumeSize: 200
+        ImageId: ami-0cb5541034051e50b  # exoflow-artifacts-0420
+        SecurityGroupIds:
+          - "sg-3463e565"
+          - "sg-092b10044bcf1f37e"
+  ray.worker.default:
+      node_config:
+        InstanceType: m5.2xlarge
+        ImageId: ami-0cb5541034051e50b  # exoflow-artifacts-0420
+        SecurityGroupIds:
+          - "sg-3463e565"
+          - "sg-092b10044bcf1f37e"
+      min_workers: 0
+      max_workers: 0
+
+
+setup_commands:
+    # This replaces the standard anaconda Ray installation
+    - mkdir -p /exoflow
+    - sudo mount -t efs fs-0d0c1e4b4ddb1a2b3 /exoflow
+    - sudo chown ubuntu:ubuntu /exoflow
+
+# Command to start ray on the head node. You don't need to change this.
+head_start_ray_commands:
+    - ray stop
+    - "sudo ulimit -n 65536; PYTHONPATH=/exoflow/experiments/stateful_serverless ray start --head --port=6379 --object-manager-port=8076 --autoscaling-config=~/ray_bootstrap_config.yaml --resources='{\"machine\": 1}'"
+
+# Command to start ray on worker nodes. You don't need to change this.
+worker_start_ray_commands:
+    - ray stop
+    - "sudo ulimit -n 65536; PYTHONPATH=/exoflow/experiments/stateful_serverless ray start --address=$RAY_HEAD_IP:6379 --object-manager-port=8076 --resources='{\"machine\": 1}'"
