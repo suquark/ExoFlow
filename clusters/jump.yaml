@@ -11,7 +11,8 @@ auth:
 available_node_types:
   ray.head.default:
       node_config:
-        InstanceType: m5.large
+        # This node is used for both a jump node and for Beldi evaluation.
+        InstanceType: r3.2xlarge
         BlockDeviceMappings:
             - DeviceName: /dev/sda1
               Ebs:
