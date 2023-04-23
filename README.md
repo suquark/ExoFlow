@@ -13,9 +13,8 @@ We encourage using a [Conda](https://docs.conda.io/en/latest/miniconda.html) env
 ```bash
 conda create -n exoflow python=3.8.13
 conda activate exoflow
-# Export the following environment variables if you are using Apple M1 chip and failed to install `grpcio` as a dependency of Ray.
-# export GRPC_PYTHON_BUILD_SYSTEM_OPENSSL=1
-# export GRPC_PYTHON_BUILD_SYSTEM_ZLIB=1
+# We install `grpcio` separately to handle Apple M1 chip issues.
+conda install 'grpcio<=1.43.0' -y
 pip install awscli boto3 ray==2.0.1
 ```
 
