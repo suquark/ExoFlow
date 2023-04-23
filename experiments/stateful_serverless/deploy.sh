@@ -11,8 +11,12 @@ docker rm beldi &> /dev/null
 
 # pull the docker and keep it running in the background
 docker run -td -v /exoflow/experiments/stateful_serverless:/stateful_serverless --name=beldi tauta/beldi:latest
+container_id=$(docker ps -aqf "name=beldi")
 # docker exec beldi <command>
-cmd "mkdir -p ~/.aws && vim ~/.aws/credentials && chmod 600 ~/.aws/credentials"
+
+cmd "mkdir -p ~/.aws"
+docker cp ~/.aws/credentials $container_id:/root/.aws/credentials
+cmd "chmod 600 ~/.aws/credentials"
 
 echo "Compiling"
 cmd "make clean && make hotel"
