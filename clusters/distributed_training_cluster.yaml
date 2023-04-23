@@ -35,8 +35,7 @@ available_node_types:
 
 
 setup_commands:
-    # This replaces the standard anaconda Ray installation
-    - mkdir -p /exoflow
+    - sudo mkdir -p /exoflow
     - sudo mount -t efs fs-0d0c1e4b4ddb1a2b3 /exoflow
     - sudo chown ubuntu:ubuntu /exoflow
 

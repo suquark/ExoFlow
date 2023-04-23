@@ -1,0 +1,26 @@
+cluster_name: osdi23ae
+
+provider:
+    type: aws
+    region: us-east-1
+    cache_stopped_nodes: False
+
+auth:
+    ssh_user: ubuntu
+
+available_node_types:
+  ray.head.default:
+      node_config:
+        InstanceType: m5.large
+        BlockDeviceMappings:
+            - DeviceName: /dev/sda1
+              Ebs:
+                  VolumeSize: 200
+        ImageId: ami-0cb5541034051e50b  # exoflow-artifacts-0420
+        SecurityGroupIds:
+          - "sg-3463e565"
+          - "sg-092b10044bcf1f37e"
+
+setup_commands:
+    - sudo mkdir -p /exoflow
+    - sudo chown ubuntu:ubuntu /exoflow

@@ -18,6 +18,8 @@ conda install 'grpcio<=1.43.0' -y
 pip install awscli boto3 ray==2.0.1
 ```
 
+https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-sso.html
+
 ## Main Results
 
 ### 5.1 ML training pipelines
