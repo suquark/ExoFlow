@@ -5,6 +5,12 @@
 ## Overview
 
 
+```bash
+conda create -n exoflow python=3.8.13
+conda activate exoflow
+pip install awscli boto3 ray==2.0.1
+```
+
 ## Main Results
 
 ### 5.1 ML training pipelines
