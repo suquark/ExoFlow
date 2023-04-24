@@ -25,7 +25,7 @@ https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-sso.html
 After your local setup is ready, you can launch the shared cluster by running the following command:
 
 ```bash
-ray up -y <Your Local ExoFlow Github Repository>/clusters/shared.yaml
+ray up -y <Your Local ExoFlow Github Repository>/clusters/shared.yaml --disable-usage-stats
 ```
 
 After the cluster is ready, follow the instructions on your screen to login the cluster.
@@ -56,6 +56,8 @@ Finally, change the permission of the `~/.aws/credentials` file to `600` to secu
 ```bash
 chmod 600 ~/.aws/credentials
 ```
+
+**NOTE: For all later experiments, you should be running commands inside this shared cluster you just created. This keeps your local environment clean.**
 
 ## Main Results
 
@@ -113,7 +115,27 @@ Second, setup the gateway for Beldi.
 
 #### Setup ExoFlow Server (20 minutes)
 
-TODO: add instructions
+To run stateful serverless workflows with ExoFlow, you need to setup the ExoFlow server.
+
+In the shared cluster, run the following command to setup the ExoFlow server:
+
+```bash
+ray up -y /exoflow/clusters/stateful_serverless_exoflow_cluster.yaml --disable-usage-stats
+```
+
+After the cluster is ready, follow the instructions on your screen to login the ExoFlow server cluster. Inside it, run the following command to setup the ExoFlow server:
+
+```bash
+cd /exoflow/experiments/stateful_serverless
+pip install -r requirements.txt
+./start_exoflow_server.sh
+```
+
+The server is ready when you see messages like this:
+
+```
+[2023-04-24 06:05:25 +0000] [4913] [INFO] Application startup complete.
+```
 
 #### Figure 7(a)
 
