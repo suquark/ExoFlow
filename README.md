@@ -91,7 +91,7 @@ cd /exoflow/experiments/distributed_training
 
 ### 5.2 Stateful serverless workflows
 
-#### Setup (20-40 minutes)
+#### Setup Serverless Functions (20-40 minutes)
 
 First, deploy the serverless functions by running the following command:
 
@@ -109,8 +109,43 @@ Second, setup the gateway for Beldi.
 6. This is what you should see after adding the trigger. ![Trigger Added](images/trigger_added.png). You can check the URL of the gateway by clicking the trigger on the page.
 7. Run `/exoflow/experiments/stateful_serverless/get_beldi_gateway.sh`. You will see it returns the URL of the gateway same as above, if everything is setup correctly.
 
+#### Setup ExoFlow Server (20 minutes)
+
+TODO: add instructions
 
 #### Figure 7(a)
+
+**Beldi**
+
+(~75 min) Batch running of all experiments with the following command:
+
+```bash
+docker exec -w /root/beldi -it beldi bash -ic "/stateful_serverless/benchmark/batch-beldi.sh"
+```
+
+**recommanded** you can run the experiments one by one with the rate (i.e. throughput) you want (7-10 min):
+
+```bash
+docker exec -w /root/beldi -it beldi bash -ic "/stateful_serverless/benchmark/benchmark-beldi.sh $rate"
+```
+
+Check Beldi results in `/exoflow/experiments/stateful_serverless/result/beldi/`
+
+**ExoFlow**
+
+(~75 min) Batch running of all experiments with the following command:
+
+```bash
+docker exec -w /root/beldi -it beldi bash -ic "/stateful_serverless/benchmark/batch-exoflow.sh"
+```
+
+**recommanded** you can run the experiments one by one with the rate (i.e. throughput) you want (7-10 min):
+
+```bash
+docker exec -w /root/beldi -it beldi bash -ic "/stateful_serverless/benchmark/benchmark-exoflow.sh $rate"
+```
+
+Check ExoFlow results in `/exoflow/experiments/stateful_serverless/result/exoflow/`
 
 
 #### Figure 7(b)

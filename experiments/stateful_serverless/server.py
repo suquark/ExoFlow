@@ -19,7 +19,9 @@ app = FastAPI()
 
 DEBUG = False
 worker_id = os.getpid()
-STORAGE_URL = os.path.expanduser(f"~/efs/stateful_serverless-workflows/{datetime.now().isoformat()}")
+STORAGE_URL = f"/exoflow/stateful_serverless-workflows/{datetime.now().isoformat()}"
+result_dir = "/exoflow/experiments/stateful_serverless/result/temp"
+os.makedirs(result_dir, exist_ok=True)
 
 
 def _dump(s: "LatencyStats"):
@@ -32,7 +34,7 @@ def _dump(s: "LatencyStats"):
             ds = [f"{a}, {b}" for a, b in durations]
             ds.append("")
             try:
-                with open(f"result/hotel-worker-metrics-{worker_id}.csv", "a") as f:
+                with open(f"{result_dir}/hotel-worker-metrics-{worker_id}.csv", "a") as f:
                     f.write("\n".join(ds))
             except Exception:
                 pass
