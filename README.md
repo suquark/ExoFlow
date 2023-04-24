@@ -215,13 +215,13 @@ This experiment requires an extra deployment (`@BASE`):
 
 NOTE: This deployment overwrites the previous ExoFlow deployment. If you want to run the previous experiments, you need to redeploy the serverless functions (deploy-exoflow.sh).
 
-(~75 min) Batch running of all experiments with the following command (`@BASE`):
+(~75 min) Batch running of all experiments with the following command on `@BASE`:
 
 ```bash
 docker exec -w /root/beldi -it beldi bash -ic "/stateful_serverless/benchmark/batch-exoflow-failure.sh"
 ```
 
-(*recommanded*) Alternatively, you can run the experiments one by one with the rate (i.e., throughput) you want (7-10 min, `@BASE`):
+(*recommanded*) Alternatively, you can run the experiments one by one with the rate (i.e., throughput) you want (7-10 min, on `@BASE`):
 
 ```bash
 docker exec -w /root/beldi -it beldi bash -ic "/stateful_serverless/benchmark/benchmark-exoflow-failure.sh $rate"
@@ -442,8 +442,16 @@ Wait for ~3min. Then turn on all Airflow DAG `spark` with the Airflow UI. Here i
 On `@MICRO`, run the following commands to config Spark:
 
 ```bash
-/experiments/microbenchmarks/data_sharing/config_spark.sh
+/exoflow/experiments/microbenchmarks/data_sharing/config_spark.sh
 ```
+
+Then run the following commands to start the Spark server that is called Airflow:
+
+```bash
+/exoflow/experiments/microbenchmarks/data_sharing/airflow_server.py
+```
+
+Keep this server running until the end of the experiment. For example, you can run it in a tmux session on `@MICRO`.
 
 **Benchmark**
 
