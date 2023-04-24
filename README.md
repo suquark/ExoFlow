@@ -298,10 +298,11 @@ For the microbenchmarks, you need to setup the infrastructure for these baseline
 1. AWS Managed Apache Airflow
 2. AWS Standard Step Functions
 3. AWS Express Step Functions
+4. A cluster (besides the shared cluster) for running the microbenchmarks
 
 Here are the instructions:
 
-### AWS Managed Apache Airflow
+### Setup AWS Managed Apache Airflow
 
 (~40min to setup)
 
@@ -326,7 +327,7 @@ Next, setup `Managed Apache Airflow` on AWS.
 9. Once the environment is ready, go to the `Airflow UI` by clicking the link in the `Airflow webserver URL` field. The setup is successful if you can see something like this ![MWAA UI](images/mwaa_ui.png). Wait for 3-5min if the DAG does not appear initially.
 
 
-### AWS Standard Step Functions
+### Setup AWS Standard Step Functions
 
 (~15min to setup)
 
@@ -345,7 +346,7 @@ docker exec -w /microbenchmarks/latency/lambdas -it beldi bash -ic "sls deploy -
 7. Click `Create state machine`. The state machine is created. Check whether the state machine exists on the state machine page. ![State Machine Created](images/state_machine_created.png)
 
 
-### AWS Express Step Functions
+### Setup AWS Express Step Functions
 
 (~15min to setup)
 
@@ -354,6 +355,14 @@ The setup is almost the same as Standard Step Functions. The only difference is 
 This is what the state machine looks like after both are created:
 
 ![State Machine Created](images/state_machine_final.png)
+
+
+### Setup a cluster for running the microbenchmarks
+
+(~10min to setup)
+
+
+
 
 ### Figure 8(a)
 
