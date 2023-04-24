@@ -91,11 +91,24 @@ cd /exoflow/experiments/distributed_training
 
 ### 5.2 Stateful serverless workflows
 
+#### Setup (20-40 minutes)
+
 First, deploy the serverless functions by running the following command:
 
 ```bash
 /exoflow/experiments/stateful_serverless/deploy.sh
 ```
+
+Second, setup the gateway for Beldi.
+
+1. Go to the AWS console, click the Lambda. ![Lambda Console](images/lambda_service.png)
+2. In the Lambda console, click `function` ![Lambda Function](images/lambda_function.png)
+3. Search for `beldi-dev-gateway` and click it. ![Beldi Gateway](images/beldi_gateway.png)
+4. On the page of the function, click `add trigger` and select `API Gateway`. ![Add Trigger](images/add_trigger.png) ![API Gateway](images/api_gateway.png)
+5. On the page of the trigger, config like below. Then add the trigger. ![HTTP API](images/http_api.png)
+6. This is what you should see after adding the trigger. ![Trigger Added](images/trigger_added.png). You can check the URL of the gateway by clicking the trigger on the page.
+7. Run `/exoflow/experiments/stateful_serverless/get_beldi_gateway.sh`. You will see it returns the URL of the gateway same as above, if everything is setup correctly.
+
 
 #### Figure 7(a)
 
