@@ -181,7 +181,6 @@ docker exec -w /root/beldi -it beldi bash -ic "/stateful_serverless/benchmark/ba
 docker exec -w /root/beldi -it beldi bash -ic "/stateful_serverless/benchmark/benchmark-exoflow.sh $rate"
 ```
 
-
 Check ExoFlow results by running `python /exoflow/experiments/stateful_serverless/collect_metrics.py` and check the `workflow-server` field in `/exoflow/experiments/stateful_serverless/result/result.json`. The array in the field represents the latency under the throughput of `[100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]` requests per second.
 
 **ExoFlow-Failure**
