@@ -14,10 +14,12 @@ spark.sql.execution.arrow.enabled True
 spark.sql.execution.arrow.pyspark.fallback.enabled False
 EOT
 
-cat <<'EOT' >> /spark/conf/spark-defaults.conf
+cat <<'EOT' >> /spark/conf/spark-env.sh
 #!/usr/bin/env bash
 export SPARK_DAEMON_MEMORY=100g
 source ~/anaconda3/bin/activate exoflow-dev
 export PYSPARK_PYTHON=/home/ubuntu/anaconda3/envs/exoflow-dev/bin/python
 export PYSPARK_DRIVER_PYTHON=/home/ubuntu/anaconda3/envs/exoflow-dev/bin/python
 EOT
+
+chmod +x /spark/conf/spark-env.sh
