@@ -139,7 +139,7 @@ The server is ready when you see messages like this (it will take ~2min):
 [2023-04-24 06:05:25 +0000] [4913] [INFO] Application startup complete.
 ```
 
-It is normal if you see something like
+It is normal for the server to print something like
 
 ```
 (WorkflowManagementActor pid=51786) 2023-04-24 07:15:58,611     WARNING worker.py:2254 -- Using blocking ray.get inside async actor. This blocks the event loop. Please use `await` on object ref with asyncio.gather if you want to yield execution to the event loop instead.
