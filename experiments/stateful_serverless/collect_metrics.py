@@ -5,12 +5,18 @@ import numpy as np
 
 
 def _get_cloudwatch_latency(path: str):
-    with open(path) as f:
-        text = f.read()
-    p50l, p99l = text.splitlines()[1:3]
-    return float(p50l.replace("Median: ", "")), float(
-        p99l.replace("99 Percentile: ", "")
-    )
+    try:
+        with open(path) as f:
+            text = f.read()
+        p50l, p99l = text.splitlines()[1:3]
+        return float(p50l.replace("Median: ", "")), float(
+            p99l.replace("99 Percentile: ", "")
+        )
+    except Exception:
+        print(f"Failed to get latency for {path}. Set the result to 0. "
+              "It could be that the related experiment is missing. "
+              "If this is intended, please ignore this error.")
+        return 0, 0
 
 
 def get_cloudwatch_data(dirname: str):
@@ -68,7 +74,7 @@ def get_workflow_data(dirname: str):
 def get_workflow_failure_data(dirname: str):
     p50s, p99s = [], []
     for i in range(100, 1001, 100):
-        subdir = f"{dirname}/failure-{i}"
+        subdir = f"{dirname}/exoflow-failure/temp/{i}"
         p50, p99 = _try_get_fastapi_latency(subdir)
         p50s.append(p50)
         p99s.append(p99)
@@ -86,7 +92,7 @@ def get_workflow_reserve_data(dirname: str):
     result = {}
     for name in apis:
         subdir = f"{dirname}/workflow-{name}"
-        p50, p99 = _get_fastapi_latency(subdir)
+        p50, p99 = _try_get_fastapi_latency(subdir)
         result[name] = {"p50": p50, "p99": p99}
     return result
 
