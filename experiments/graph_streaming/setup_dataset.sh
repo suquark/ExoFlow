@@ -1,13 +1,16 @@
 #!/bin/bash
 
 # twitter dataset:
+# An edge from i to j indicates that j is a follower of i
 # https://snap.stanford.edu/data/twitter-2010.html
 
-mkdir -p ~/efs/twitter_dataset
-cd ~/efs/twitter_dataset
+mkdir -p /exoflow/twitter_dataset
+cd /exoflow/twitter_dataset
+echo "Downloading twitter dataset..."
 wget https://snap.stanford.edu/data/twitter-2010.txt.gz
 wget https://snap.stanford.edu/data/twitter-2010-ids.csv.gz
-#gzip -d twitter-2010.txt.gz
-#gzip -d twitter-2010-ids.csv.gz
-# An edge from i to j indicates that j is a follower of i
-
+echo "Decompressing twitter dataset..."
+gzip -d twitter-2010.txt.gz
+echo "Splitting twitter dataset..."
+python /exoflow/experiments/graph_streaming/split_dataset.py
+# gzip -d twitter-2010-ids.csv.gz
