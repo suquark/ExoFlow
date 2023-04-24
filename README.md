@@ -32,11 +32,17 @@ Once your local setup is ready, launch the shared cluster by running:
 ray up -y <Your Local ExoFlow Github Repository>/clusters/shared.yaml --disable-usage-stats
 ```
 
-After the cluster is ready, follow the instructions on your screen to log in to the cluster.
+Let us call the cluster `@BASE`.
+
+After `@BASE` is ready, follow the instructions on your screen to log in to `@BASE`. You can alreadys log in to `@BASE` from your local device by running:
+
+```bash
+ray attach <Your Local ExoFlow Github Repository>/clusters/shared.yaml
+```
 
 You will then need to set up your AWS credentials on the cluster to enable automation of the experiments.
 
-On the cluster, first, create the `.aws` directory:
+In `@BASE`, first, create the `.aws` directory:
 
 ```bash
 mkdir -p ~/.aws
@@ -61,7 +67,7 @@ Finally, secure your credentials by changing the permission of the `~/.aws/crede
 chmod 600 ~/.aws/credentials
 ```
 
-**IMPORTANT NOTE: For all subsequent experiments, run commands inside the shared cluster you just created. This keeps your local environment clean.**
+**IMPORTANT NOTE: For all subsequent experiments, run commands inside `@BASE` by default. This keeps your local environment clean.**
 
 ## Main Results
 
@@ -69,13 +75,19 @@ This section is divided into three subsections, representing the main results of
 
 ### 5.1 ML training pipelines
 
-To run the experiment, start the cluster by running:
+To run the experiment, start the cluster from `@BASE` by running:
 
 ```bash
 ray up -y /exoflow/clusters/distributed_training_cluster.yaml
 ```
 
-After the cluster is fully ready (about 5min after you can log in to the cluster), initialize the cluster by running (in the shared cluster, not the new cluster):
+Let us call the cluster `@ML`.
+
+Wait until `@ML` is fully ready (about 5min after you can log in to the cluster).
+
+TODO: this is not necessary anymore due to file mount?
+
+Finally initialize `@ML` by running (in `@BASE`, not `@ML`):
 
 ```bash
 /exoflow/clusters/init_s3_access.sh
@@ -83,7 +95,7 @@ After the cluster is fully ready (about 5min after you can log in to the cluster
 
 #### Figure 6 (left)
 
-(~12 hours) Batch run all experiments with the following command:
+(~12 hours) Batch run all experiments with the following command in `@ML`:
 
 ```bash
 cd /exoflow/experiments/distributed_training
@@ -94,7 +106,7 @@ TODO: Add instructions for running individual experiments.
 
 #### Figure 6 (right)
 
-(~20 hours) Batch run all experiments with the following command:
+(~20 hours) Batch run all experiments with the following command in `@ML`:
 
 ```bash
 cd /exoflow/experiments/distributed_training
@@ -109,7 +121,7 @@ Before running the experiments, set up the serverless functions and the ExoFlow 
 
 #### Setup Serverless Functions (20-40 minutes)
 
-First, deploy the serverless functions:
+First, deploy the serverless functions (`@BASE`):
 
 ```bash
 /exoflow/experiments/stateful_serverless/deploy.sh
@@ -137,7 +149,9 @@ In the shared cluster, run the following command to set up the ExoFlow server:
 ray up -y /exoflow/clusters/stateful_serverless_exoflow_cluster.yaml --disable-usage-stats
 ```
 
-After the cluster is ready, follow the instructions on your screen to log in to the ExoFlow server cluster. Then, run the following command to start the ExoFlow server:
+We will call the cluster `@SERVER`.
+
+After `@SERVER` is ready, follow the instructions on your screen to log in to `@SERVER`. Then, run the following command in `@SERVER` to start the ExoFlow server:
 
 ```bash
 cd /exoflow/experiments/stateful_serverless
@@ -161,7 +175,7 @@ It is normal for the server to print messages like:
 
 **Beldi**
 
-(~75 min) Batch run all experiments with the following command:
+(~75 min) Batch run all experiments with the following command (`@BASE`):
 
 ```bash
 docker exec -w /root/beldi -it beldi bash -ic "/stateful_serverless/benchmark/batch-beldi.sh"
@@ -177,7 +191,7 @@ Check Beldi results in `/exoflow/experiments/stateful_serverless/result/beldi/`
 
 **ExoFlow**
 
-(~75 min) Batch run all experiments with the following command:
+(~75 min) Batch run all experiments with the following command (`@BASE`):
 
 ```bash
 docker exec -w /root/beldi -it beldi bash -ic "/stateful_serverless/benchmark/batch-exoflow.sh"
@@ -193,7 +207,7 @@ Check ExoFlow results by running `python /exoflow/experiments/stateful_serverles
 
 **ExoFlow-Failure**
 
-This experiment requires an extra deployment:
+This experiment requires an extra deployment (`@BASE`):
 
 ```bash
 /exoflow/experiments/stateful_serverless/deploy-exoflow-ft.sh
@@ -201,13 +215,13 @@ This experiment requires an extra deployment:
 
 NOTE: This deployment overwrites the previous ExoFlow deployment. If you want to run the previous experiments, you need to redeploy the serverless functions (deploy-exoflow.sh).
 
-(~75 min) Batch running of all experiments with the following command:
+(~75 min) Batch running of all experiments with the following command (`@BASE`):
 
 ```bash
 docker exec -w /root/beldi -it beldi bash -ic "/stateful_serverless/benchmark/batch-exoflow-failure.sh"
 ```
 
-(*recommanded*) Alternatively, you can run the experiments one by one with the rate (i.e., throughput) you want (7-10 min):
+(*recommanded*) Alternatively, you can run the experiments one by one with the rate (i.e., throughput) you want (7-10 min, `@BASE`):
 
 ```bash
 docker exec -w /root/beldi -it beldi bash -ic "/stateful_serverless/benchmark/benchmark-exoflow-failure.sh $rate"
@@ -367,7 +381,11 @@ Launch the cluster for running the microbenchmarks:
 ray up /exoflow/clusters/microbenchmarks_cluster.yaml -y --disable-usage-stats
 ```
 
-Let's refer to this cluster as `@MICRO`.
+Let's refer to this cluster as `@MICRO`. You can log into `@MICRO` (from `@BASE`) by running:
+
+```bash
+ray attach /exoflow/clusters/microbenchmarks_cluster.yaml
+```
 
 ### Figure 8(a)
 

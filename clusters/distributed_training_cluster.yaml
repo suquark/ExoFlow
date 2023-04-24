@@ -33,6 +33,9 @@ available_node_types:
       min_workers: 1
       max_workers: 1
 
+file_mounts:
+    # mount the credentials for AWS dynamodb access
+    ~/.aws: ~/.aws
 
 setup_commands:
     - sudo mkdir -p /exoflow
