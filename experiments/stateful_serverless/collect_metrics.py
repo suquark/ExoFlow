@@ -43,11 +43,23 @@ def _get_fastapi_latency(subdir: str, warmup_ratio=0.1):
     return np.median(latencies).item(), np.percentile(latencies, 99).item()
 
 
+def _try_get_fastapi_latency(subdir: str):
+    try:
+        p50, p99 = _get_fastapi_latency(subdir)
+        assert not np.isnan(p50) and not np.isnan(p99)
+        return p50, p99
+    except Exception:
+        print(f"Failed to get latency for {subdir}. Set the result to 0. "
+              "It could be that the related experiment is missing. "
+              "If this is intended, please ignore this error.")
+        return 0, 0
+
+
 def get_workflow_data(dirname: str):
     p50s, p99s = [], []
     for i in range(100, 1001, 100):
-        subdir = f"{dirname}/{i}"
-        p50, p99 = _get_fastapi_latency(subdir)
+        subdir = f"{dirname}/exoflow/temp/{i}"
+        p50, p99 = _try_get_fastapi_latency(subdir)
         p50s.append(p50)
         p99s.append(p99)
     return {"p50": p50s, "p99": p99s}
@@ -57,7 +69,7 @@ def get_workflow_failure_data(dirname: str):
     p50s, p99s = [], []
     for i in range(100, 1001, 100):
         subdir = f"{dirname}/failure-{i}"
-        p50, p99 = _get_fastapi_latency(subdir)
+        p50, p99 = _try_get_fastapi_latency(subdir)
         p50s.append(p50)
         p99s.append(p99)
     return {"p50": p50s, "p99": p99s}
@@ -89,4 +101,4 @@ if __name__ == "__main__":
         "workflow-server-reserve": get_workflow_reserve_data(result_dir),
     }
     with open("result/result.json", "w") as f:
-        json.dump(data, f)
+        json.dump(data, f, indent=2)
