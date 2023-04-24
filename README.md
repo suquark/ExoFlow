@@ -151,7 +151,7 @@ ray up -y /exoflow/clusters/stateful_serverless_exoflow_cluster.yaml --disable-u
 
 We will call the cluster `@SERVER`.
 
-After `@SERVER` is ready, follow the instructions on your screen to log in to `@SERVER`. Then, run the following command in `@SERVER` to start the ExoFlow server:
+After `@SERVER` is ready, follow the instructions on your screen to log in to `@SERVER`. Then, run the following command on `@SERVER` to start the ExoFlow server:
 
 ```bash
 cd /exoflow/experiments/stateful_serverless
@@ -175,7 +175,7 @@ It is normal for the server to print messages like:
 
 **Beldi**
 
-(~75 min) Batch run all experiments with the following command (`@BASE`):
+(~75 min) Batch run all experiments with the following command on `@BASE`:
 
 ```bash
 docker exec -w /root/beldi -it beldi bash -ic "/stateful_serverless/benchmark/batch-beldi.sh"
@@ -191,7 +191,7 @@ Check Beldi results in `/exoflow/experiments/stateful_serverless/result/beldi/`
 
 **ExoFlow**
 
-(~75 min) Batch run all experiments with the following command (`@BASE`):
+(~75 min) Batch run all experiments with the following command on `@BASE`:
 
 ```bash
 docker exec -w /root/beldi -it beldi bash -ic "/stateful_serverless/benchmark/batch-exoflow.sh"
@@ -207,7 +207,7 @@ Check ExoFlow results by running `python /exoflow/experiments/stateful_serverles
 
 **ExoFlow-Failure**
 
-This experiment requires an extra deployment (`@BASE`):
+This experiment requires an extra deployment on `@BASE`:
 
 ```bash
 /exoflow/experiments/stateful_serverless/deploy-exoflow-ft.sh
@@ -231,11 +231,21 @@ Check ExoFlow-Failure results by running `python /exoflow/experiments/stateful_s
 
 #### Figure 7(b)
 
+**Beldi**
+
 (7-10 min) Beldi:
 
 ```bash
 docker exec -w /root/beldi -it beldi bash -ic "/stateful_serverless/benchmark/benchmark-beldi-reserve.sh"
 ```
+
+(~60 min) Batch run all experiments with the following command on `@BASE`:
+
+```bash
+docker exec -w /root/beldi -it beldi bash -ic "/stateful_serverless/benchmark/batch-exoflow-reserve.sh"
+```
+
+Or your can run them one by one:
 
 (7-10 min) "-WAL"
 
