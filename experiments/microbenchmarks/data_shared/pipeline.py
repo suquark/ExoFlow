@@ -8,7 +8,7 @@ N_ROWS = 2 ** 20
 N_COLS = 2 ** 10 // 8
 FRACTION = 0.001
 
-CHECKPOINT_DIR = "/exoflow/experiments/microbenchmarks/data_shared"
+CHECKPOINT_DIR = "/exoflow/experiments/microbenchmarks/data_sharing"
 # CHECKPOINT_DIR = "s3://exoflow/microbenchmarks/checkpoint/"
 CHECKPOINT_FILE = os.path.join(CHECKPOINT_DIR, "data.parquet")
 CHECKPOINT_MAP = {"sync": True, "async": "async", "skip": False}
