@@ -291,9 +291,32 @@ cd /exoflow/experiments/graph_streaming
 
 NOTE: It takes a long time for each experiment to start, due to writing the DAG to S3.
 
-## Microbenchmark
+## 5.4 Microbenchmark
+
+For the microbenchmarks, you need to setup the infrastructure for these baselines:
+
+1. AWS Managed Apache Airflow
+2. AWS Standard Step Functions
+3. AWS Express Step Functions
+
+Here are the instructions:
+
+### AWS Managed Apache Airflow
+
+1. Go to the AWS console and select `Managed Apache Airflow`. ![MWAA Console](images/mwaa.png)
+2. Click `Create environment`. ![Create MWAA](images/create_mwaa.png)
+3. Config the environment details like this: ![Config MWAA details](images/config_mwaa_detail.png)
+4. Config AirFlow like this: ![Config MWAA bucket](images/config_mwaa_bucket.png) Then click `Next`.
+5. Config the network. Click `Create MWAA VPC` and follow all instructions: ![Config MWAA network](images/config_mwaa_network.png) It will redirect you to `CloudFormation`, where you should wait for the stack to be created. ![Create MWAA VPC](images/create_mwaa_vpc.png) Once the creation is done, go back to the previous page and click `Refresh`. Then select the VPC you just created. ![Select MWAA VPC](images/select_mwaa_vpc.png) After picking the VPC, choose two subnets in the VPC. ![Select MWAA subnets](images/select_mwaa_subnets.png)
+6. On the same page, select the environment class as `mw1.medium`. ![Select MWAA class](images/select_mwaa_class.png) The environment class does not affect the result of our experiment significantly.
+7. On the same page, config the Airflow options like this: ![Config MWAA options](images/config_mwaa_options.png) This is important for experiments to be running properly. Then click `Next`.
+8. On the `Review and create` page, double check your configuration. Then click `Create environment`.
+
+
 
 ### Figure 8(a)
+
+
 
 ### Figure 8(b)
 
