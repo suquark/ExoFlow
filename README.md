@@ -282,7 +282,7 @@ Inside the graph processing cluster, first, config the Spark cluster:
 /exoflow/experiments/graph_streaming/config_spark_cluster.sh
 ```
 
-Then run the experiments in batch (~2 hours):
+Then run the experiments in batch (~6 hours):
 
 ```bash
 cd /exoflow/experiments/graph_streaming
