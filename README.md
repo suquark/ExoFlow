@@ -83,17 +83,25 @@ After the cluster is fully ready (about 5min after you can log in to the cluster
 
 #### Figure 6 (left)
 
+(~12 hours) Batch run all experiments with the following command:
+
 ```bash
 cd /exoflow/experiments/distributed_training
 ./run.sh
 ```
+
+TODO: Add instructions for running individual experiments.
 
 #### Figure 6 (right)
 
+(~20 hours) Batch run all experiments with the following command:
+
 ```bash
 cd /exoflow/experiments/distributed_training
-./run.sh
+./run_fault_tolerance.sh
 ```
+
+TODO: Add instructions for running individual experiments.
 
 ### 5.2 Stateful serverless workflows
 
