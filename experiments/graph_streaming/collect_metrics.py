@@ -6,7 +6,7 @@ import subprocess
 import numpy as np
 from smart_open import s3
 
-BUCKET = "siyuan-workflow"
+BUCKET = "exoflow"
 N_WORKERS = multiprocessing.cpu_count() * 4
 OUTPUT_DIR = "result/analyze_outputs"
 DATE = "2022-11-03"
@@ -60,7 +60,7 @@ def get_end_time(workflow_id: str, task_name: str):
 
 def get_workflows():
     result = subprocess.check_output(
-        "aws s3 ls siyuan-workflow/workflows/ "
+        "aws s3 ls exoflow/workflows/ "
         "| awk '{print $2}' | grep -v '__status__'",
         text=True,
         shell=True,
