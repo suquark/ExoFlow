@@ -36,13 +36,13 @@ After the cluster is ready, follow the instructions on your screen to log in to 
 
 You will then need to set up your AWS credentials on the cluster to enable automation of the experiments.
 
-On the cluster, first, create the .aws directory:
+On the cluster, first, create the `.aws` directory:
 
 ```bash
 mkdir -p ~/.aws
 ```
 
-Next, edit the ~/.aws/credentials file (e.g., vim ~/.aws/credentials) and add the following content:
+Next, edit the `~/.aws/credentials` file (e.g., `vim ~/.aws/credentials`) and add the following content:
 
 ```
 [default]
@@ -55,7 +55,7 @@ If you don't know your AWS credentials, follow the instructions [here](https://d
 
 ![AWS Access Key](images/create_access_key.png)
 
-Finally, secure your credentials by changing the permission of the ~/.aws/credentials file to 600:
+Finally, secure your credentials by changing the permission of the `~/.aws/credentials` file to `600`:
 
 ```bash
 chmod 600 ~/.aws/credentials
@@ -75,7 +75,7 @@ To run the experiment, start the cluster by running:
 ray up -y /exoflow/clusters/distributed_training_cluster.yaml
 ```
 
-After the cluster is fully ready, initialize the cluster by running:
+After the cluster is fully ready, initialize the cluster by running (in the shared cluster, not the new cluster):
 
 ```bash
 /exoflow/clusters/init_s3_access.sh
@@ -250,6 +250,12 @@ Check results by running `python /exoflow/experiments/stateful_serverless/collec
 You could further run `python /exoflow/experiments/stateful_serverless/plot.py` to plot Figure 7(a) and 7(b). The generated figures are saved in `/exoflow/experiments/stateful_serverless/plots`.
 
 ### 5.3 Online-offline graph processing
+
+We start with downloading the twitter dataset:
+
+```bash
+/exoflow/experiments/graph_streaming/setup_dataset.sh
+```
 
 #### Figure 7(c)
 
