@@ -227,7 +227,7 @@ docker exec -w /root/beldi -it beldi bash -ic "/stateful_serverless/benchmark/be
 docker exec -w /root/beldi -it beldi bash -ic "/stateful_serverless/benchmark/benchmark-exoflow-reserve.sh reserve_nooverlapckpt"
 ```
 
-Check results by running `python /exoflow/experiments/stateful_serverless/collect_metrics.py` and look into `/exoflow/experiments/stateful_serverless/result/result.json`. Here is the mapping between the field and the figure:
+Check results by running `python /exoflow/experiments/stateful_serverless/collect_metrics.py` and look into `/exoflow/experiments/stateful_serverless/result/result.json`. Here is the mapping between the field in the result JSON file and the legend in the figure:
 
 * beldi-cloudwatch-reserve -> Beldi
 * reserve_serial -> +WAL
