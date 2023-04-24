@@ -105,7 +105,7 @@ First, deploy the serverless functions:
 
 ```bash
 /exoflow/experiments/stateful_serverless/deploy.sh
-# deploy shared functions for ExoFlow
+# deploy shared Lambda functions for ExoFlow
 /exoflow/experiments/stateful_serverless/deploy-exoflow.sh
 ```
 
