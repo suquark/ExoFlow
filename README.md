@@ -93,6 +93,8 @@ cd /exoflow/experiments/distributed_training
 
 ### 5.2 Stateful serverless workflows
 
+Before running the experiments, you need to setup the serverless functions and the ExoFlow server.
+
 #### Setup Serverless Functions (20-40 minutes)
 
 First, deploy the serverless functions by running the following command:
@@ -113,7 +115,7 @@ Second, setup the gateway for Beldi.
 6. This is what you should see after adding the trigger. ![Trigger Added](images/trigger_added.png). You can check the URL of the gateway by clicking the trigger on the page.
 7. Run `/exoflow/experiments/stateful_serverless/get_beldi_gateway.sh`. You will see it returns the URL of the gateway same as above, if everything is setup correctly.
 
-#### Setup ExoFlow Server (20 minutes)
+#### Setup ExoFlow Server (10 minutes)
 
 To run stateful serverless workflows with ExoFlow, you need to setup the ExoFlow server.
 
@@ -123,7 +125,7 @@ In the shared cluster, run the following command to setup the ExoFlow server:
 ray up -y /exoflow/clusters/stateful_serverless_exoflow_cluster.yaml --disable-usage-stats
 ```
 
-After the cluster is ready, follow the instructions on your screen to login the ExoFlow server cluster. Inside it, run the following command to setup the ExoFlow server:
+After the cluster is ready, follow the instructions on your screen to login the ExoFlow server cluster. Then run the following command to start the ExoFlow server:
 
 ```bash
 cd /exoflow/experiments/stateful_serverless
@@ -131,10 +133,16 @@ pip install -r requirements.txt
 ./start_exoflow_server.sh
 ```
 
-The server is ready when you see messages like this:
+The server is ready when you see messages like this (it will take ~2min):
 
 ```
 [2023-04-24 06:05:25 +0000] [4913] [INFO] Application startup complete.
+```
+
+It is normal if you see something like
+
+```
+(WorkflowManagementActor pid=51786) 2023-04-24 07:15:58,611     WARNING worker.py:2254 -- Using blocking ray.get inside async actor. This blocks the event loop. Please use `await` on object ref with asyncio.gather if you want to yield execution to the event loop instead.
 ```
 
 #### Figure 7(a)
