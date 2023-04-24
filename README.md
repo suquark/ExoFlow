@@ -87,7 +87,7 @@ Wait until `@ML` is fully ready (about 5min after you can log in to the cluster)
 
 TODO: this is not necessary anymore due to file mount?
 
-Finally initialize `@ML` by running (in `@BASE`, not `@ML`):
+Finally initialize `@ML` by running (on `@BASE`, not `@ML`):
 
 ```bash
 /exoflow/clusters/init_s3_access.sh
@@ -95,7 +95,7 @@ Finally initialize `@ML` by running (in `@BASE`, not `@ML`):
 
 #### Figure 6 (left)
 
-(~12 hours) Batch run all experiments with the following command in `@ML`:
+(~12 hours) Batch run all experiments with the following command on `@ML`:
 
 ```bash
 cd /exoflow/experiments/distributed_training
@@ -106,7 +106,7 @@ TODO: Add instructions for running individual experiments.
 
 #### Figure 6 (right)
 
-(~20 hours) Batch run all experiments with the following command in `@ML`:
+(~20 hours) Batch run all experiments with the following command on `@ML`:
 
 ```bash
 cd /exoflow/experiments/distributed_training
