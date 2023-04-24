@@ -6,8 +6,6 @@ cd ~/beldi
 bp="http://$(/stateful_serverless/get_server_ip.sh):8080"
 
 output_dir=/stateful_serverless/result
-mkdir -p $output_dir
-rm $output_dir/*.csv &> /dev/null
 
 # warmup
 echo "Benchmarking warmup..."
@@ -20,6 +18,8 @@ ENDPOINT="/gateway" API=reserve_skipckpt ./tools/wrk -t1 -c5 -d100s -R5 \
 for api in reserve reserve_serial reserve_overlapckpt reserve_nooverlapckpt; do
   rate=5
   echo "Benchmarking [workflow.$api] @rate=$rate"
+  rm $output_dir/temp/*.csv &> /dev/null
+
   ENDPOINT="/gateway" API=$api ./tools/wrk -t1 -c$rate -d420s -R$rate \
     -s /stateful_serverless/hotel/txn_workload.lua --timeout 10s "$bp" > /dev/null
 
@@ -28,6 +28,6 @@ for api in reserve reserve_serial reserve_overlapckpt reserve_nooverlapckpt; do
   subdir=workflow-$api
   rm -r $output_dir/$subdir &> /dev/null
   mkdir -p $output_dir/$subdir
-  mv /stateful_serverless/result/*.csv $output_dir/$subdir
+  mv $output_dir/temp/*.csv $output_dir/$subdir
   chmod -R 777 $output_dir/$subdir
 done
