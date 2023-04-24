@@ -49,7 +49,7 @@ def sendrecv_s3():
         start_time = time.time()
         conf = context["dag_run"].conf
         payload = "A" * conf["size"]
-        path = "s3://siyuan-airflow/payload"
+        path = "s3://exoflow-airflow/payload"
         with smart_open.open(path, "wb") as f:
             pickle.dump(payload, f)
         return {
