@@ -324,6 +324,7 @@ Next, setup `Managed Apache Airflow` on AWS.
 7. On the same page, config the Airflow options like this: ![Config MWAA options](images/config_mwaa_options.png) This is important for experiments to be running properly. Then click `Next`.
 8. On the `Review and create` page, double check your configuration. Then click `Create environment`.
 9. Wait for the environment to be ready. It would take you 20-30min. ![MWAA ready](images/mwaa_creating.png)
+10. Once the environment is ready, go to the `Airflow UI` by clicking the link in the `Airflow webserver URL` field. The setup is successful if you can see something like this ![MWAA UI](images/mwaa_ui.png). Wait for 3-5min if the DAG does not appear initially.
 
 
 ### AWS Standard Step Functions
@@ -337,9 +338,23 @@ docker exec -w /microbenchmarks/latency/lambdas -it beldi bash -ic "sls deploy -
 ```
 
 1. Go to the AWS console and select `Step Functions`. ![Step Functions Console](images/step_functions.png)
+2. Toggle the left panel, choose "State machines". ![State Machine](images/state_machine.png)
+3. Click `Create state machine`. ![Create State Machine](images/create_state_machine.png)
+4. Config like this (select "Standard Type") ![Select State Machine Type](images/select_state_machine_type.png) Then click `Next`.
+5. Config the state machine like this ![Config State Machine 1](images/state_machine_producer.png) ![Config State Machine 2](images/state_machine_consumer.png) Then click `Next`.
+6. On the "Specify state machine settings" page, set the name of the state machine to "SendRecvStateMachineStandard" ![Config State Machine 3](images/config_state_machine_name.png)
+7. Click `Create state machine`. The state machine is created. Check whether the state machine exists on the state machine page. ![State Machine Created](images/state_machine_created.png)
+
 
 ### AWS Express Step Functions
 
+(~15min to setup)
+
+The setup is almost the same as Standard Step Functions. The only difference is that you need to select "Express Type" in step 4; and use the name "SendRecvStateMachine" in step 6.
+
+This is what the state machine looks like after both are created:
+
+![State Machine Created](images/state_machine_final.png)
 
 ### Figure 8(a)
 
