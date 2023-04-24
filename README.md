@@ -389,6 +389,15 @@ ray attach /exoflow/clusters/microbenchmarks_cluster.yaml
 
 ### Figure 8(a)
 
+**Setup** Log into `@MICRO` from `@BASE`. Then run the following commands:
+
+```bash
+cd /exoflow/experiments/microbenchmarks/latency
+./start_server.sh
+```
+
+Wait util the server is ready.
+
 
 
 ### Figure 8(b)
