@@ -14,7 +14,7 @@ app = FastAPI()
 
 DEBUG = False
 STORAGE_URL = (
-    "s3://siyuan-workflow/microbenchmarks/latency/workflows/"
+    "s3://exoflow/microbenchmarks/latency/workflows/"
     f"{datetime.now().isoformat()}"
 )
 
