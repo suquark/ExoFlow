@@ -274,7 +274,12 @@ Inside the graph processing cluster, first, config the Spark cluster:
 /exoflow/experiments/graph_streaming/config_spark_cluster.sh
 ```
 
+Then run the experiments in batch:
 
+```bash
+cd /exoflowe/xperiments
+./run.sh
+```
 
 ## Microbenchmark
 
