@@ -175,8 +175,6 @@ Check ExoFlow-Failure results by running `python /exoflow/experiments/stateful_s
 
 #### Figure 7(b)
 
-**Beldi**
-
 (7-10 min) Beldi baseline:
 
 ```bash
