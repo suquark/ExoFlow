@@ -361,8 +361,11 @@ This is what the state machine looks like after both are created:
 
 (~10min to setup)
 
+Launch the cluster for running the microbenchmarks:
 
-
+```bash
+ray up /exoflow/clusters/microbenchmarks_cluster.yaml -y --disable-usage-stats
+```
 
 ### Figure 8(a)
 
