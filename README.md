@@ -317,14 +317,13 @@ Next, setup `Managed Apache Airflow` on AWS.
 
 1. Go to the AWS console and select `Managed Apache Airflow`. ![MWAA Console](images/mwaa.png)
 2. Click `Create environment`. ![Create MWAA](images/create_mwaa.png)
-3. Config the environment details like this: ![Config MWAA details](images/config_mwaa_detail.png)
-4. Config AirFlow like this: ![Config MWAA bucket](images/config_mwaa_bucket.png) Then click `Next`.
-5. Config the network. Click `Create MWAA VPC` and follow all instructions: ![Config MWAA network](images/config_mwaa_network.png) It will redirect you to `CloudFormation`, where you should wait for the stack to be created. ![Create MWAA VPC](images/create_mwaa_vpc.png) Once the creation is done, go back to the previous page and click `Refresh`. Then select the VPC you just created. ![Select MWAA VPC](images/select_mwaa_vpc.png) After picking the VPC, choose two subnets in the VPC. ![Select MWAA subnets](images/select_mwaa_subnets.png) Also make sure you select the public network for the UI, otherwise you cannot open the Airflow UI directly ![MWAA public access](images/config_mwaa_network2.png)
-6. On the same page, select the environment class as `mw1.medium`. ![Select MWAA class](images/select_mwaa_class.png) The environment class does not affect the result of our experiment significantly.
-7. On the same page, config the Airflow options like this: ![Config MWAA options](images/config_mwaa_options.png) This is important for experiments to be running properly. Then click `Next`.
-8. On the `Review and create` page, double check your configuration. Then click `Create environment`.
-9. Wait for the environment to be ready. It would take you 20-30min. ![MWAA ready](images/mwaa_creating.png)
-10. Once the environment is ready, go to the `Airflow UI` by clicking the link in the `Airflow webserver URL` field. The setup is successful if you can see something like this ![MWAA UI](images/mwaa_ui.png). Wait for 3-5min if the DAG does not appear initially.
+3. Config AirFlow like this: ![Config MWAA](images/config_mwaa.png) Then click `Next`.
+4. Config the network. Click `Create MWAA VPC` and follow all instructions: ![Config MWAA network](images/config_mwaa_network.png) It will redirect you to `CloudFormation`, where you should wait for the stack to be created. ![Create MWAA VPC](images/create_mwaa_vpc.png) Once the creation is done, go back to the previous page and click `Refresh`. Then select the VPC you just created. ![Select MWAA VPC](images/select_mwaa_vpc.png) After picking the VPC, choose two subnets in the VPC. ![Select MWAA subnets](images/select_mwaa_subnets.png) Also make sure you select the public network for the UI, otherwise you cannot open the Airflow UI directly ![MWAA public access](images/config_mwaa_network2.png)
+5. On the same page, select the environment class as `mw1.medium`. ![Select MWAA class](images/select_mwaa_class.png) The environment class does not affect the result of our experiment significantly.
+6. On the same page, config the Airflow options like this: ![Config MWAA options](images/config_mwaa_options.png) This is important for experiments to be running properly. Then click `Next`.
+7. On the `Review and create` page, double check your configuration. Then click `Create environment`.
+8. Wait for the environment to be ready. It would take you 20-30min. ![MWAA ready](images/mwaa_creating.png)
+9. Once the environment is ready, go to the `Airflow UI` by clicking the link in the `Airflow webserver URL` field. The setup is successful if you can see something like this ![MWAA UI](images/mwaa_ui.png). Wait for 3-5min if the DAG does not appear initially.
 
 
 ### AWS Standard Step Functions
