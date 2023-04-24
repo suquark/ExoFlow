@@ -277,9 +277,11 @@ Inside the graph processing cluster, first, config the Spark cluster:
 Then run the experiments in batch:
 
 ```bash
-cd /exoflowe/xperiments
+cd /exoflow/experiments/graph_streaming
 ./run.sh
 ```
+
+NOTE: It takes a long time for each experiment to start, due to writing the DAG to S3.
 
 ## Microbenchmark
 
