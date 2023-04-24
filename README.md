@@ -367,6 +367,8 @@ Launch the cluster for running the microbenchmarks:
 ray up /exoflow/clusters/microbenchmarks_cluster.yaml -y --disable-usage-stats
 ```
 
+Let's refer to this cluster as `@MICRO`.
+
 ### Figure 8(a)
 
 
