@@ -303,7 +303,7 @@ Here are the instructions:
 
 ### AWS Managed Apache Airflow
 
-Before setting up Airflow, we need to provide requirements.txt for the DAGs, as well as uploading DAGs. We provde a script for you:
+Before setting up Airflow, we need to provide requirements.txt for the DAGs, as well as uploading DAGs. We provde a script for you (run them on the shared cluster):
 
 ```bash
 cd /exoflow/experiments/microbenchmarks/latency/dags
