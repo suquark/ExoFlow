@@ -1,3 +1,4 @@
+# Plot with bigger size for slides
 import json
 
 import numpy as np

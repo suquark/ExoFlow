@@ -4,6 +4,8 @@ import numpy as np
 from matplotlib import pyplot as plt
 from matplotlib import cm
 
+PATH_PREFIX = "/exoflow/experiments/stateful_serverless"
+
 
 def plot(data):
     fig, ax = plt.subplots(figsize=(8, 6))
@@ -73,8 +75,8 @@ def plot(data):
     ax.set_xlabel("Throughput (request/second)")
     ax.set_ylabel("Latency (ms)")
     fig.tight_layout()
-    fig.savefig("plots/stateful_serverless-latency.png")
-    fig.savefig("plots/stateful_serverless-latency.pdf")
+    fig.savefig(f"{PATH_PREFIX}/plots/stateful_serverless-latency.png")
+    fig.savefig(f"{PATH_PREFIX}/plots/stateful_serverless-latency.pdf")
 
 
 def plot_reserve(data):
@@ -152,12 +154,12 @@ def plot_reserve(data):
     )
     lgd.get_frame().set_linewidth(0.0)
     fig.tight_layout()
-    fig.savefig("plots/stateful_serverless-reserve-latency.png", bbox_extra_artists=(lgd,))
-    fig.savefig("plots/stateful_serverless-reserve-latency.pdf", bbox_extra_artists=(lgd,))
+    fig.savefig(f"{PATH_PREFIX}/plots/stateful_serverless-reserve-latency.png", bbox_extra_artists=(lgd,))
+    fig.savefig(f"{PATH_PREFIX}/plots/stateful_serverless-reserve-latency.pdf", bbox_extra_artists=(lgd,))
 
 
 if __name__ == "__main__":
-    with open("result/result.json") as f:
+    with open(f"{PATH_PREFIX}/result/result.json") as f:
         result = json.load(f)
     plt.rc("font", size=24, family="Times")
     plt.rc("legend", fontsize=22)
