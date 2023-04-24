@@ -75,7 +75,7 @@ To run the experiment, start the cluster by running:
 ray up -y /exoflow/clusters/distributed_training_cluster.yaml
 ```
 
-After the cluster is fully ready, initialize the cluster by running (in the shared cluster, not the new cluster):
+After the cluster is fully ready (about 5min after you can log in to the cluster), initialize the cluster by running (in the shared cluster, not the new cluster):
 
 ```bash
 /exoflow/clusters/init_s3_access.sh
@@ -263,7 +263,7 @@ Next, start a cluster for graph processing:
 ray up /exoflow/clusters/graph_streaming_cluster.yaml -y --disable-usage-stats
 ```
 
-Then SSH into the cluster following the instructions from the output of the command, after the cluster is up.
+Then SSH into the cluster following the instructions from the output of the command, after the cluster is up. Then wait for about 5min for the whole cluster to be ready.
 
 
 #### Figure 7(c)
