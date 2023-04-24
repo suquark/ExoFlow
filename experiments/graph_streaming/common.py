@@ -31,7 +31,7 @@ else:
     N_EPOCH_INTERVAL = 10
     N_CHECKPOINT_INTERVAL = 10
     SPARK_MEMORY = "100g"
-    STORAGE = "s3://siyuan-workflow"
+    STORAGE = "s3://exoflow"
 
 # constant in TunkRank
 # https://www.rivaliq.com/blog/good-engagement-rate-twitter/
