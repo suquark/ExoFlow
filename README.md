@@ -407,7 +407,7 @@ Turn on the Airflow DAG `sendrecv` with the Airflow UI. Here is what the webpage
 
 **Benchmark**
 
-Run the following commands on `@BASE`:
+Run the following commands on `@BASE` (~6 min):
 
 ```bash
 pip install shortuuid
@@ -415,6 +415,53 @@ cd /exoflow/experiments/microbenchmarks/latency/
 ./benchmark.sh
 ```
 
+Plot the result:
+
+```bash
+cd /exoflow/experiments/microbenchmarks/latency/
+python plot.py
+```
+
+The output figure (`microbenchmark-data-movement.png`) is in the `plots/` directory.
+
 ### Figure 8(b)
 
+**Setup**
+
+On `@BASE`, run the following commands to setup Airflow operators for Spark:
+
+```bash
+pip install jinja2
+cd /exoflow/experiments/microbenchmarks/data_sharing/dags
+bash upload_dag.sh
+```
+
+Wait for ~3min. Then turn on all Airflow DAG `spark` with the Airflow UI. Here is what the webpage looks like after turning all of them on: ![Airflow DAG](images/airflow_dag_spark.png)
+
+
+On `@MICRO`, run the following commands to config Spark:
+
+```bash
+/experiments/microbenchmarks/data_sharing/config_spark.sh
+```
+
+**Benchmark**
+
+On `@MICRO`, run the following commands for benchmarking (~10min):
+
+```bash
+cd /exoflow/experiments/microbenchmarks/data_sharing
+./benchmark.sh
+```
+
+Plot the result:
+
+```bash
+cd /exoflow/experiments/microbenchmarks/data_sharing
+python plot.py
+```
+
+The output figure (`microbenchmark-data-shared.png`) is in the `plots/` directory.
+
 ### Figure 8(c)
+
