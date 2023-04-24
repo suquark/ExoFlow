@@ -303,12 +303,14 @@ Here are the instructions:
 
 ### AWS Managed Apache Airflow
 
+(~40min to setup)
+
 Before setting up Airflow, we need to provide requirements.txt for the DAGs, as well as uploading DAGs. We provde a script for you (run them on the shared cluster):
 
 ```bash
 cd /exoflow/experiments/microbenchmarks/latency/dags
 # upload requirements.txt & related DAGs
-bash upload_dags.sh
+bash upload_dag.sh
 ```
 
 Next, setup `Managed Apache Airflow` on AWS.
@@ -321,7 +323,22 @@ Next, setup `Managed Apache Airflow` on AWS.
 6. On the same page, select the environment class as `mw1.medium`. ![Select MWAA class](images/select_mwaa_class.png) The environment class does not affect the result of our experiment significantly.
 7. On the same page, config the Airflow options like this: ![Config MWAA options](images/config_mwaa_options.png) This is important for experiments to be running properly. Then click `Next`.
 8. On the `Review and create` page, double check your configuration. Then click `Create environment`.
+9. Wait for the environment to be ready. It would take you 20-30min. ![MWAA ready](images/mwaa_creating.png)
 
+
+### AWS Standard Step Functions
+
+(~15min to setup)
+
+First, we need to deploy serverless functions similar to the Beldi experiments (5.2). We can reuse some functionality of 5.2. Assuming you have pulled the docker of Beldi, you can run the following commands on the shared cluster:
+
+```bash
+docker exec -w /microbenchmarks/latency/lambdas -it beldi bash -ic "sls deploy -c deploy.yml"
+```
+
+1. Go to the AWS console and select `Step Functions`. ![Step Functions Console](images/step_functions.png)
+
+### AWS Express Step Functions
 
 
 ### Figure 8(a)

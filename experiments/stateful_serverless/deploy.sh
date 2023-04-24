@@ -10,7 +10,7 @@ echo '========= Setting up Docker ========='
 docker stop beldi &> /dev/null
 docker rm beldi &> /dev/null
 # pull the docker and keep it running in the background
-docker run -td -v /exoflow/experiments/stateful_serverless:/stateful_serverless --name=beldi tauta/beldi:latest
+docker run -td -v /exoflow/experiments/stateful_serverless:/stateful_serverless -v /exoflow/experiments/microbenchmarks:/microbenchmarks --name=beldi tauta/beldi:latest
 container_id=$(docker ps -aqf "name=beldi")
 # docker exec beldi <command>
 echo -e 'Done!🎉\n'
