@@ -23,7 +23,6 @@ echo -e 'Done!🎉\n'
 
 echo '========= Compiling ========='
 cmd "make clean && make hotel"
-cmd make -f /stateful_serverless/Makefile hotel
 echo -e 'Done!🎉\n'
 
 echo "========= Deploying ========="

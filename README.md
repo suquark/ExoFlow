@@ -97,6 +97,8 @@ First, deploy the serverless functions by running the following command:
 
 ```bash
 /exoflow/experiments/stateful_serverless/deploy.sh
+# deploy shared functions for ExoFlow
+/exoflow/experiments/stateful_serverless/deploy-exoflow.sh
 ```
 
 Second, setup the gateway for Beldi.
@@ -123,7 +125,7 @@ TODO: add instructions
 docker exec -w /root/beldi -it beldi bash -ic "/stateful_serverless/benchmark/batch-beldi.sh"
 ```
 
-**recommanded** you can run the experiments one by one with the rate (i.e. throughput) you want (7-10 min):
+(*recommanded*) you can run the experiments one by one with the rate (i.e. throughput) you want (7-10 min):
 
 ```bash
 docker exec -w /root/beldi -it beldi bash -ic "/stateful_serverless/benchmark/benchmark-beldi.sh $rate"
@@ -139,16 +141,81 @@ Check Beldi results in `/exoflow/experiments/stateful_serverless/result/beldi/`
 docker exec -w /root/beldi -it beldi bash -ic "/stateful_serverless/benchmark/batch-exoflow.sh"
 ```
 
-**recommanded** you can run the experiments one by one with the rate (i.e. throughput) you want (7-10 min):
+(*recommanded*) you can run the experiments one by one with the rate (i.e. throughput) you want (7-10 min):
 
 ```bash
 docker exec -w /root/beldi -it beldi bash -ic "/stateful_serverless/benchmark/benchmark-exoflow.sh $rate"
 ```
 
-Check ExoFlow results in `/exoflow/experiments/stateful_serverless/result/exoflow/`
+Check ExoFlow results by running `python /exoflow/experiments/stateful_serverless/collect_metrics.py` and check the `workflow-server` field in `/exoflow/experiments/stateful_serverless/result/result.json`. The array in field represents the latency under the throughtput of `[100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]` requests per second.
 
+**ExoFlow-Failure**
+
+This experiment need this extra deployment:
+
+```bash
+/exoflow/experiments/stateful_serverless/deploy-exoflow-ft.sh
+```
+
+NOTE: this deployment over writes the previous ExoFlow deployment. If you want to run the previous experiments, you need to redeploy the serverless functions (`deploy-exoflow.sh`).
+
+(~75 min) Batch running of all experiments with the following command:
+
+```bash
+docker exec -w /root/beldi -it beldi bash -ic "/stateful_serverless/benchmark/batch-exoflow-failure.sh"
+```
+
+(*recommanded*) you can run the experiments one by one with the rate (i.e. throughput) you want (7-10 min):
+
+```bash
+docker exec -w /root/beldi -it beldi bash -ic "/stateful_serverless/benchmark/benchmark-exoflow-failure.sh $rate"
+```
+
+Check ExoFlow-Failure results by running `python /exoflow/experiments/stateful_serverless/collect_metrics.py` and check the `workflow-server-failure` field in `/exoflow/experiments/stateful_serverless/result/result.json`. The array in field represents the latency under the throughtput of `[100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]` requests per second.
 
 #### Figure 7(b)
+
+**Beldi**
+
+(7-10 min) Beldi baseline:
+
+```bash
+docker exec -w /root/beldi -it beldi bash -ic "/stateful_serverless/benchmark/benchmark-beldi-reserve.sh"
+```
+
+(7-10 min) "-WAL"
+
+```bash
+docker exec -w /root/beldi -it beldi bash -ic "/stateful_serverless/benchmark/benchmark-exoflow-reserve.sh reserve_serial"
+```
+
+(7-10 min) "+parallel"
+
+```bash
+docker exec -w /root/beldi -it beldi bash -ic "/stateful_serverless/benchmark/benchmark-exoflow-reserve.sh reserve"
+```
+
+(7-10 min) "+async"
+
+```bash
+docker exec -w /root/beldi -it beldi bash -ic "/stateful_serverless/benchmark/benchmark-exoflow-reserve.sh reserve_overlapckpt"
+```
+
+(7-10 min) "-async"
+
+```bash
+docker exec -w /root/beldi -it beldi bash -ic "/stateful_serverless/benchmark/benchmark-exoflow-reserve.sh reserve_nooverlapckpt"
+```
+
+Check results by running `python /exoflow/experiments/stateful_serverless/collect_metrics.py` and look into `/exoflow/experiments/stateful_serverless/result/result.json`. Here is the mapping between the field and the figure:
+
+* beldi-cloudwatch-reserve -> Beldi
+* reserve_serial -> +WAL
+* reserve -> +parallel
+* reserve_overlapckpt -> +async
+* reserve_nooverlapckpt -> -async
+
+You could further run `python /exoflow/experiments/stateful_serverless/plot.py` to plot Figure 7(a) and 7(b). The generated figures are saved in `/exoflow/experiments/stateful_serverless/plots`.
 
 ### 5.3 Online-offline graph processing
 
