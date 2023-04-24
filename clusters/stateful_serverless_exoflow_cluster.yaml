@@ -35,6 +35,8 @@ available_node_types:
       min_workers: 0
       max_workers: 0
 
+file_mounts:
+    ~/.aws: ~/.aws
 
 setup_commands:
     - sudo mkdir -p /exoflow
