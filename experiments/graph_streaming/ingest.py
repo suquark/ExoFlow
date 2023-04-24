@@ -99,5 +99,6 @@ class IngestActor:
 def create_ingest_actors(n_ingestion: int, n_event_interval: int):
     actors = []
     for i in range(n_ingestion):
-        actors.append(IngestActor.remote(f"chunk_{i}.txt", n_event_interval))
+        actors.append(IngestActor.remote(
+            f"/exoflow/twitter_dataset/chunk_{i}.txt", n_event_interval))
     return actors
