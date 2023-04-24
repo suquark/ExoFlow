@@ -303,6 +303,16 @@ Here are the instructions:
 
 ### AWS Managed Apache Airflow
 
+Before setting up Airflow, we need to provide requirements.txt for the DAGs, as well as uploading DAGs. We provde a script for you:
+
+```bash
+cd /exoflow/experiments/microbenchmarks/latency/dags
+# upload requirements.txt & related DAGs
+bash upload_dags.sh
+```
+
+Next, setup `Managed Apache Airflow` on AWS.
+
 1. Go to the AWS console and select `Managed Apache Airflow`. ![MWAA Console](images/mwaa.png)
 2. Click `Create environment`. ![Create MWAA](images/create_mwaa.png)
 3. Config the environment details like this: ![Config MWAA details](images/config_mwaa_detail.png)
