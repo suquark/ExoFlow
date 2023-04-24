@@ -251,13 +251,30 @@ You could further run `python /exoflow/experiments/stateful_serverless/plot.py` 
 
 ### 5.3 Online-offline graph processing
 
-We start with downloading the twitter dataset:
+We start with downloading and preparing the twitter dataset (~25min):
 
 ```bash
 /exoflow/experiments/graph_streaming/setup_dataset.sh
 ```
 
+Next, start a cluster for graph processing:
+
+```bash
+ray up /exoflow/clusters/graph_streaming_cluster.yaml -y --disable-usage-stats
+```
+
+Then SSH into the cluster following the instructions from the output of the command, after the cluster is up.
+
+
 #### Figure 7(c)
+
+Inside the graph processing cluster, first, config the Spark cluster:
+
+```bash
+/exoflow/experiments/graph_streaming/config_spark_cluster.sh
+```
+
+
 
 ## Microbenchmark
 
