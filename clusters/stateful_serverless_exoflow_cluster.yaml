@@ -36,6 +36,7 @@ available_node_types:
       max_workers: 0
 
 file_mounts:
+    # mount the credentials for AWS dynamodb access
     ~/.aws: ~/.aws
 
 setup_commands:

@@ -27,7 +27,6 @@ echo -e 'Done!🎉\n'
 
 echo "========= Deploying ========="
 cmd sls deploy -c hotel.yml
-cmd make -f /stateful_serverless/Makefile deploy
 echo -e 'Done!🎉\n'
 
 echo "========= Initializing Database (DynamoDB) ========="
