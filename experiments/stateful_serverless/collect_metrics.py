@@ -98,7 +98,7 @@ def get_workflow_reserve_data(dirname: str):
 
 
 if __name__ == "__main__":
-    result_dir = "result"
+    result_dir = "/exoflow/experiments/stateful_serverless/result"
     data = {
         "beldi-cloudwatch": get_cloudwatch_data(result_dir),
         "workflow-server": get_workflow_data(result_dir),
@@ -106,5 +106,5 @@ if __name__ == "__main__":
         "beldi-cloudwatch-reserve": get_cloudwatch_reserve_data(result_dir),
         "workflow-server-reserve": get_workflow_reserve_data(result_dir),
     }
-    with open("result/result.json", "w") as f:
+    with open(f"{result_dir}/result.json", "w") as f:
         json.dump(data, f, indent=2)
