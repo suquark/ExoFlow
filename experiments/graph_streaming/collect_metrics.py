@@ -9,7 +9,7 @@ from smart_open import s3
 BUCKET = "exoflow"
 N_WORKERS = multiprocessing.cpu_count() * 4
 OUTPUT_DIR = "result/analyze_outputs"
-DATE = "2022-11-03"
+# DATE = "2022-11-03"
 
 
 def _split_key(key: str) -> int:
@@ -66,8 +66,8 @@ def get_workflows():
         shell=True,
     )
     for workflow_id in result.splitlines():
-        if DATE in workflow_id:
-            yield workflow_id.strip("/")
+        # if DATE in workflow_id:
+        yield workflow_id.strip("/")
 
 
 def analyze(workflow_id: str):
