@@ -195,7 +195,16 @@ Here are the corresponding failure triggers:
 * Augmentation Task Failure: `transform_8.task_crash`
 * Augmentation Data Worker Failure: `transform_subtask_8.task_crash`
 
-TODO: add plotting instructions
+#### Check Results
+
+The results for figure 6 are stored in `/exoflow/experiments/distributed_training/results`. They are quiet self-explanatory, where each row represents the running time of one experiment with corresponding configuration. To plot the results, run:
+
+```bash
+cd /exoflow/experiments/distributed_training
+python plot.py
+```
+
+The plots are stored in `/exoflow/experiments/distributed_training/plots`.
 
 ### 5.2 Stateful serverless workflows
 
