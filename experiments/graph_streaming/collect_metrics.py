@@ -26,7 +26,7 @@ def get_start_time(workflow_id: str, task_name: str):
     def _accept_key(key: str):
         return task_name in key and key.endswith("pre_task_metadata.json")
 
-    prefix = f"workflows/{workflow_id}/tasks/"
+    prefix = f"graph_streaming/workflows/{workflow_id}/tasks/"
     for key, content in s3.iter_bucket(
         BUCKET, prefix=prefix, accept_key=_accept_key, workers=N_WORKERS
     ):
@@ -43,7 +43,7 @@ def get_end_time(workflow_id: str, task_name: str):
     def _accept_key(key: str):
         return task_name in key and key.endswith("post_task_metadata.json")
 
-    prefix = f"workflows/{workflow_id}/tasks/"
+    prefix = f"graph_streaming/workflows/{workflow_id}/tasks/"
     for key, content in s3.iter_bucket(
         BUCKET, prefix=prefix, accept_key=_accept_key, workers=N_WORKERS
     ):
@@ -60,7 +60,7 @@ def get_end_time(workflow_id: str, task_name: str):
 
 def get_workflows():
     result = subprocess.check_output(
-        "aws s3 ls exoflow/workflows/ "
+        "aws s3 ls exoflow/graph_streaming/workflows/ "
         "| awk '{print $2}' | grep -v '__status__'",
         text=True,
         shell=True,
