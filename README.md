@@ -195,6 +195,7 @@ Here are the corresponding failure triggers:
 * Augmentation Task Failure: `transform_8.task_crash`
 * Augmentation Data Worker Failure: `transform_subtask_8.task_crash`
 
+TODO: add plotting instructions
 
 ### 5.2 Stateful serverless workflows
 
@@ -394,7 +395,36 @@ cd /exoflow/experiments/graph_streaming
 ./run.sh
 ```
 
+You can easily the batch into 3 parts:
+
+```bash
+# ExoFlow NoCkpt
+python run.py --checkpoint=false
+# ExoFlow AsyncCkpt
+python run.py --checkpoint=async
+# ExoFlow SyncCkpt
+python run.py --checkpoint=true
+```
+
 NOTE: It takes a long time for each experiment to start, due to writing the DAG to S3.
+
+After the experiments are done, you can collect the results by running:
+
+```bash
+cd /exoflow/experiments/graph_streaming
+python collect_metrics.py
+```
+
+Existing results are saved in `result/analyze_outputs`. They are array of latency per iteration.
+
+Finally, you can plot the results by running:
+
+```bash
+cd /exoflow/experiments/graph_streaming
+python plot.py
+```
+
+The generated figures are saved in `plots`.
 
 ## 5.4 Microbenchmark
 
@@ -546,7 +576,7 @@ Keep this server running until the end of the experiment. For example, you can r
 
 **Benchmark**
 
-On `@MICRO`, run the following commands for benchmarking (~10min):
+On `@MICRO`, run the following commands for benchmarking (~2 hour):
 
 ```bash
 cd /exoflow/experiments/microbenchmarks/data_sharing
