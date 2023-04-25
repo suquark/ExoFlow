@@ -176,4 +176,7 @@ if __name__ == "__main__":
     checkpoint_options = ["async", "True", "False"]
     plot_checkpoint_online(checkpoint_options)
     plot_checkpoint_batch(checkpoint_options)
-    plot_difference()
+    try:
+        plot_difference()
+    except FileNotFoundError:
+        print("Difference file not found. This is optional data.")
