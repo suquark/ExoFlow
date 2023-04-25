@@ -4,9 +4,11 @@
 
 ## Overview
 
-This guide will help you set up and run experiments for the ExoFlow paper. It is divided into three main sections: Local Setup, Main Results and Microbenchmarks.
+This guide is designed to assist you in setting up and running experiments for the ExoFlow paper. It is organized into three primary sections: Local Setup, Main Results, and Microbenchmarks.
 
-Follow the instructions in each section to reproduce the results.
+Please follow the instructions in each section to reproduce the results.
+
+**NOTE:** All experiments in the paper were executed in batch mode with proper warm-up. To facilitate the reviewer's reproduction of the results, we provide commands to run each experiment individually. If you encounter significant overhead due to insufficient warm-up during these individual runs, we recommend running the experiment again after the initial run for better results.
 
 ## Local Setup
 
@@ -83,15 +85,7 @@ ray up -y /exoflow/clusters/distributed_training_cluster.yaml
 
 Let us call the cluster `@ML`.
 
-Wait until `@ML` is fully ready (about 5min after you can log in to the cluster).
-
-TODO: this is not necessary anymore due to file mount?
-
-Finally initialize `@ML` by running (on `@BASE`, not `@ML`):
-
-```bash
-/exoflow/clusters/init_s3_access.sh
-```
+Wait until `@ML` is fully ready (a worker node is started later. It would usually take another 5 minutes after you can log in to the cluster).
 
 #### Figure 6 (left)
 
