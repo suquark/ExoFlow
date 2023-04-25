@@ -134,7 +134,7 @@ if __name__ == "__main__":
     print(f"duration={duration}")
 
     if not args.skip_record:
-        with open(log_file, "a") as f:
+        with open("result/" + log_file, "a") as f:
             f.write(
                 f"duration = {round(duration, 3)}s | config = {json.dumps(config)} | "
                 f"datetime = {utils.get_datetime()} | "
