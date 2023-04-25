@@ -16,6 +16,7 @@ OUTPUT_DIR = "result/analyze_outputs"
 # FEED_SIZE = 400000
 # N_EVENT_INTERVAL = 1
 
+
 COLORS = {
     "hybrid": "green",
     "async": "blue",
@@ -46,7 +47,7 @@ def read_workflow_with_checkpoint(checkpoint: str):
           "Fill results with '0's.")
     return {
         "online_update_durations": [0] * N_EPOCHS,
-        "batch_update_durations": [0] * N_EPOCHS,
+        "batch_update_durations": [0] * len(_get_batch_range()),
     }
 
 
