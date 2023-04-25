@@ -7,7 +7,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from common import BATCH_UPDATE_INTERVAL, WARMUP_EPOCHS, N_EPOCHS
 
-OUTPUT_DIR = "result/analyze_outputs.1103"
+# OUTPUT_DIR = "result/analyze_outputs.1103"
+OUTPUT_DIR = "result/analyze_outputs"
 
 # N_PARTITIONS = 4
 # N_INGESTION = 2

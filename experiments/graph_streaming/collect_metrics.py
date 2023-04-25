@@ -90,6 +90,7 @@ def analyze(workflow_id: str):
 
 
 if __name__ == "__main__":
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
     for wid in get_workflows():
         print(wid, "*" * 20)
         analyze(wid)
