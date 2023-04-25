@@ -144,9 +144,9 @@ if __name__ == "__main__":
         with open(f"result/workflow_sync_{n}.json", "w") as f:
             json.dump(durations, f)
 
-    for n in tqdm.trange(1, N + 1, desc="workflow no share"):
-        ray.shutdown()
-        _init()
-        durations = run_no_shared(n, n_repeats=5)
-        with open(f"result/workflow_no_share_{n}.json", "w") as f:
-            json.dump(durations, f)
+    # for n in tqdm.trange(1, N + 1, desc="workflow no share"):
+    #     ray.shutdown()
+    #     _init()
+    #     durations = run_no_shared(n, n_repeats=5)
+    #     with open(f"result/workflow_no_share_{n}.json", "w") as f:
+    #         json.dump(durations, f)
