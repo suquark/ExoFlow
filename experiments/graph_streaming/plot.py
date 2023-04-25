@@ -46,7 +46,7 @@ def read_workflow_with_checkpoint(checkpoint: str):
           "Fill results with '0's.")
     return {
         "online_update_durations": [0] * N_EPOCHS,
-        "offline_update_durations": [0] * N_EPOCHS,
+        "batch_update_durations": [0] * N_EPOCHS,
     }
 
 
