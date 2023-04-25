@@ -102,7 +102,47 @@ cd /exoflow/experiments/distributed_training
 ./run.sh
 ```
 
-TODO: Add instructions for running individual experiments.
+Alternatively, you can run the experiments individually (10-12 min each):
+
+**Selective AsyncCkpt**
+
+```bash
+cd /exoflow/experiments/distributed_training
+./restart_ray.sh
+python run.py --checkpoint=hybrid --enhance-dataset-multiplier=<dataset size>
+```
+
+**NoCkpt**
+
+```bash
+cd /exoflow/experiments/distributed_training
+./restart_ray.sh
+python run.py --checkpoint=false --enhance-dataset-multiplier=<dataset size>
+```
+
+**AsyncCkpt**
+
+```bash
+cd /exoflow/experiments/distributed_training
+./restart_ray.sh
+python run.py --checkpoint=async --enhance-dataset-multiplier=<dataset size>
+```
+
+**SyncCkpt**
+
+```bash
+cd /exoflow/experiments/distributed_training
+./restart_ray.sh
+python run.py --checkpoint=true --enhance-dataset-multiplier=<dataset size>
+```
+
+**Workflow Tasks**
+
+```bash
+cd /exoflow/experiments/distributed_training
+./restart_ray.sh
+python run.py --checkpoint=false --enhance-dataset-multiplier=<dataset size> --disable-ephemeral-tasks
+```
 
 #### Figure 6 (right)
 
@@ -113,7 +153,54 @@ cd /exoflow/experiments/distributed_training
 ./run_fault_tolerance.sh
 ```
 
-TODO: Add instructions for running individual experiments.
+Alternatively, you can run the experiments individually (~30 min each):
+
+**Cluster Failure**
+
+```bash
+cd /exoflow/experiments/distributed_training
+cluster_failure="train_12.cluster_crash"
+
+# Selective AsyncCkpt
+workflow_id=$(openssl rand -hex 12)
+./restart_ray.sh && python run.py --checkpoint=hybrid --enhance-dataset-multiplier=4 --failure=$cluster_failure --workflow-id=$workflow_id
+./restart_ray.sh && python run.py --checkpoint=hybrid --enhance-dataset-multiplier=4 --failure=$cluster_failure --workflow-id=$workflow_id --resume
+
+# NoCkpt
+workflow_id=$(openssl rand -hex 12)
+./restart_ray.sh && python run.py --checkpoint=false --enhance-dataset-multiplier=4 --failure=$cluster_failure --workflow-id=$workflow_id
+./restart_ray.sh && python run.py --checkpoint=false --enhance-dataset-multiplier=4 --failure=$cluster_failure --workflow-id=$workflow_id --resume
+
+# SyncCkpt
+workflow_id=$(openssl rand -hex 12)
+./restart_ray.sh && python run.py --checkpoint=true --enhance-dataset-multiplier=4 --failure=$cluster_failure --workflow-id=$workflow_id
+./restart_ray.sh && python run.py --checkpoint=true --enhance-dataset-multiplier=4 --failure=$cluster_failure --workflow-id=$workflow_id --resume
+```
+
+**Other Failure**
+
+Other failure is based on this template:
+
+```bash
+cd /exoflow/experiments/distributed_training
+rm *.task_crash
+rm *.cluster_crash
+
+# Selective AsyncCkpt
+./restart_ray.sh && python run.py --checkpoint=hybrid --enhance-dataset-multiplier=4 --failure=<failure_trigger>
+# NoCkpt
+./restart_ray.sh && python run.py --checkpoint=false --enhance-dataset-multiplier=4 --failure=<failure_trigger>
+# SyncCkpt
+./restart_ray.sh && python run.py --checkpoint=true --enhance-dataset-multiplier=4 --failure=<failure_trigger>
+```
+
+Here are the corresponding failure triggers:
+
+* Ingestion Data Worker Failure: `preprocess.task_crash`
+* Training Actor Failure: `train_actor_8.task_crash`
+* Augmentation Task Failure: `transform_8.task_crash`
+* Augmentation Data Worker Failure: `transform_subtask_8.task_crash`
+
 
 ### 5.2 Stateful serverless workflows
 
