@@ -65,6 +65,7 @@ def get_data(records, **config):
     if not output:
         print(f"Warning: no data for '{config}', returning empty data instead")
         return (0,), (0,)
+    return output
 
 
 def get_normal_data(n_repeat: int):
