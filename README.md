@@ -603,3 +603,12 @@ The output figure (`microbenchmark-data-shared.png`) is in the `plots/` director
 
 ### Figure 8(c)
 
+**Setup**
+
+On `@BASE`, launch the cluster:
+
+```bash
+ray up /exoflow/clusters/microbenchmarks-throughput-cluster.yaml -y
+```
+
+Let's refer to this cluster as `@THROUGHPUT`.
