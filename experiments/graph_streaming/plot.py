@@ -42,7 +42,12 @@ def read_workflow_with_checkpoint(checkpoint: str):
         if fn.name.startswith(f"exp3-{checkpoint}"):
             with fn.open() as f:
                 return json.load(f)
-    assert False
+    print(f"Cannot find result corresponding to {LABELS[checkpoint]}. "
+          "Fill results with '0's.")
+    return {
+        "online_update_durations": [0] * N_EPOCHS,
+        "offline_update_durations": [0] * N_EPOCHS,
+    }
 
 
 def plot_checkpoint_online(checkpoint_options: List[str]):
