@@ -61,7 +61,10 @@ def project_records(records, vectorize=True):
 
 
 def get_data(records, **config):
-    return project_records(filter_records(records, **config))
+    output = project_records(filter_records(records, **config))
+    if not output:
+        print(f"Warning: no data for '{config}', returning empty data instead")
+        return (0,), (0,)
 
 
 def get_normal_data(n_repeat: int):
