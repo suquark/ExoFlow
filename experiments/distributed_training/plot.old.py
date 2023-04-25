@@ -64,8 +64,8 @@ def get_data(records, **config):
     return project_records(filter_records(records, **config))
 
 
-def get_normal_data(n_repeat: int):
-    records = parse_results(f"result/results.txt", line_parser=parse_line)
+def get_normal_data(date: int, n_repeat: int):
+    records = parse_results(f"result/results.{date}.txt", line_parser=parse_line)
 
     def _pick_and_repeat(d):
         return [d[-1]] * n_repeat
@@ -87,9 +87,9 @@ def get_normal_data(n_repeat: int):
     return bar_data
 
 
-def get_fault_tolerance_data():
+def get_fault_tolerance_data(date: int):
     records = parse_results(
-        f"result/fault_tolerance_results.txt", line_parser=parse_line
+        f"result/fault_tolerance_results.{date}.txt", line_parser=parse_line
     )
 
     failures = [
@@ -123,8 +123,8 @@ def get_fault_tolerance_data():
     return bar_data
 
 
-def plot_duration(ax: plt.Axes):
-    records = parse_results(f"result/results.txt", line_parser=parse_line)
+def plot_duration(date: int, ax: plt.Axes):
+    records = parse_results(f"result/results.{date}.txt", line_parser=parse_line)
 
     labels = [f"{i}x" for i in range(1, 5)]
 
@@ -169,7 +169,7 @@ def plot_duration(ax: plt.Axes):
     # fig.savefig("plots/exp1-duration.pdf")
 
 
-def plot_fault_tolerance(ax: plt.Axes):
+def plot_fault_tolerance(date: int, ax: plt.Axes):
     labels = [
         "Cluster",  # workflow_task_object_lost
         "Ingest data",  # cluster crash
@@ -178,8 +178,8 @@ def plot_fault_tolerance(ax: plt.Axes):
         "Aug. data",  # ephemeral task crash
     ]
 
-    bar_data_1 = get_normal_data(len(labels))
-    bar_data_2 = get_fault_tolerance_data()
+    bar_data_1 = get_normal_data(date, len(labels))
+    bar_data_2 = get_fault_tolerance_data(date)
 
     x = np.arange(len(labels))  # the label locations
     width = 0.18  # the width of the bars
@@ -212,8 +212,8 @@ if __name__ == "__main__":
         ncols=2, figsize=(20, 5.5), gridspec_kw={"width_ratios": [4, 5]}
     )
 
-    plot_duration(ax1)
-    plot_fault_tolerance(ax2)
+    plot_duration(1122, ax1)
+    plot_fault_tolerance(1122, ax2)
 
     # share the legend
     handles, labels = ax1.get_legend_handles_labels()
