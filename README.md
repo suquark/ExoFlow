@@ -2,13 +2,21 @@
 
 **OSDI'23 Artifact Evaluation**
 
-## Overview
+## Abstract
 
 This guide is designed to assist you in setting up and running experiments for the ExoFlow paper. It is organized into three primary sections: Local Setup, Main Results, and Microbenchmarks.
 
 Please follow the instructions in each section to reproduce the results.
 
 **NOTE:** All experiments in the paper were executed in batch mode with proper warm-up. To facilitate the reviewer's reproduction of the results, we provide commands to run each experiment individually. If you encounter significant overhead due to insufficient warm-up during these individual runs, we recommend running the experiment again after the initial run for better results.
+
+## Overview
+
+Our artifact operates on Amazon AWS. Below is a summary of the key AWS resources utilized in the artifact for each experiment, which you can refer to when you are running the experiments:
+
+![ExoFlow Dependency Graph](images/exoflow_dependency_graph.png)
+
+We understand that the graph above may seem intimidating, particularly for evaluators who are not very familiar with AWS. This is primarily due to the fact that our paper encompasses a wide variety of experiments, and we must use different baselines and setups for each experiment since the baselines might not be as versatile as ExoFlow. Additionally, we aim to include more systems for comparison. However, there is no need to worry because (1) we have prepared most of the resources for you, and we will provide instructions for logging into our instance to run all experiments with significantly fewer steps, and (2) if you truly wish to build and test everything from the ground up, we also offer a document that will guide you through the setup process step by step.
 
 ## Local Setup
 
@@ -386,25 +394,27 @@ Next, start a cluster for graph processing:
 ray up /exoflow/clusters/graph_streaming_cluster.yaml -y --disable-usage-stats
 ```
 
-Then SSH into the cluster following the instructions from the output of the command, after the cluster is up. Then wait for about 5min for the whole cluster to be ready.
+Let's call the cluster `@GRAPH`.
+
+Then SSH into `@GRAPH` following the instructions from the output of the command, after the cluster is up. Then wait for about 5min for the whole cluster to be ready.
 
 
 #### Figure 7(c)
 
-Inside the graph processing cluster, first, config the Spark cluster:
+On `@GRAPH`, first, config the Spark cluster:
 
 ```bash
 /exoflow/experiments/graph_streaming/config_spark_cluster.sh
 ```
 
-Then run the experiments in batch (~6 hours):
+Then run the experiments on `@GRAPH` in batch (~6 hours):
 
 ```bash
 cd /exoflow/experiments/graph_streaming
 ./run.sh
 ```
 
-You can easily the batch into 3 parts:
+You can easily split the batch into 3 parts (1.5-2.5 hours each):
 
 ```bash
 # ExoFlow NoCkpt
@@ -450,7 +460,7 @@ Here are the instructions:
 
 (~40min to setup)
 
-Before setting up Airflow, we need to provide requirements.txt for the DAGs, as well as uploading DAGs. We provde a script for you (run them on the shared cluster):
+Before setting up Airflow, we need to provide requirements.txt for the DAGs, as well as uploading DAGs. We provde a script for you (run them on `@BASE`):
 
 ```bash
 cd /exoflow/experiments/microbenchmarks/latency/dags
