@@ -417,8 +417,6 @@ INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
 ```
 
-Turn on the Airflow DAG `sendrecv` with the Airflow UI. Here is what the webpage looks like: ![Airflow DAG](images/airflow_dag.png)
-
 **Benchmark**
 
 Run the following commands on `@BASE` (~6 min):
