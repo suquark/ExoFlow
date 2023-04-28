@@ -16,9 +16,7 @@ Our artifact operates on Amazon AWS. Below is a summary of the key AWS resources
 
 ![ExoFlow Dependency Graph](images/exoflow_dependency_graph.png)
 
-We understand that the graph above may seem intimidating, particularly for evaluators who are not very familiar with AWS. This is primarily due to the fact that our paper encompasses a wide variety of experiments, and we must use different baselines and setups for each experiment since the baselines might not be as versatile as ExoFlow. Additionally, we aim to include more systems for comparison.
-
-However, there is no need to worry because (1) we have prepared most of the resources for you, and we will provide instructions for logging into our instance to run all experiments with significantly fewer steps, and (2) if you **truly wish to build and test everything from the ground up**, we also offer a [document](README-full.md) that guides you through the setup process step by step.
+We understand that the graph above may seem intimidating, particularly for evaluators who are not very familiar with AWS. This is primarily due to the fact that our paper encompasses a wide variety of experiments, and we must use different baselines and setups for each experiment since the baselines might not be as versatile as ExoFlow. Additionally, we aim to include more systems for comparison. However, there is no need to worry because (1) we have prepared most of the resources for you, and we will provide instructions for logging into our instance to run all experiments with significantly fewer steps, and (2) if you truly wish to build and test everything from the ground up, we also offer a document that will guide you through the setup process step by step.
 
 ## Local Setup
 
