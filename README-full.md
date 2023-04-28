@@ -242,7 +242,7 @@ Second, set up the gateway for Beldi by following these steps:
 
 Set up the ExoFlow server to run stateful serverless workflows with ExoFlow.
 
-In the shared cluster, run the following command to set up the ExoFlow server:
+On `@BASE`, run the following command to set up the ExoFlow server:
 
 ```bash
 ray up -y /exoflow/clusters/stateful_serverless_exoflow_cluster.yaml --disable-usage-stats
@@ -452,7 +452,7 @@ For the microbenchmarks, you need to setup the infrastructure for these baseline
 1. AWS Managed Apache Airflow
 2. AWS Standard Step Functions
 3. AWS Express Step Functions
-4. A cluster (besides the shared cluster) for running the microbenchmarks
+4. A cluster (besides `@BASE`) for running the microbenchmarks
 
 Here are the instructions:
 
@@ -485,7 +485,7 @@ Next, setup `Managed Apache Airflow` on AWS.
 
 (~15min to setup)
 
-First, we need to deploy serverless functions similar to the Beldi experiments (5.2). We can reuse some functionality of 5.2. Assuming you have pulled the docker of Beldi, you can run the following commands on the shared cluster:
+First, we need to deploy serverless functions similar to the Beldi experiments (5.2). We can reuse some functionality of 5.2. Assuming you have pulled the docker of Beldi, you can run the following commands on `@BASE`:
 
 ```bash
 docker exec -w /microbenchmarks/latency/lambdas -it beldi bash -ic "sls deploy -c deploy.yml"
@@ -585,7 +585,7 @@ On `@MICRO`, run the following commands to config Spark:
 /exoflow/experiments/microbenchmarks/data_sharing/config_spark.sh
 ```
 
-Then run the following commands to start the Spark server that is called Airflow:
+Then run the following commands to start the Spark server that is called by Airflow:
 
 ```bash
 /exoflow/experiments/microbenchmarks/data_sharing/airflow_server.py
