@@ -18,7 +18,7 @@ Our artifact operates on Amazon AWS. Below is a summary of the key AWS resources
 
 We understand that the graph above may seem intimidating, particularly for evaluators who are not very familiar with AWS. This is primarily due to the fact that our paper encompasses a wide variety of experiments, and we must use different baselines and setups for each experiment since the baselines might not be as versatile as ExoFlow. Additionally, we aim to include more systems for comparison.
 
-However, there is no need to worry because (1) we have prepared most of the resources for you, and we will provide instructions for logging into our instance to run all experiments with significantly fewer steps, and (2) if you **truly wish to build and test everything from the ground up**, we also offer a [document](README-full.md) that guides you through the setup process step by step.
+However, there is no need to worry because (1) we have prepared most of the resources for you, and we will provide instructions for logging into our instance to run all experiments with significantly fewer steps, and (2) if you **truly wish to build and test everything from the ground up on your own AWS cloud**, we also offer a [document](README-full.md) that guides you through the setup process step by step.
 
 ## Local Setup
 
@@ -50,7 +50,9 @@ ray up -y /exoflow/clusters/distributed_training_cluster.yaml
 
 Let us call the cluster `@ML`.
 
-Wait until `@ML` is fully ready (a worker node is started later. It would usually take another 5 minutes after you can log in to the cluster).
+Wait until `@ML` is fully ready.
+
+> NOTE: We use Ray to start clusters. Ray first starts the head node. After the head node is ready, you will see instructions about how to log into the head node. However, if your cluster has more than one node, then besides the "head node", you will also have some "worker nodes". Ray starts the worker nodes only after the head node is ready. Worker nodes are necessary for the experiments, so you have to wait some extra time for the worker node to be fully setup. It will take similar or longer time to setup the worker node compared to the head node. For this experiment, it usually takes another 5 minutes.
 
 #### Figure 6 (left)
 

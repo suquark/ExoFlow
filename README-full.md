@@ -16,7 +16,29 @@ Our artifact operates on Amazon AWS. Below is a summary of the key AWS resources
 
 ![ExoFlow Dependency Graph](images/exoflow_dependency_graph.png)
 
-We understand that the graph above may seem intimidating, particularly for evaluators who are not very familiar with AWS. This is primarily due to the fact that our paper encompasses a wide variety of experiments, and we must use different baselines and setups for each experiment since the baselines might not be as versatile as ExoFlow. Additionally, we aim to include more systems for comparison. However, there is no need to worry because (1) we have prepared most of the resources for you, and we will provide instructions for logging into our instance to run all experiments with significantly fewer steps, and (2) if you truly wish to build and test everything from the ground up, we also offer a document that will guide you through the setup process step by step.
+## Setup Shared Initial Resources
+
+There are some shared resources that are used by all ExoFlow pipelines. We will first set up these shared resources.
+
+### S3 Bucket
+
+We created 3 S3 buckets for all experiments.
+
+* `exoflow`: This is the main S3 bucket for saving workflows, checkpoints and logs for ExoFlow. We created this bucket in the `us-east-1` region.
+* `exoflow-airflow`: This is the S3 bucket for AWS managed AirFlow. We created this bucket in the `us-east-1` region.
+* `exoflow-dataset`: This is the S3 bucket for storing the dataset used in the ML training experiments. We created this bucket in the `us-west-2` region. The dataset were from "https://aiadvocate.blob.core.windows.net/public/tacodata.zip". We store it in S3 because the download speed from S3 is much more consistent than from the original source.
+
+To create S3 buckets in AWS, you can follow the instructions [here](https://docs.aws.amazon.com/AmazonS3/latest/userguide/create-bucket-overview.html). You should use different names for the buckets, but you should use the same region as we did. You also need to replace all "s3://<bucket_name>" strings in the codebase with the names of your buckets.
+
+### EFS
+
+We created an EFS file system for sharing data between different instances.
+
+You can create an EFS file system by following the instructions [here](https://docs.aws.amazon.com/efs/latest/ug/gs-step-one-create-efs-resources.html). You should use the same region as we did. You also need to replace all "sudo mount -t efs fs-0d0c1e4b4ddb1a2b3 /exoflow" strings in the codebase with the ID of your EFS file system.
+
+### AMI
+
+We created a shared AMI for the experiments. The AMI is built based on [this official AMI](https://aws.amazon.com/releasenotes/aws-deep-learning-ami-gpu-pytorch-1-13-ubuntu-20-04/). You should first start an EC2 instance with this base AMI. Then follow `setup/init.sh` in our repo to setup the AMI. finally, after the setup, create an AMI from the instance. You should replace all "ami-************" strings in the `cluster` directory with the ID of your new AMI.
 
 ## Local Setup
 
@@ -93,7 +115,9 @@ ray up -y /exoflow/clusters/distributed_training_cluster.yaml
 
 Let us call the cluster `@ML`.
 
-Wait until `@ML` is fully ready (a worker node is started later. It would usually take another 5 minutes after you can log in to the cluster).
+Wait until `@ML` is fully ready.
+
+> NOTE: We use Ray to start clusters. Ray first starts the head node. After the head node is ready, you will see instructions about how to log into the head node. However, if your cluster has more than one node, then besides the "head node", you will also have some "worker nodes". Ray starts the worker nodes only after the head node is ready. Worker nodes are necessary for the experiments, so you have to wait some extra time for the worker node to be fully setup. It will take similar or longer time to setup the worker node compared to the head node. For this experiment, it usually takes another 5 minutes.
 
 #### Figure 6 (left)
 
