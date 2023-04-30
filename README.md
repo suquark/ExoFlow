@@ -24,17 +24,17 @@ However, there is no need to worry because (1) we have prepared most of the reso
 
 Obtain the SSH key and configuration for the artifact by utilizing the **password** supplied in the OSDI'23 artifact submission form. The SSH key is required for accessing `@BASE`. Decrypt the SSH key and configuration by extracting the contents of the `osdi23ae_access.zip` file, located in the artifact's root directory. It is essential to set the permission for the SSH private key file (`osdi23ae`) to `600`; otherwise, the SSH connection may fail.
 
-Here are all the components you need to setup or care about:
+Here are all the components you need to setup manually (we have already setup the rest for you):
 
 ![ExoFlow Dependency Graph Hosted](images/exoflow_dependency_graph_hosted.png)
 
-The majority of our resources are EC2 instances, and we ask evaluators to set them up to minimize costs. The setup commands are simple one-liners.
+The majority resources the evaluators need to setup manually with our account (i.e. provision on `@BASE`) are EC2 instances. We did not prepare them for evaluators because it is too expansive to keep them running during artifiact evaluation. Instead, evaluators can set them up with simple one-liners.
 
 **IMPORTANT NOTES**
 1. We trust our evaluators and grant them extensive permissions to streamline the evaluation process. However, please refrain from using or modifying our cloud resources in ways unrelated to artifact evaluation.
-2. Our experiments are not designed for multi-tenancy. We kindly request that evaluators coordinate with each other and avoid running multiple experiments simultaneously. This could cause disruptions to the environment or impact the timing of the experiments.
-3. After completing the evaluation, please terminate all EC2 instances other than `@BASE` using the command `ray down <the corresponding YAML file>`.
-4. By default, execute all subsequent experiment commands within `@BASE`. This helps maintain a clean local environment.
+2. Our experiments are not designed for multi-tenancy. We kindly request that evaluators coordinate with each other and **avoid running multiple experiments simultaneously**. This could cause disruptions to the environment or impact the timing of the experiments.
+3. After completing the evaluation, please **terminate** all EC2 instances other than `@BASE` using the command `ray down <the corresponding YAML file>`.
+4. By default, execute all subsequent experiment commands within `@BASE`.
 
 ## Main Results
 
