@@ -54,6 +54,13 @@ Wait until `@ML` is fully ready.
 
 > NOTE: We use Ray to start clusters. Ray first starts the head node. After the head node is ready, you will see instructions about how to log into the head node. However, if your cluster has more than one node, then besides the "head node", you will also have some "worker nodes". Ray starts the worker nodes only after the head node is ready. Worker nodes are necessary for the experiments, so you have to wait some extra time for the worker node to be fully setup. It will take similar or longer time to setup the worker node compared to the head node. For this experiment, it usually takes another 5 minutes.
 
+**The experiments below are running on `@ML`! Please SSH into `@ML` first. You can either follow the instructions printed by "ray up ..." command, or execute this:**
+
+```bash
+cd /exoflow/clusters
+ray attach distributed_training_cluster.yaml
+```
+
 #### Figure 6 (left)
 
 (~12 hours) Batch run all experiments with the following command on `@ML`:
@@ -405,7 +412,9 @@ ray attach /exoflow/clusters/microbenchmarks_cluster.yaml
 
 ### Figure 8(a)
 
-**Setup** Log into `@MICRO` from `@BASE`. Then run the following commands:
+**Setup**
+
+Log into `@MICRO` from `@BASE`. Then run the following commands:
 
 ```bash
 cd /exoflow/experiments/microbenchmarks/latency
