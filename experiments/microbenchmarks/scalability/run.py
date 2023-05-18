@@ -15,7 +15,7 @@ from config import N_TASKS, N_PARALLEL_TASKS
 
 @ray.remote(**exoflow.options(checkpoint=False), resources={"tag:worker": 1})
 def nop():
-    pass
+    time.sleep(0.01)
 
 
 def register_dags():
@@ -51,6 +51,7 @@ if __name__ == "__main__":
         "--n-schedulers", help="number of schedulers", type=int, default=1
     )
     parser.add_argument("--n-workers", help="number of workers", type=int, default=2)
+    parser.add_argument("--n-nodes", help="number of nodes", type=int, default=1)
     args = parser.parse_args()
 
     os.environ["N_WORKFLOW_SHARDS"] = str(args.n_schedulers)
@@ -62,9 +63,9 @@ if __name__ == "__main__":
     register_dags()
 
     durations = run_single(N_TASKS)
-    with open(f"result/dag_{args.n_schedulers}_{args.n_workers}.json", "w") as f:
+    with open(f"result/dag_{args.n_schedulers}_{args.n_nodes}.json", "w") as f:
         json.dump(durations, f)
 
     durations = run_parallel(N_TASKS // N_PARALLEL_TASKS)
-    with open(f"result/task_{args.n_schedulers}_{args.n_workers}.json", "w") as f:
+    with open(f"result/task_{args.n_schedulers}_{args.n_nodes}.json", "w") as f:
         json.dump(durations, f)
