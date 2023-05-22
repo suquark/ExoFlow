@@ -460,7 +460,7 @@ On `@MICRO`, run the following commands to config Spark:
 Then run the following commands to start the Spark server that is called by Airflow:
 
 ```bash
-/exoflow/experiments/microbenchmarks/data_sharing/airflow_server.py
+python /exoflow/experiments/microbenchmarks/data_sharing/airflow_server.py
 ```
 
 Keep this server running until the end of the experiment. For example, you can run it in a tmux session on `@MICRO`.
