@@ -16,7 +16,7 @@ available_node_types:
             - DeviceName: /dev/sda1
               Ebs:
                   VolumeSize: 200
-        ImageId: ami-0ef6b9069ce79b4b1  # ray-workflow-osdi_22-10-13
+        ImageId: ami-0bc093c9b91f2c0e2  # exoflow-artifacts-0422
         SecurityGroupIds:
           - "sg-3463e565"
           - "sg-092b10044bcf1f37e"
