@@ -284,6 +284,7 @@ class ActorController:
             nodes.append({
                 "node_id": n["NodeID"],
                 "state": "ALIVE" if n["Alive"] else "FAILED",
+                "resources_total": n["Resources"],
             })
         if local_workers_only:
             local_node_id = global_worker.core_worker.get_current_node_id().hex()
