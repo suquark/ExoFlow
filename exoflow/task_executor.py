@@ -277,7 +277,8 @@ class ActorController:
         # nodes = client.list(
         #     StateResource("nodes"), ListApiOptions(), raise_on_missing_output=False
         # )
-        nodes = list_nodes("http://" + global_worker.node.gcs_address)
+        head_node = global_worker.node.gcs_address.split(":")[0]
+        nodes = list_nodes(f"http://{head_node}:8265")
         if local_workers_only:
             local_node_id = global_worker.core_worker.get_current_node_id().hex()
             nodes = [node for node in nodes if node["node_id"] == local_node_id]
