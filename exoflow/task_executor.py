@@ -279,7 +279,7 @@ class ActorController:
         # )
         # head_node = global_worker.node.gcs_address.split(":")[0]
         # nodes = list_nodes(f"http://{head_node}:8265")
-        nodes = {}
+        nodes = []
         for n in ray.nodes():
             nodes.append({
                 "node_id": n["NodeID"],
