@@ -21,7 +21,7 @@ def plot_scalability():
 
     _mean, _std = [], []
     for j in NUM_NODES:
-        with open(f"result/dag_1_{j}.json") as f:
+        with open(f"result/dag_{j}_{j}.json") as f:
             t = N_TASKS / np.array(json.load(f))
             _mean.append(np.mean(t))
             _std.append(np.std(t))
@@ -29,7 +29,7 @@ def plot_scalability():
 
     _mean, _std = [], []
     for j in NUM_NODES:
-        with open(f"result/task_1_{j}.json") as f:
+        with open(f"result/task_{j}_{j}.json") as f:
             t = N_TASKS / np.array(json.load(f))
             _mean.append(np.mean(t))
             _std.append(np.std(t))
@@ -39,7 +39,7 @@ def plot_scalability():
     ax.grid(which="both", axis="x", ls=":")
 
     ax.set_xticks(x, [str(t) for t in NUM_NODES], rotation=0)
-    y_ticks = range(0, 1201, 200)
+    y_ticks = range(0, 12001, 200)
     y_tick_labels = [f"{y}" for y in y_ticks]
     ax.set_yticks(y_ticks, y_tick_labels)
     # ax.set_title("Workflow Scalability")
