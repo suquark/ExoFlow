@@ -10,11 +10,12 @@ setup(
     packages=find_packages(),
     install_requires=[
         "ray==2.0.1",
-        "boto3==1.24.63",
-        "smart-open==6.0.0",
-        "tqdm==4.64.1",
-        "uvicorn==0.16.0",
-        "fastapi==0.79.1",
+        "boto3>=1.24.63",
+        "smart-open>=6.0.0",
+        "tqdm>=4.64.1",
+        "uvicorn>=0.16.0",
+        "fastapi>=0.79.1",
+        "shortuuid>=1.0.11",
     ],
     classifiers=[
         "Development Status :: 3 - Alpha",
