@@ -13,9 +13,9 @@ import tqdm
 from config import N_TASKS, N_PARALLEL_TASKS
 
 
-@ray.remote(**exoflow.options(checkpoint=False), resources={"tag:worker": 1})
+@ray.remote(**exoflow.options(checkpoint=False))
 def nop():
-    time.sleep(0.01)
+    pass
 
 
 def register_dags():
