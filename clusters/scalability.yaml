@@ -13,7 +13,7 @@ auth:
 available_node_types:
   ray.head.default:
       node_config:
-        InstanceType: m5.8xlarge
+        InstanceType: m5.xlarge
         BlockDeviceMappings:
             - DeviceName: /dev/sda1
               Ebs:
@@ -49,4 +49,4 @@ head_start_ray_commands:
 # Command to start ray on worker nodes. You don't need to change this.
 worker_start_ray_commands:
     - ray stop
-    - "sudo ulimit -n 65536; PYTHONPATH=/exoflow/experiments/distributed_training ray start --address=$RAY_HEAD_IP:6379 --object-manager-port=8076 --resources='{\"machine\": 1, \"tag:worker\": 1}'"
+    - "sudo ulimit -n 65536; PYTHONPATH=/exoflow/experiments/distributed_training ray start --address=$RAY_HEAD_IP:6379 --object-manager-port=8076 --resources='{\"machine\": 1, \"tag:worker\": 1, \"controller\": 1}'"

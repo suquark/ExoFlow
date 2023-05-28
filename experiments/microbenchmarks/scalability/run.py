@@ -54,6 +54,10 @@ if __name__ == "__main__":
     parser.add_argument("--n-nodes", help="number of nodes", type=int, default=1)
     args = parser.parse_args()
 
+    # one controller per node
+    os.environ["EXOFLOW_LOCAL_WORKERS_ONLY"] = "1"
+    os.environ["EXOFLOW_CONTROLLER_RESOURCES"] = json.dumps({"controller": 1})
+
     os.environ["N_WORKFLOW_SHARDS"] = str(args.n_schedulers)
     os.environ["N_WORKFLOW_WORKERS"] = str(args.n_workers)
     os.environ["RAY_USAGE_STATS_ENABLED"] = "0"
