@@ -269,11 +269,21 @@ class ActorController:
         self._task_tag: Dict[TaskHandle, str] = {}
 
         n_workers = int(_internal_kv_get("n_workers", namespace="workflow"))
+        local_workers_only = int(_internal_kv_get("local_workers_only", namespace="workflow"))
+
         node_tags = {}
         client = StateApiClient("auto")
         nodes = client.list(
             StateResource("nodes"), ListApiOptions(), raise_on_missing_output=False
         )
+        if local_workers_only:
+            from ray._private.worker import global_worker
+
+            local_node_id = global_worker.core_worker.get_current_node_id().hex()
+            nodes = [node for node in nodes if node["node_id"] == local_node_id]
+            if not nodes:
+                raise RuntimeError("Local node is not found.")
+
         for node in nodes:
             if node["state"] != "ALIVE":
                 continue
