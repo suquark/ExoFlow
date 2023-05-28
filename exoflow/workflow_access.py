@@ -1,5 +1,6 @@
 import asyncio
 import copy
+import json
 import logging
 import os
 import queue
@@ -442,16 +443,39 @@ def init_management_actor(
         if max_pending_workflows is None:
             max_pending_workflows = -1
 
-        from ray._private.worker import global_worker
-        from ray.util.scheduling_strategies import NodeAffinitySchedulingStrategy
+        controller_resources = os.getenv("EXOFLOW_CONTROLLER_RESOURCES", default=None)
+        if controller_resources is None:
+            # If no resources are specified, then the default scheduling
+            # strategy is "local": the ExoFlow controller will be scheduled
+            # on the same node as the Ray driver.
+            from ray._private.worker import global_worker
+            from ray.util.scheduling_strategies import NodeAffinitySchedulingStrategy
 
-        node_id = global_worker.core_worker.get_current_node_id().hex()
-        scheduling_strategy = NodeAffinitySchedulingStrategy(node_id, soft=False)
+            node_id = global_worker.core_worker.get_current_node_id().hex()
+            scheduling_strategy = NodeAffinitySchedulingStrategy(node_id, soft=False)
+            resources = None
+        else:
+            scheduling_strategy = None
+            resources = json.loads(controller_resources)
 
+        # start only local workers, this ensures the number of workers
+        # would only be proportional to the number of workflow shards
+        # instead of the number of ExoFlow workers
+        local_workers_only = int(os.getenv("EXOFLOW_LOCAL_WORKERS_ONLY", default=0))
+        _internal_kv_put(
+            "local_workers_only", str(local_workers_only), namespace="workflow"
+        )
+
+        # Total number of workflow controllers.
         n_workflow_shards = int(os.getenv("N_WORKFLOW_SHARDS", default=1))
         _internal_kv_put("n_shards", str(n_workflow_shards), namespace="workflow")
+
+        # Number of workers per node. -1 means the number is proportional to
+        # the number of CPU cores. If "local_workers_only" is 1, then there is only
+        # one node.
         n_workflow_workers = int(os.getenv("N_WORKFLOW_WORKERS", default=-1))
         _internal_kv_put("n_workers", str(n_workflow_workers), namespace="workflow")
+
         n_workflow_worker_threads = int(
             os.getenv("N_WORKFLOW_WORKER_THREADS", default=1)
         )
@@ -476,6 +500,7 @@ def init_management_actor(
                 num_cpus=0,
                 max_concurrency=scheduler_max_concurrency,
                 scheduling_strategy=scheduling_strategy,
+                resources=resources,
             ).remote(max_running_workflows, max_pending_workflows)
             # No-op to ensure the actor is created before the driver exits.
             actors_ready.append(actor.ready.remote())
