@@ -281,8 +281,10 @@ class ActorController:
         # nodes = list_nodes(f"http://{head_node}:8265")
         nodes = {}
         for n in ray.nodes():
-            nodes["node_id"] = n["NodeID"]
-            nodes["state"] = "ALIVE" if n["Alive"] else "FAILED"
+            nodes.append({
+                "node_id": n["NodeID"],
+                "state": "ALIVE" if n["Alive"] else "FAILED",
+            })
         if local_workers_only:
             local_node_id = global_worker.core_worker.get_current_node_id().hex()
             nodes = [node for node in nodes if node["node_id"] == local_node_id]
