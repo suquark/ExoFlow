@@ -512,7 +512,7 @@ _kv_cache = utils.KVCache()
 def get_management_actor(index: Optional[int] = 0) -> "ActorHandle":
     global _workflow_manager_actor_index
     if index is None:
-        n_controllers = int(_kv_cache("n_controllers"))
+        n_controllers = int(_kv_cache.get("n_controllers"))
         # round robin scheduling
         if _workflow_manager_actor_index is None:
             _workflow_manager_actor_index = random.randrange(n_controllers)
@@ -526,4 +526,4 @@ def get_management_actor(index: Optional[int] = 0) -> "ActorHandle":
     else:
         name = common.MANAGEMENT_ACTOR_NAME + f"_{index}"
 
-    return _actor_cache(name)
+    return _actor_cache.get(name)
