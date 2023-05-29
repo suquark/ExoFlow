@@ -58,7 +58,7 @@ if __name__ == "__main__":
     os.environ["EXOFLOW_LOCAL_EXECUTORS_ONLY"] = "1"
     os.environ["EXOFLOW_CONTROLLER_RESOURCES"] = json.dumps({"controller": 1})
 
-    os.environ["N_WORKFLOW_SHARDS"] = str(args.n_controllers)
+    os.environ["EXOFLOW_N_CONTROLLERS"] = str(args.n_controllers)
     os.environ["EXOFLOW_N_EXECUTORS"] = str(args.n_executors)
     os.environ["RAY_USAGE_STATS_ENABLED"] = "0"
     os.environ["EXOFLOW_CONTROLLER_MAX_CONCURRENCY"] = "10000"

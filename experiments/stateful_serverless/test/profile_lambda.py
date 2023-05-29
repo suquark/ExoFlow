@@ -11,7 +11,7 @@ from exoflow.lambda_executor import ray_invoke_lambda
 if __name__ == "__main__":
     import shutil
 
-    os.environ["N_WORKFLOW_SHARDS"] = "4"
+    os.environ["EXOFLOW_N_CONTROLLERS"] = "4"
     os.environ["EXOFLOW_N_EXECUTORS"] = "8"
 
     shutil.rmtree("/tmp/ray/workflow", ignore_errors=True)

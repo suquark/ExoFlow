@@ -468,8 +468,8 @@ def init_management_actor(
         )
 
         # Total number of workflow controllers.
-        n_workflow_shards = int(os.getenv("N_WORKFLOW_SHARDS", default=1))
-        _internal_kv_put("n_shards", str(n_workflow_shards), namespace="workflow")
+        n_controllers = int(os.getenv("EXOFLOW_N_CONTROLLERS", default=1))
+        _internal_kv_put("n_controllers", str(n_controllers), namespace="workflow")
 
         # Number of workers per node. -1 means the number is proportional to
         # the number of CPU cores. If "local_executors_only" is 1, then there is only
@@ -488,7 +488,7 @@ def init_management_actor(
         )
 
         actors_ready = []
-        for i in range(n_workflow_shards):
+        for i in range(n_controllers):
             if i == 0:
                 name = common.MANAGEMENT_ACTOR_NAME
             else:
@@ -516,13 +516,13 @@ _kv_cache = utils.KVCache()
 def get_management_actor(index: Optional[int] = 0) -> "ActorHandle":
     global _workflow_manager_actor_index
     if index is None:
-        n_workflow_shards = int(_kv_cache("n_shards"))
+        n_controllers = int(_kv_cache("n_controllers"))
         # round robin scheduling
         if _workflow_manager_actor_index is None:
-            _workflow_manager_actor_index = random.randrange(n_workflow_shards)
+            _workflow_manager_actor_index = random.randrange(n_controllers)
         else:
             _workflow_manager_actor_index += 1
-            _workflow_manager_actor_index %= n_workflow_shards
+            _workflow_manager_actor_index %= n_controllers
         index = _workflow_manager_actor_index
 
     if index == 0:

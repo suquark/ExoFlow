@@ -54,7 +54,7 @@ if __name__ == "__main__":
     parser.add_argument("--n-executors", help="number of executors", type=int, default=2)
     args = parser.parse_args()
 
-    os.environ["N_WORKFLOW_SHARDS"] = str(args.n_controllers)
+    os.environ["EXOFLOW_N_CONTROLLERS"] = str(args.n_controllers)
     os.environ["EXOFLOW_N_EXECUTORS"] = str(args.n_executors)
     os.environ["RAY_USAGE_STATS_ENABLED"] = "0"
     os.environ["EXOFLOW_CONTROLLER_MAX_CONCURRENCY"] = "10000"

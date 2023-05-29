@@ -225,11 +225,11 @@ def _submit_workflow(
             else:
                 from ray.experimental.internal_kv import _internal_kv_get
 
-                n_workflow_shards = int(
-                    _internal_kv_get("n_shards", namespace="workflow")
+                n_controllers = int(
+                    _internal_kv_get("n_controllers", namespace="workflow")
                 )
                 outputs = []
-                for i in range(n_workflow_shards):
+                for i in range(n_controllers):
                     controller = workflow_access.get_management_actor(i)
                     outputs.append(
                         controller.submit_workflow.remote(
