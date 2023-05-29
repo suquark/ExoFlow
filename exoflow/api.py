@@ -190,8 +190,8 @@ def _submit_workflow(
     validate_user_metadata(metadata)
     metadata = metadata or {}
 
-    workflow_manager = workflow_access.get_management_actor()
-    if ray.get(workflow_manager.is_workflow_non_terminating.remote(workflow_id)):
+    controller = workflow_access.get_management_actor()
+    if ray.get(controller.is_workflow_non_terminating.remote(workflow_id)):
         raise RuntimeError(f"Workflow '{workflow_id}' is already running or pending.")
 
     state = workflow_state_from_dag(dag, input_data, workflow_id)
@@ -215,7 +215,7 @@ def _submit_workflow(
         if not wf_exists:
             if not is_service:
                 ray.get(
-                    workflow_manager.submit_workflow.remote(
+                    controller.submit_workflow.remote(
                         workflow_id,
                         state,
                         ignore_existing=False,
@@ -230,9 +230,9 @@ def _submit_workflow(
                 )
                 outputs = []
                 for i in range(n_workflow_shards):
-                    shard = workflow_access.get_management_actor(i)
+                    controller = workflow_access.get_management_actor(i)
                     outputs.append(
-                        shard.submit_workflow.remote(
+                        controller.submit_workflow.remote(
                             workflow_id,
                             state,
                             ignore_existing=False,
@@ -279,10 +279,10 @@ def run_async(
     )
     if wf_exists:
         return resume_async(workflow_id)
-    workflow_manager = workflow_access.get_management_actor()
+    controller = workflow_access.get_management_actor()
     job_id = ray.get_runtime_context().job_id.hex()
     context = workflow_context.WorkflowTaskContext(workflow_id=workflow_id)
-    return workflow_manager.execute_workflow.remote(job_id, context)
+    return controller.execute_workflow.remote(job_id, context)
 
 
 def register_service(
@@ -321,11 +321,11 @@ def run_service_async(
 ) -> ray.ObjectRef:
     _ensure_workflow_initialized()
     job_id = ray.get_runtime_context().job_id.hex()
-    workflow_manager = workflow_access.get_management_actor(index=None)
+    controller = workflow_access.get_management_actor(index=None)
     input_dict = dict(enumerate(args))
     input_dict.update(kwargs)
     # TODO(suquark): skip checkpointing if not persisted
-    return workflow_manager.execute_service.remote(
+    return controller.execute_service.remote(
         workflow_id, service_id, job_id, persist_input, input_dict
     )
 
@@ -379,8 +379,8 @@ def resume_async(workflow_id: str) -> ray.ObjectRef:
     """
     _ensure_workflow_initialized()
     logger.info(f'Resuming workflow [id="{workflow_id}"].')
-    workflow_manager = workflow_access.get_management_actor()
-    if ray.get(workflow_manager.is_workflow_non_terminating.remote(workflow_id)):
+    controller = workflow_access.get_management_actor()
+    if ray.get(controller.is_workflow_non_terminating.remote(workflow_id)):
         raise RuntimeError(f"Workflow '{workflow_id}' is already running or pending.")
     # NOTE: It is important to 'ray.get' the returned output. This
     # ensures caller of 'run()' holds the reference to the workflow
@@ -389,8 +389,8 @@ def resume_async(workflow_id: str) -> ray.ObjectRef:
     job_id = ray.get_runtime_context().job_id.hex()
 
     context = workflow_context.WorkflowTaskContext(workflow_id=workflow_id)
-    ray.get(workflow_manager.reconstruct_workflow.remote(job_id, context))
-    result = workflow_manager.execute_workflow.remote(job_id, context)
+    ray.get(controller.reconstruct_workflow.remote(job_id, context))
+    result = controller.execute_workflow.remote(job_id, context)
     logger.info(f"Workflow job {workflow_id} resumed.")
     return result
 
@@ -438,7 +438,7 @@ def get_output_async(
     """
     _ensure_workflow_initialized()
     try:
-        workflow_manager = workflow_access.get_management_actor()
+        controller = workflow_access.get_management_actor()
     except ValueError as e:
         raise ValueError(
             "Failed to connect to the workflow management "
@@ -446,7 +446,7 @@ def get_output_async(
             "exoflow.resume() or exoflow.resume_async() to resume the "
             "workflow."
         ) from e
-    return workflow_manager.get_output.remote(workflow_id, task_id)
+    return controller.get_output.remote(workflow_id, task_id)
 
 
 @PublicAPI(stability="alpha")
@@ -506,15 +506,15 @@ def list_all(
         )
 
     try:
-        workflow_manager = workflow_access.get_management_actor()
+        controller = workflow_access.get_management_actor()
     except ValueError:
-        workflow_manager = None
+        controller = None
 
-    if workflow_manager is None:
+    if controller is None:
         non_terminating_workflows = {}
     else:
         non_terminating_workflows = ray.get(
-            workflow_manager.list_non_terminating_workflows.remote()
+            controller.list_non_terminating_workflows.remote()
         )
 
     ret = []
@@ -600,7 +600,7 @@ def resume_all(include_failed: bool = False) -> List[Tuple[str, ray.ObjectRef]]:
     all_failed = list_all(filter_set)
 
     try:
-        workflow_manager = workflow_access.get_management_actor()
+        controller = workflow_access.get_management_actor()
     except Exception as e:
         raise RuntimeError("Failed to get management actor") from e
 
@@ -611,7 +611,7 @@ def resume_all(include_failed: bool = False) -> List[Tuple[str, ray.ObjectRef]]:
         # TODO(suquark): This is not very efficient, but it makes sure
         #  running workflows has higher priority when getting reconstructed.
         try:
-            ray.get(workflow_manager.reconstruct_workflow.remote(job_id, context))
+            ray.get(controller.reconstruct_workflow.remote(job_id, context))
         except Exception as e:
             # TODO(suquark): Here some workflows got resumed successfully but some
             #  failed and the user has no idea about this, which is very wired.
@@ -625,7 +625,7 @@ def resume_all(include_failed: bool = False) -> List[Tuple[str, ray.ObjectRef]]:
         results.append(
             (
                 context.workflow_id,
-                workflow_manager.execute_workflow.remote(job_id, context),
+                controller.execute_workflow.remote(job_id, context),
             )
         )
     return results
@@ -651,8 +651,8 @@ def get_status(workflow_id: str) -> WorkflowStatus:
     _ensure_workflow_initialized()
     if not isinstance(workflow_id, str):
         raise TypeError("workflow_id has to be a string type.")
-    workflow_manager = workflow_access.get_management_actor()
-    return ray.get(workflow_manager.get_workflow_status.remote(workflow_id))
+    controller = workflow_access.get_management_actor()
+    return ray.get(controller.get_workflow_status.remote(workflow_id))
 
 
 @PublicAPI(stability="alpha")
@@ -779,8 +779,8 @@ def cancel(workflow_id: str) -> None:
     _ensure_workflow_initialized()
     if not isinstance(workflow_id, str):
         raise TypeError("workflow_id has to be a string type.")
-    workflow_manager = workflow_access.get_management_actor()
-    ray.get(workflow_manager.cancel_workflow.remote(workflow_id))
+    controller = workflow_access.get_management_actor()
+    ray.get(controller.cancel_workflow.remote(workflow_id))
 
 
 @PublicAPI(stability="alpha")
@@ -806,8 +806,8 @@ def delete(workflow_id: str) -> None:
         >>> assert [] == exoflow.list_all() # doctest: +SKIP
     """
     _ensure_workflow_initialized()
-    workflow_manager = workflow_access.get_management_actor()
-    ray.get(workflow_manager.delete_workflow.remote(workflow_id))
+    controller = workflow_access.get_management_actor()
+    ray.get(controller.delete_workflow.remote(workflow_id))
 
 
 @PublicAPI(stability="alpha")
@@ -845,9 +845,9 @@ def get_task_execution_metadata(
     _ensure_workflow_initialized()
     if not isinstance(workflow_id, str):
         raise TypeError("workflow_id has to be a string type.")
-    workflow_manager = workflow_access.get_management_actor()
+    controller = workflow_access.get_management_actor()
     return ray.get(
-        workflow_manager.get_task_execution_metadata.remote(workflow_id, task_id)
+        controller.get_task_execution_metadata.remote(workflow_id, task_id)
     )
 
 
