@@ -55,7 +55,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     os.environ["N_WORKFLOW_SHARDS"] = str(args.n_schedulers)
-    os.environ["N_WORKFLOW_WORKERS"] = str(args.n_workers)
+    os.environ["EXOFLOW_N_EXECUTORS"] = str(args.n_workers)
     os.environ["RAY_USAGE_STATS_ENABLED"] = "0"
     os.environ["WORKFLOW_SCHEDULER_MAX_CONCURRENCY"] = "10000"
     ray.init(

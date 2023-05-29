@@ -12,7 +12,7 @@ if __name__ == "__main__":
     import shutil
 
     os.environ["N_WORKFLOW_SHARDS"] = "4"
-    os.environ["N_WORKFLOW_WORKERS"] = "8"
+    os.environ["EXOFLOW_N_EXECUTORS"] = "8"
 
     shutil.rmtree("/tmp/ray/workflow", ignore_errors=True)
     ray.init(num_cpus=4, storage="/tmp/ray/workflow")

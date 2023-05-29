@@ -22,7 +22,7 @@ STORAGE_URL = (
 @app.on_event("startup")
 async def startup_event():
     # os.environ["N_WORKFLOW_SHARDS"] = "32"
-    # os.environ["N_WORKFLOW_WORKERS"] = "1"
+    # os.environ["EXOFLOW_N_EXECUTORS"] = "1"
     # os.environ["N_WORKFLOW_WORKER_THREADS"] = "16"
     os.environ["RAY_USAGE_STATS_ENABLED"] = "0"
     ray.init("local", storage=STORAGE_URL)

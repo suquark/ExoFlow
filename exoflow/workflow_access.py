@@ -474,8 +474,8 @@ def init_management_actor(
         # Number of workers per node. -1 means the number is proportional to
         # the number of CPU cores. If "local_executors_only" is 1, then there is only
         # one node.
-        n_workflow_workers = int(os.getenv("N_WORKFLOW_WORKERS", default=-1))
-        _internal_kv_put("n_workers", str(n_workflow_workers), namespace="workflow")
+        n_executors = int(os.getenv("EXOFLOW_N_EXECUTORS", default=-1))
+        _internal_kv_put("n_workers", str(n_executors), namespace="workflow")
 
         n_workflow_worker_threads = int(
             os.getenv("N_WORKFLOW_WORKER_THREADS", default=1)

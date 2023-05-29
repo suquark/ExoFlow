@@ -59,7 +59,7 @@ if __name__ == "__main__":
     os.environ["EXOFLOW_CONTROLLER_RESOURCES"] = json.dumps({"controller": 1})
 
     os.environ["N_WORKFLOW_SHARDS"] = str(args.n_controllers)
-    os.environ["N_WORKFLOW_WORKERS"] = str(args.n_executors)
+    os.environ["EXOFLOW_N_EXECUTORS"] = str(args.n_executors)
     os.environ["RAY_USAGE_STATS_ENABLED"] = "0"
     os.environ["WORKFLOW_SCHEDULER_MAX_CONCURRENCY"] = "10000"
     ray.init("auto")
