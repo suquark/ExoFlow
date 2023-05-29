@@ -462,9 +462,9 @@ def init_management_actor(
         # start only local workers, this ensures the number of workers
         # would only be proportional to the number of workflow shards
         # instead of the number of ExoFlow workers
-        local_workers_only = int(os.getenv("EXOFLOW_LOCAL_WORKERS_ONLY", default=0))
+        local_executors_only = int(os.getenv("EXOFLOW_LOCAL_EXECUTORS_ONLY", default=0))
         _internal_kv_put(
-            "local_workers_only", str(local_workers_only), namespace="workflow"
+            "local_executors_only", str(local_executors_only), namespace="workflow"
         )
 
         # Total number of workflow controllers.
@@ -472,7 +472,7 @@ def init_management_actor(
         _internal_kv_put("n_shards", str(n_workflow_shards), namespace="workflow")
 
         # Number of workers per node. -1 means the number is proportional to
-        # the number of CPU cores. If "local_workers_only" is 1, then there is only
+        # the number of CPU cores. If "local_executors_only" is 1, then there is only
         # one node.
         n_workflow_workers = int(os.getenv("N_WORKFLOW_WORKERS", default=-1))
         _internal_kv_put("n_workers", str(n_workflow_workers), namespace="workflow")

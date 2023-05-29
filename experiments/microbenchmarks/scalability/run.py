@@ -55,7 +55,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # one controller per node
-    os.environ["EXOFLOW_LOCAL_WORKERS_ONLY"] = "1"
+    os.environ["EXOFLOW_LOCAL_EXECUTORS_ONLY"] = "1"
     os.environ["EXOFLOW_CONTROLLER_RESOURCES"] = json.dumps({"controller": 1})
 
     os.environ["N_WORKFLOW_SHARDS"] = str(args.n_controllers)

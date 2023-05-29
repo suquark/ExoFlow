@@ -271,7 +271,7 @@ class ActorController:
         self._task_tag: Dict[TaskHandle, str] = {}
 
         n_workers = int(_internal_kv_get("n_workers", namespace="workflow"))
-        local_workers_only = int(_internal_kv_get("local_workers_only", namespace="workflow"))
+        local_executors_only = int(_internal_kv_get("local_executors_only", namespace="workflow"))
 
         # client = StateApiClient(global_worker.node.gcs_address)
         # nodes = client.list(
@@ -286,7 +286,7 @@ class ActorController:
                 "state": "ALIVE" if n["Alive"] else "FAILED",
                 "resources_total": n["Resources"],
             })
-        if local_workers_only:
+        if local_executors_only:
             local_node_id = global_worker.core_worker.get_current_node_id().hex()
             nodes = [node for node in nodes if node["node_id"] == local_node_id]
             if not nodes:
