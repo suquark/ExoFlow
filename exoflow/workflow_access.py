@@ -483,8 +483,8 @@ def init_management_actor(
         _internal_kv_put(
             "n_worker_threads", str(n_workflow_worker_threads), namespace="workflow"
         )
-        scheduler_max_concurrency = int(
-            os.getenv("WORKFLOW_SCHEDULER_MAX_CONCURRENCY", default=1000)
+        controller_max_concurrency = int(
+            os.getenv("EXOFLOW_CONTROLLER_MAX_CONCURRENCY", default=1000)
         )
 
         actors_ready = []
@@ -499,7 +499,7 @@ def init_management_actor(
                 namespace=common.MANAGEMENT_ACTOR_NAMESPACE,
                 lifetime="detached",
                 num_cpus=0,
-                max_concurrency=scheduler_max_concurrency,
+                max_concurrency=controller_max_concurrency,
                 scheduling_strategy=scheduling_strategy,
                 resources=resources,
             ).remote(max_running_workflows, max_pending_workflows)
