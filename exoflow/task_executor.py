@@ -270,7 +270,7 @@ class ActorController:
         self._pools: Dict[str, ActorPool] = {}
         self._task_tag: Dict[TaskHandle, str] = {}
 
-        n_workers = int(_internal_kv_get("n_workers", namespace="workflow"))
+        n_executors = int(_internal_kv_get("n_executors", namespace="workflow"))
         local_executors_only = int(_internal_kv_get("local_executors_only", namespace="workflow"))
 
         # client = StateApiClient(global_worker.node.gcs_address)
@@ -296,8 +296,8 @@ class ActorController:
         for node in nodes:
             if node["state"] != "ALIVE":
                 continue
-            if n_workers > 0:
-                n_cpus = n_workers
+            if n_executors > 0:
+                n_cpus = n_executors
             else:
                 n_cpus = int(node["resources_total"].get("CPU", 1))
             node_id = node["node_id"]
