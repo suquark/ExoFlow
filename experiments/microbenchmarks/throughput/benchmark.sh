@@ -3,7 +3,7 @@
 for i in `seq 12`; do
     ray stop --force &> /dev/null
     sleep 5
-    python run.py --n-schedulers=$i --n-workers=2
+    python run.py --n-controllers=$i --n-executors=2
 done
 
 for i in `seq 12`; do
