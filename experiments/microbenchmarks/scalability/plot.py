@@ -37,7 +37,7 @@ def plot_scalability():
 
     _mean, _std = [], []
     for j in NUM_NODES:
-        with open(f"result/ray_{j + 1}.json") as f:
+        with open(f"result/ray_{j}.json") as f:
             t = N_TASKS / np.array(json.load(f))
             _mean.append(np.mean(t))
             _std.append(np.std(t))
