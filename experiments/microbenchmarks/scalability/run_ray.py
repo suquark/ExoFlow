@@ -6,6 +6,7 @@ import ray
 import tqdm
 
 from config import N_TASKS
+from exoflow import utils
 
 
 def nop():
@@ -24,7 +25,11 @@ class Controller:
     def __init__(self, n_executors: int) -> None:
         self._n_executors = n_executors
         self._index = 0
-        self._executors = [TaskExecutor.remote() for _ in range(n_executors)]
+        self._executors = [TaskExecutor.options(
+            num_cpus=0,
+            max_restarts=-1,
+            scheduling_strategy=utils.local_binding_scheduling_strategy(),
+        ).remote() for _ in range(n_executors)]
 
     async def execute(self):
         executor = self._executors[self._index % self._n_executors]

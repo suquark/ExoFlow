@@ -4,6 +4,8 @@ import time
 
 import ray
 from ray.experimental.internal_kv import _internal_kv_get
+from ray._private.worker import global_worker
+from ray.util.scheduling_strategies import NodeAffinitySchedulingStrategy
 
 from exoflow import common
 
@@ -36,3 +38,10 @@ class NamedActorCache(CacheWithExpiration):
 class KVCache(CacheWithExpiration):
     def _get_internal(self, name: str):
         return _internal_kv_get(name, namespace="workflow")
+
+
+def local_binding_scheduling_strategy():
+    """Get a scheduling strategy that binds tasks to the current node."""
+    node_id = global_worker.core_worker.get_current_node_id().hex()
+    scheduling_strategy = NodeAffinitySchedulingStrategy(node_id, soft=False)
+    return scheduling_strategy

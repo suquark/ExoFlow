@@ -449,11 +449,7 @@ def init_management_actor(
             # If no resources are specified, then the default scheduling
             # strategy is "local": the ExoFlow controller will be scheduled
             # on the same node as the Ray driver.
-            from ray._private.worker import global_worker
-            from ray.util.scheduling_strategies import NodeAffinitySchedulingStrategy
-
-            node_id = global_worker.core_worker.get_current_node_id().hex()
-            scheduling_strategy = NodeAffinitySchedulingStrategy(node_id, soft=False)
+            scheduling_strategy = utils.local_binding_scheduling_strategy()
             resources = None
         else:
             scheduling_strategy = None
