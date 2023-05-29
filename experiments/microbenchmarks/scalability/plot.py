@@ -5,7 +5,7 @@ from matplotlib import pyplot as plt
 
 from config import N_TASKS, N_PARALLEL_TASKS
 
-NUM_NODES = (1, 2, 4, 8, 16)
+NUM_NODES = (1, 2, 4, 8, 16, 32)
 
 
 def _label(n: int) -> str:
