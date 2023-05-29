@@ -1,6 +1,6 @@
 cluster_name: exoflow-scalability
-min_workers: 16
-max_workers: 16
+min_workers: 32
+max_workers: 32
 
 provider:
     type: aws
@@ -29,8 +29,8 @@ available_node_types:
         SecurityGroupIds:
           - "sg-3463e565"
           - "sg-092b10044bcf1f37e"
-      min_workers: 16
-      max_workers: 16
+      min_workers: 32
+      max_workers: 32
 
 file_mounts:
     # mount the credentials for AWS dynamodb access
