@@ -51,25 +51,25 @@ if __name__ == "__main__":
         "--n-controllers", help="number of controllers", type=int, default=1
     )
     parser.add_argument("--n-executors", help="number of executors", type=int, default=2)
-    parser.add_argument("--n-nodes", help="number of nodes", type=int, default=1)
     args = parser.parse_args()
 
     # one controller per node
     os.environ["EXOFLOW_LOCAL_EXECUTORS_ONLY"] = "1"
     os.environ["EXOFLOW_CONTROLLER_RESOURCES"] = json.dumps({"controller": 1})
-
     os.environ["EXOFLOW_N_CONTROLLERS"] = str(args.n_controllers)
     os.environ["EXOFLOW_N_EXECUTORS"] = str(args.n_executors)
-    os.environ["RAY_USAGE_STATS_ENABLED"] = "0"
     os.environ["EXOFLOW_CONTROLLER_MAX_CONCURRENCY"] = "10000"
+
+    os.environ["RAY_USAGE_STATS_ENABLED"] = "0"
+
     ray.init("auto")
     exoflow.init()
     register_dags()
 
     durations = run_single(N_TASKS)
-    with open(f"result/dag_{args.n_controllers}_{args.n_nodes}.json", "w") as f:
+    with open(f"result/dag_{args.n_controllers}_{args.n_controllers}.json", "w") as f:
         json.dump(durations, f)
 
     durations = run_parallel(N_TASKS // N_PARALLEL_TASKS)
-    with open(f"result/task_{args.n_controllers}_{args.n_nodes}.json", "w") as f:
+    with open(f"result/task_{args.n_controllers}_{args.n_controllers}.json", "w") as f:
         json.dump(durations, f)
