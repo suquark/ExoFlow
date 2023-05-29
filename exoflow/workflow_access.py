@@ -8,7 +8,7 @@ import random
 from typing import Dict, List, Set, Optional, TYPE_CHECKING
 
 import ray
-from ray.experimental.internal_kv import _internal_kv_get, _internal_kv_put
+from ray.experimental.internal_kv import _internal_kv_put
 
 from exoflow import common
 from exoflow.common import WorkflowStatus, TaskID, SERVICE_SEP
@@ -25,6 +25,7 @@ from exoflow.task_executor import ActorController
 from exoflow.workflow_executor import WorkflowExecutor, TaskExecutionMetadata
 from exoflow.workflow_state import WorkflowExecutionState
 from exoflow.workflow_context import WorkflowTaskContext
+from exoflow import utils
 
 if TYPE_CHECKING:
     from ray.actor import ActorHandle
@@ -508,12 +509,15 @@ def init_management_actor(
 
 
 _workflow_manager_actor_index = None
+_actor_cache = utils.NamedActorCache()
+_kv_cache = utils.KVCache()
 
 
 def get_management_actor(index: Optional[int] = 0) -> "ActorHandle":
     global _workflow_manager_actor_index
     if index is None:
-        n_workflow_shards = int(_internal_kv_get("n_shards", namespace="workflow"))
+        n_workflow_shards = int(_kv_cache("n_shards"))
+        # round robin scheduling
         if _workflow_manager_actor_index is None:
             _workflow_manager_actor_index = random.randrange(n_workflow_shards)
         else:
@@ -526,4 +530,4 @@ def get_management_actor(index: Optional[int] = 0) -> "ActorHandle":
     else:
         name = common.MANAGEMENT_ACTOR_NAME + f"_{index}"
 
-    return ray.get_actor(name, namespace=common.MANAGEMENT_ACTOR_NAMESPACE)
+    return _actor_cache(name)
