@@ -35,6 +35,14 @@ def plot_scalability():
             _std.append(np.std(t))
     ax.errorbar(x, _mean, _std, label=f"ExoF. ({N_PARALLEL_TASKS} tasks / DAG)")
 
+    _mean, _std = [], []
+    for j in NUM_NODES:
+        with open(f"result/ray_{j + 1}.json") as f:
+            t = N_TASKS / np.array(json.load(f))
+            _mean.append(np.mean(t))
+            _std.append(np.std(t))
+    ax.errorbar(x, _mean, _std, label="Ray")
+
     ax.grid(which="both", axis="y", ls=":")
     ax.grid(which="both", axis="x", ls=":")
 
