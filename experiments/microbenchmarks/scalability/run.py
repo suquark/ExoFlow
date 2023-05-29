@@ -61,7 +61,7 @@ if __name__ == "__main__":
     os.environ["N_WORKFLOW_SHARDS"] = str(args.n_controllers)
     os.environ["EXOFLOW_N_EXECUTORS"] = str(args.n_executors)
     os.environ["RAY_USAGE_STATS_ENABLED"] = "0"
-    os.environ["WORKFLOW_SCHEDULER_MAX_CONCURRENCY"] = "10000"
+    os.environ["EXOFLOW_CONTROLLER_MAX_CONCURRENCY"] = "10000"
     ray.init("auto")
     exoflow.init()
     register_dags()
