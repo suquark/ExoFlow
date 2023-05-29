@@ -48,10 +48,10 @@ class WorkflowTaskActor:
     def __init__(self):
         # A thread pool for checkpointing.
         sys.setrecursionlimit(10 ** 6)
-        n_worker_threads = int(
-            _internal_kv_get("n_worker_threads", namespace="workflow")
+        n_executor_threads = int(
+            _internal_kv_get("n_executor_threads", namespace="workflow")
         )
-        self._io_thread_pool = ThreadPoolExecutor(max_workers=n_worker_threads)
+        self._io_thread_pool = ThreadPoolExecutor(max_workers=n_executor_threads)
         self._futures: Dict[str, Dict] = {}
 
     def async_submit_task(

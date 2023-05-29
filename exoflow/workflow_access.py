@@ -477,11 +477,11 @@ def init_management_actor(
         n_executors = int(os.getenv("EXOFLOW_N_EXECUTORS", default=-1))
         _internal_kv_put("n_executors", str(n_executors), namespace="workflow")
 
-        n_workflow_worker_threads = int(
-            os.getenv("N_WORKFLOW_WORKER_THREADS", default=1)
+        n_executor_threads = int(
+            os.getenv("EXOFLOW_N_EXECUTOR_THREADS", default=1)
         )
         _internal_kv_put(
-            "n_worker_threads", str(n_workflow_worker_threads), namespace="workflow"
+            "n_executor_threads", str(n_executor_threads), namespace="workflow"
         )
         controller_max_concurrency = int(
             os.getenv("EXOFLOW_CONTROLLER_MAX_CONCURRENCY", default=1000)

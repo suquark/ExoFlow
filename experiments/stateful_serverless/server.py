@@ -64,7 +64,7 @@ app.add_middleware(BaseHTTPMiddleware, dispatch=metrics_middleware)
 async def startup_event():
     os.environ["EXOFLOW_N_CONTROLLERS"] = "32"
     os.environ["EXOFLOW_N_EXECUTORS"] = "1"
-    os.environ["N_WORKFLOW_WORKER_THREADS"] = "16"
+    os.environ["EXOFLOW_N_EXECUTOR_THREADS"] = "16"
     os.environ["RAY_USAGE_STATS_ENABLED"] = "0"
     ray.init("local", storage=STORAGE_URL)
     pipelines.register_dags(worker_id)
