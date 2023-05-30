@@ -38,11 +38,20 @@ def plot_scalability(prefix: str):
     _mean, _std = [], []
     for j in N_CONTROLLERS:
         # ray_{n_controllers}_{n_executors}.json
-        with open(f"result/ray_{prefix}_{j}_2.json") as f:
+        with open(f"result/ray_dag_{prefix}_{j}_2.json") as f:
             t = N_TASKS / np.array(json.load(f))
             _mean.append(np.mean(t))
             _std.append(np.std(t))
-    ax.errorbar(x, _mean, _std, label="Ray")
+    ax.errorbar(x, _mean, _std, label="Ray (1 task / controller)")
+
+    _mean, _std = [], []
+    for j in N_CONTROLLERS:
+        # ray_{n_controllers}_{n_executors}.json
+        with open(f"result/ray_task_{prefix}_{j}_2.json") as f:
+            t = N_TASKS / np.array(json.load(f))
+            _mean.append(np.mean(t))
+            _std.append(np.std(t))
+    ax.errorbar(x, _mean, _std, label=f"Ray ({N_PARALLEL_TASKS} task / controller)")
 
     ax.grid(which="both", axis="y", ls=":")
     ax.grid(which="both", axis="x", ls=":")
@@ -52,7 +61,7 @@ def plot_scalability(prefix: str):
     y_tick_labels = [f"{y}" for y in y_ticks]
     ax.set_yticks(y_ticks, y_tick_labels)
     # ax.set_title("Workflow Scalability")
-    ax.set_xlabel("Number of Nodes")
+    ax.set_xlabel("Number of Controllers")
     ax.set_ylabel("Throughput (tasks/s)")
     ax.set_ylim(bottom=0)
 
@@ -68,10 +77,10 @@ def plot_scalability(prefix: str):
     lgd.get_frame().set_linewidth(0.0)
 
     fig.tight_layout()
-    # box = ax.get_position()
-    # ax.set_position(
-    #     [box.x0 - box.width * 0.06, box.y0, box.width * 1.13, box.height * 0.86]
-    # )
+    box = ax.get_position()
+    ax.set_position(
+        [box.x0, box.y0, box.width, box.height * 0.86]
+    )
     fig.savefig(f"plots/microbenchmark-{prefix}-scalability.png")
     fig.savefig(f"plots/microbenchmark-{prefix}-scalability.pdf")
 
@@ -82,4 +91,4 @@ if __name__ == "__main__":
     plt.rc("ytick", labelsize=20)
     plt.rc("legend", fontsize=20)
     plot_scalability("1node")
-    plot_scalability("4node")
+    # plot_scalability("4node")
