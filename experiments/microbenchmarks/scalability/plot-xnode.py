@@ -51,16 +51,16 @@ def plot_scalability(prefix: str):
             t = N_TASKS / np.array(json.load(f))
             _mean.append(np.mean(t))
             _std.append(np.std(t))
-    ax.errorbar(x, _mean, _std, label=f"Ray ({N_PARALLEL_TASKS} task / batch)")
+    ax.errorbar(x, _mean, _std, label=f"Ray ({N_PARALLEL_TASKS} tasks / batch)")
 
     ax.grid(which="both", axis="y", ls=":")
     ax.grid(which="both", axis="x", ls=":")
 
     ax.set_xticks(x, [str(t) for t in N_CONTROLLERS], rotation=0)
-    y_ticks = range(0, 5001, 1000)
-    y_tick_labels = [f"{y}" for y in y_ticks]
-    ax.set_yticks(y_ticks, y_tick_labels)
-    # ax.set_title("Workflow Scalability")
+    # y_ticks = range(0, 5001, 1000)
+    # y_tick_labels = [f"{y}" for y in y_ticks]
+    # ax.set_yticks(y_ticks, y_tick_labels)
+    ax.set_title(f"ExoFlow Scalability ({prefix})")
     ax.set_xlabel("Number of Controllers")
     ax.set_ylabel("Throughput (tasks/s)")
     ax.set_ylim(bottom=0)
