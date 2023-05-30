@@ -51,6 +51,7 @@ if __name__ == "__main__":
         "--n-controllers", help="number of controllers", type=int, default=1
     )
     parser.add_argument("--n-executors", help="number of executors", type=int, default=2)
+    parser.add_argument("--prefix", help="prefix of output file", type=str, default="")
     args = parser.parse_args()
 
     # one controller per node
@@ -67,9 +68,17 @@ if __name__ == "__main__":
     register_dags()
 
     durations = run_single(N_TASKS)
-    with open(f"result/dag_{args.n_controllers}_{args.n_controllers}.json", "w") as f:
+    if args.prefix:
+        output_file = f"result/dag_{args.prefix}_{args.n_controllers}_{args.n_executors}.json"
+    else:
+        output_file = f"result/dag_{args.n_controllers}_{args.n_executors}.json"
+    with open(output_file, "w") as f:
         json.dump(durations, f)
 
     durations = run_parallel(N_TASKS // N_PARALLEL_TASKS)
-    with open(f"result/task_{args.n_controllers}_{args.n_controllers}.json", "w") as f:
+    if args.prefix:
+        output_file = f"result/task_{args.prefix}_{args.n_controllers}_{args.n_executors}.json"
+    else:
+        output_file = f"result/task_{args.n_controllers}_{args.n_executors}.json"
+    with open(output_file, "w") as f:
         json.dump(durations, f)

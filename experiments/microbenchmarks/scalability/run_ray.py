@@ -39,7 +39,8 @@ class Controller:
         return data
 
 
-def run_ray_tasks(controllers: list, n_tasks: int, n_repeats: int = 5, n_warmups: int = 1):
+def run_ray_tasks(n_controllers: int, n_executors: int, n_tasks: int, n_repeats: int = 5, n_warmups: int = 1):
+    controllers = [Controller.remote(n_executors) for _ in range(n_controllers)]
     durations = []
     for _ in tqdm.trange(n_warmups + n_repeats, desc="Ray Task throughput"):
         start = time.time()
@@ -60,11 +61,14 @@ if __name__ == "__main__":
         "--n-controllers", help="number of controllers", type=int, default=1
     )
     parser.add_argument("--n-executors", help="number of executors", type=int, default=2)
+    parser.add_argument("--prefix", help="prefix of output file", type=str, default="")
     args = parser.parse_args()
 
     ray.init("auto")
-    controllers = [Controller.remote(args.n_executors) for _ in range(args.n_controllers)]
-
-    durations = run_ray_tasks(controllers, N_TASKS)
-    with open(f"result/ray_{args.n_controllers}.json", "w") as f:
+    durations = run_ray_tasks(args.n_controllers, args.n_executors, N_TASKS)
+    if args.prefix:
+        output_file = f"result/ray_{args.prefix}_{args.n_controllers}_{args.n_executors}.json"
+    else:
+        output_file = f"result/ray_{args.n_controllers}_{args.n_executors}.json"
+    with open(output_file, "w") as f:
         json.dump(durations, f)
