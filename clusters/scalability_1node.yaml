@@ -1,4 +1,4 @@
-cluster_name: exoflow-scalability
+cluster_name: exoflow-scalability-1node
 min_workers: 1
 max_workers: 1
 
