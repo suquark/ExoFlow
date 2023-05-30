@@ -82,3 +82,4 @@ if __name__ == "__main__":
     plt.rc("ytick", labelsize=20)
     plt.rc("legend", fontsize=20)
     plot_scalability("1node")
+    plot_scalability("4node")
