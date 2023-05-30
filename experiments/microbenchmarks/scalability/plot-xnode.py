@@ -42,7 +42,7 @@ def plot_scalability(prefix: str):
             t = N_TASKS / np.array(json.load(f))
             _mean.append(np.mean(t))
             _std.append(np.std(t))
-    ax.errorbar(x, _mean, _std, label="Ray (1 task / controller)")
+    ax.errorbar(x, _mean, _std, label="Ray (1 task / batch)")
 
     _mean, _std = [], []
     for j in N_CONTROLLERS:
@@ -51,7 +51,7 @@ def plot_scalability(prefix: str):
             t = N_TASKS / np.array(json.load(f))
             _mean.append(np.mean(t))
             _std.append(np.std(t))
-    ax.errorbar(x, _mean, _std, label=f"Ray ({N_PARALLEL_TASKS} task / controller)")
+    ax.errorbar(x, _mean, _std, label=f"Ray ({N_PARALLEL_TASKS} task / batch)")
 
     ax.grid(which="both", axis="y", ls=":")
     ax.grid(which="both", axis="x", ls=":")
