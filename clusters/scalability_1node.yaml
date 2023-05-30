@@ -24,7 +24,7 @@ available_node_types:
           - "sg-092b10044bcf1f37e"
   ray.worker.default:
       node_config:
-        InstanceType: m5.4xlarge
+        InstanceType: m5.2xlarge
         ImageId: ami-0bc093c9b91f2c0e2  # exoflow-artifacts-0422
         SecurityGroupIds:
           - "sg-3463e565"
