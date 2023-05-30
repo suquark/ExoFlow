@@ -115,14 +115,8 @@ class WorkflowManagementActor:
         self._executed_workflows: Set[str] = set()
         self._service_workflows: Dict[str, WorkflowExecutionState] = {}
         self._actor_controller = ActorController()
-        import resource
-        import sys
 
-        try:
-            resource.setrlimit(resource.RLIMIT_STACK, (2 ** 29, -1))
-        except ValueError:
-            pass
-        sys.setrecursionlimit(10 ** 6)
+        utils.increase_recursion_limit()
 
     def validate_init_options(
         self, max_running_workflows: Optional[int], max_pending_workflows: Optional[int]

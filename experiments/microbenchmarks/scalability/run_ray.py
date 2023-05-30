@@ -20,9 +20,11 @@ class TaskExecutor:
         return None, func()
 
 
-@ray.remote(num_cpus=0, resources={"controller": 1})
+@ray.remote(num_cpus=0, resources={"controller": 1}, max_concurrency=10000)
 class Controller:
     def __init__(self, n_executors: int) -> None:
+        utils.increase_recursion_limit()
+
         self._n_executors = n_executors
         self._index = 0
         self._executors = [TaskExecutor.options(

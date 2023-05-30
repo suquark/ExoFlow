@@ -1,5 +1,7 @@
 from typing import Dict, Any
 
+import resource
+import sys
 import time
 
 import ray
@@ -45,3 +47,13 @@ def local_binding_scheduling_strategy():
     node_id = global_worker.core_worker.get_current_node_id().hex()
     scheduling_strategy = NodeAffinitySchedulingStrategy(node_id, soft=False)
     return scheduling_strategy
+
+
+def increase_recursion_limit():
+    """Increase the recursion limit. Useful for async Ray actors
+    since Python asyncio uses a stack-based event loop."""
+    try:
+        resource.setrlimit(resource.RLIMIT_STACK, (2 ** 29, -1))
+    except ValueError:
+        pass
+    sys.setrecursionlimit(10 ** 6)
