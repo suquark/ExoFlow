@@ -21,7 +21,7 @@ storage="file://$sp"
 PYTHONPATH=$workdir ray start --head --disable-usage-stats --port=6379 --object-manager-port=8076 --autoscaling-config=~/ray_bootstrap_config.yaml --resources='{"machine": 1}' --storage=$storage
 
 for worker_ip in $RAY_WORKER_IPS; do
-    ssh $worker_ip "source ~/anaconda3/bin/activate exoflow-dev; PYTHONPATH=$workdir ray start --address=$RAY_HEAD_IP:6379 --disable-usage-stats --object-manager-port=8076 --resources='{\"machine\": 1, \"tag:worker\": 1, \"controller\": 1}' --storage=$storage" &
+    ssh $worker_ip "source ~/anaconda3/bin/activate exoflow-dev; PYTHONPATH=$workdir ray start --address=$RAY_HEAD_IP:6379 --disable-usage-stats --object-manager-port=8076 --resources='{\"machine\": 1, \"controller\": 1}' --storage=$storage" &
     # we do not need distributed storage. this is just to make Ray storage happy.
     ssh $worker_ip "mkdir -p $sp && touch $sp/_valid" &
 done
