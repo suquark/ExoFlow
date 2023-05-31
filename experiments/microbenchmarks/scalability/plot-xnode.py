@@ -26,7 +26,7 @@ def plot_scalability(prefix: str):
             t = N_TASKS / np.array(json.load(f))
             _mean.append(np.mean(t))
             _std.append(np.std(t))
-    ax.errorbar(x, _mean, _std, label=f"ExoF. ({N_PARALLEL_TASKS} tasks / DAG)")
+    ax.errorbar(x, _mean, _std, label=f"ExoFlow ({N_PARALLEL_TASKS} tasks / DAG)")
 
     _mean, _std = [], []
     for j in N_CONTROLLERS:
@@ -79,11 +79,12 @@ def plot_scalability(prefix: str):
 
 
 def plot_scalability_dag():
-    fig, ax = plt.subplots(figsize=(8, 6))
+    fig, ax = plt.subplots(figsize=(8, 5))
     x = np.arange(1, len(N_CONTROLLERS) + 1)
 
     prefixes = ("1node", "4node")
     ls = ("-", ":")
+    labels = ("1 node", "4 nodes")
     for i, prefix in enumerate(prefixes):
         _mean, _std = [], []
         for j in N_CONTROLLERS:
@@ -91,7 +92,7 @@ def plot_scalability_dag():
                 t = N_TASKS / np.array(json.load(f))
                 _mean.append(np.mean(t))
                 _std.append(np.std(t))
-        ax.errorbar(x, _mean, _std, label=f"ExoF. ({prefix}) (1 task / DAG)", color="tab:green", ls=ls[i])
+        ax.errorbar(x, _mean, _std, label=f"ExoFlow ({labels[i]})", color="tab:green", ls=ls[i])
 
         _mean, _std = [], []
         for j in N_CONTROLLERS:
@@ -100,7 +101,7 @@ def plot_scalability_dag():
                 t = N_TASKS / np.array(json.load(f))
                 _mean.append(np.mean(t))
                 _std.append(np.std(t))
-        ax.errorbar(x, _mean, _std, label=f"Ray ({prefix}) (1 task / batch)", color="tab:orange", ls=ls[i])
+        ax.errorbar(x, _mean, _std, label=f"Ray ({labels[i]})", color="tab:orange", ls=ls[i])
 
     ax.grid(which="both", axis="y", ls=":")
     ax.grid(which="both", axis="x", ls=":")
@@ -109,14 +110,14 @@ def plot_scalability_dag():
     # y_ticks = range(0, 5001, 1000)
     # y_tick_labels = [f"{y}" for y in y_ticks]
     # ax.set_yticks(y_ticks, y_tick_labels)
-    ax.set_title(f"ExoFlow Scalability ({prefix})")
+    # ax.set_title(f"ExoFlow Scalability (DAG)")
     ax.set_xlabel("Number of Controllers")
     ax.set_ylabel("Throughput (tasks/s)")
     ax.set_ylim(bottom=0)
 
     lgd = fig.legend(
         loc="upper center",
-        bbox_to_anchor=(0.52, 1.01),
+        bbox_to_anchor=(0.52, 1),
         ncol=2,
         labelspacing=0.4,
         columnspacing=0.2,
@@ -128,18 +129,19 @@ def plot_scalability_dag():
     fig.tight_layout()
     box = ax.get_position()
     ax.set_position(
-        [box.x0, box.y0, box.width, box.height * 0.86]
+        [box.x0, box.y0, box.width, box.height * 0.8]
     )
     fig.savefig(f"plots/microbenchmark-dag-scalability.png")
     fig.savefig(f"plots/microbenchmark-dag-scalability.pdf")
 
 
 def plot_scalability_task():
-    fig, ax = plt.subplots(figsize=(8, 6))
+    fig, ax = plt.subplots(figsize=(8, 5))
     x = np.arange(1, len(N_CONTROLLERS) + 1)
 
     prefixes = ("1node", "4node")
     ls = ("-", ":")
+    labels = ("1 node", "4 nodes")
     for i, prefix in enumerate(prefixes):
         _mean, _std = [], []
         for j in N_CONTROLLERS:
@@ -147,7 +149,8 @@ def plot_scalability_task():
                 t = N_TASKS / np.array(json.load(f))
                 _mean.append(np.mean(t))
                 _std.append(np.std(t))
-        ax.errorbar(x, _mean, _std, label=f"ExoF. ({prefix}) ({N_PARALLEL_TASKS} tasks / DAG)", color="tab:green", ls=ls[i])
+        # ax.errorbar(x, _mean, _std, label=f"ExoF. ({prefix}) ({N_PARALLEL_TASKS} tasks / DAG)", color="tab:green", ls=ls[i])
+        ax.errorbar(x, _mean, _std, label=f"ExoFlow ({labels[i]})", color="tab:green", ls=ls[i])
 
         _mean, _std = [], []
         for j in N_CONTROLLERS:
@@ -156,7 +159,8 @@ def plot_scalability_task():
                 t = N_TASKS / np.array(json.load(f))
                 _mean.append(np.mean(t))
                 _std.append(np.std(t))
-        ax.errorbar(x, _mean, _std, label=f"Ray ({prefix}) ({N_PARALLEL_TASKS} tasks / batch)", color="tab:orange", ls=ls[i])
+        # ax.errorbar(x, _mean, _std, label=f"Ray ({prefix}) ({N_PARALLEL_TASKS} tasks / batch)", color="tab:orange", ls=ls[i])
+        ax.errorbar(x, _mean, _std, label=f"Ray ({labels[i]})", color="tab:orange", ls=ls[i])
 
     ax.grid(which="both", axis="y", ls=":")
     ax.grid(which="both", axis="x", ls=":")
@@ -165,7 +169,7 @@ def plot_scalability_task():
     # y_ticks = range(0, 5001, 1000)
     # y_tick_labels = [f"{y}" for y in y_ticks]
     # ax.set_yticks(y_ticks, y_tick_labels)
-    ax.set_title(f"ExoFlow Scalability ({prefix})")
+    # ax.set_title(f"ExoFlow Scalability (Task)")
     ax.set_xlabel("Number of Controllers")
     ax.set_ylabel("Throughput (tasks/s)")
     ax.set_ylim(bottom=0)
@@ -184,7 +188,7 @@ def plot_scalability_task():
     fig.tight_layout()
     box = ax.get_position()
     ax.set_position(
-        [box.x0, box.y0, box.width, box.height * 0.86]
+        [box.x0, box.y0, box.width, box.height * 0.82]
     )
     fig.savefig(f"plots/microbenchmark-task-scalability.png")
     fig.savefig(f"plots/microbenchmark-task-scalability.pdf")

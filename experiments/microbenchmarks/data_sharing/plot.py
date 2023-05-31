@@ -6,15 +6,15 @@ from matplotlib import cm
 
 LABELS_MAP = {
     "Airflow": "airflow",
-    # "ExoF. + NoSHM": "workflow_no_share",
-    "ExoF. + SyncCkpt": "workflow_sync",
-    "ExoF. + NoCkpt": "workflow_skip",
+    # "ExoFlow + NoSHM": "workflow_no_share",
+    "ExoFlow + SyncCkpt": "workflow_sync",
+    "ExoFlow + NoCkpt": "workflow_skip",
     "Spark": "spark",
 }
 
 
 def plot():
-    fig, ax = plt.subplots(figsize=(4, 6))
+    fig, ax = plt.subplots(figsize=(5, 5.5))
     labels = [1, 2, 4, 8]
     POINTS = np.array([1, 2, 3, 4])
     patterns = ["x" * 4, "\\" * 4, "/" * 4, None]
