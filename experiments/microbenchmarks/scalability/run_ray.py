@@ -1,4 +1,5 @@
 import argparse
+import asyncio
 import json
 import time
 
@@ -33,22 +34,26 @@ class Controller:
             scheduling_strategy=utils.local_binding_scheduling_strategy(),
         ).remote() for _ in range(n_executors)]
 
-    def submit_task(self, func):
+    def submit_task(self, func, completion_queue, mapping):
         executor = self._executors[self._index % self._n_executors]
         self._index += 1
-        return executor.submit.remote(func)
+        metadata_ref, output_ref = executor.submit.remote(func)
+        future = asyncio.wrap_future(metadata_ref.future())
+        future.add_done_callback(completion_queue.put_nowait)
+        mapping[future] = output_ref
 
     async def execute(self, func, n_parallel_tasks: int):
+        completion_queue = asyncio.Queue()
+        mapping = {}
         assert n_parallel_tasks >= 0
-        pairs = []
         for _ in range(n_parallel_tasks):
-            metadata, data = self.submit_task(func)
-            pairs.append((metadata, data))
-        for metadata, data in pairs:
-            await metadata
-        metadata, data = self.submit_task(func)
-        await metadata
-        return data
+            self.submit_task(func, completion_queue, mapping)
+        while not completion_queue.empty():
+            future = await completion_queue.get()
+            mapping.pop(future)
+        self.submit_task(func, completion_queue, mapping)
+        future = await completion_queue.get()
+        return mapping.pop(future)
 
 
 def run_ray_tasks(controllers, n_dags: int, n_parallel_tasks: int, n_repeats: int = 5, n_warmups: int = 1):
