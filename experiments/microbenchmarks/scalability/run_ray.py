@@ -48,7 +48,7 @@ class Controller:
         assert n_parallel_tasks >= 0
         for _ in range(n_parallel_tasks):
             self.submit_task(func, completion_queue, mapping)
-        while not completion_queue.empty():
+        for _ in range(n_parallel_tasks):
             future = await completion_queue.get()
             mapping.pop(future)
         self.submit_task(func, completion_queue, mapping)
