@@ -108,7 +108,7 @@ shortuuid==1.0.10
 six==1.16.0
 smart-open==6.0.0
 sniffio==1.2.0
-starlette==0.19.1
+starlette==0.27.0
 tabulate==0.8.10
 tensorboard==2.9.1
 tensorboard-data-server==0.6.1
