@@ -1,6 +1,7 @@
 import json
 
 import numpy as np
+import matplotlib
 from matplotlib import pyplot as plt
 from matplotlib import cm
 
@@ -75,8 +76,8 @@ def plot(data):
     ax.set_xlabel("Throughput (request/second)")
     ax.set_ylabel("Latency (ms)")
     fig.tight_layout()
-    fig.savefig(f"{PATH_PREFIX}/plots/stateful_serverless-latency.png")
-    fig.savefig(f"{PATH_PREFIX}/plots/stateful_serverless-latency.pdf")
+    fig.savefig(f"{PATH_PREFIX}/plots/exp2-latency.png")
+    fig.savefig(f"{PATH_PREFIX}/plots/exp2-latency.pdf")
 
 
 def plot_reserve(data):
@@ -154,14 +155,17 @@ def plot_reserve(data):
     )
     lgd.get_frame().set_linewidth(0.0)
     fig.tight_layout()
-    fig.savefig(f"{PATH_PREFIX}/plots/stateful_serverless-reserve-latency.png", bbox_extra_artists=(lgd,))
-    fig.savefig(f"{PATH_PREFIX}/plots/stateful_serverless-reserve-latency.pdf", bbox_extra_artists=(lgd,))
+    fig.savefig(f"{PATH_PREFIX}/plots/exp2-reserve-latency.png", bbox_extra_artists=(lgd,))
+    fig.savefig(f"{PATH_PREFIX}/plots/exp2-reserve-latency.pdf", bbox_extra_artists=(lgd,))
 
 
 if __name__ == "__main__":
     with open(f"{PATH_PREFIX}/result/result.json") as f:
         result = json.load(f)
-    plt.rc("font", size=24, family="Times")
+    # Use Type 1 fonts
+    matplotlib.rcParams['pdf.fonttype'] = 42
+    matplotlib.rcParams['ps.fonttype'] = 42
+    plt.rc("font", size=24, family="Times New Roman")
     plt.rc("legend", fontsize=22)
     plt.rc("xtick", labelsize=22)
     plt.rc("ytick", labelsize=22)

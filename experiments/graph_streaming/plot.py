@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 
 import numpy as np
+import matplotlib
 import matplotlib.pyplot as plt
 from common import BATCH_UPDATE_INTERVAL, WARMUP_EPOCHS, N_EPOCHS
 
@@ -170,7 +171,10 @@ def plot_difference():
 
 
 if __name__ == "__main__":
-    plt.rc("font", size=24, family="Times")
+    # Use Type 1 fonts
+    matplotlib.rcParams['pdf.fonttype'] = 42
+    matplotlib.rcParams['ps.fonttype'] = 42
+    plt.rc("font", size=24, family="Times New Roman")
     plt.rc("xtick", labelsize=22)
     plt.rc("ytick", labelsize=22)
     checkpoint_options = ["async", "True", "False"]

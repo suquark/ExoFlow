@@ -1,6 +1,7 @@
 import json
 
 import numpy as np
+import matplotlib
 from matplotlib import pyplot as plt
 from matplotlib import cm
 
@@ -90,7 +91,10 @@ def plot():
 
 
 if __name__ == "__main__":
-    plt.rc("font", size=22, family="Times")
+    # Use Type 1 fonts
+    matplotlib.rcParams['pdf.fonttype'] = 42
+    matplotlib.rcParams['ps.fonttype'] = 42
+    plt.rc("font", size=22, family="Times New Roman")
     plt.rc("xtick", labelsize=20)
     plt.rc("ytick", labelsize=20)
     plt.rc("legend", fontsize=20)
