@@ -6,6 +6,7 @@ from matplotlib import pyplot as plt
 from config import N_TASKS, N_PARALLEL_TASKS
 
 N_CONTROLLERS = tuple(range(1, 17))
+LINE_WIDTH = 1.6
 
 
 def plot_scalability(prefix: str):
@@ -18,7 +19,7 @@ def plot_scalability(prefix: str):
             t = N_TASKS / np.array(json.load(f))
             _mean.append(np.mean(t))
             _std.append(np.std(t))
-    ax.errorbar(x, _mean, _std, label="ExoF. (1 task / DAG)")
+    ax.errorbar(x, _mean, _std, label="ExoF. (1 task / DAG)", lw=LINE_WIDTH)
 
     _mean, _std = [], []
     for j in N_CONTROLLERS:
@@ -26,7 +27,7 @@ def plot_scalability(prefix: str):
             t = N_TASKS / np.array(json.load(f))
             _mean.append(np.mean(t))
             _std.append(np.std(t))
-    ax.errorbar(x, _mean, _std, label=f"ExoFlow ({N_PARALLEL_TASKS} tasks / DAG)")
+    ax.errorbar(x, _mean, _std, label=f"ExoFlow ({N_PARALLEL_TASKS} tasks / DAG)", lw=LINE_WIDTH)
 
     _mean, _std = [], []
     for j in N_CONTROLLERS:
@@ -35,7 +36,7 @@ def plot_scalability(prefix: str):
             t = N_TASKS / np.array(json.load(f))
             _mean.append(np.mean(t))
             _std.append(np.std(t))
-    ax.errorbar(x, _mean, _std, label="Ray (1 task / batch)")
+    ax.errorbar(x, _mean, _std, label="Ray (1 task / batch)", lw=LINE_WIDTH)
 
     _mean, _std = [], []
     for j in N_CONTROLLERS:
@@ -44,7 +45,7 @@ def plot_scalability(prefix: str):
             t = N_TASKS / np.array(json.load(f))
             _mean.append(np.mean(t))
             _std.append(np.std(t))
-    ax.errorbar(x, _mean, _std, label=f"Ray ({N_PARALLEL_TASKS} tasks / batch)")
+    ax.errorbar(x, _mean, _std, label=f"Ray ({N_PARALLEL_TASKS} tasks / batch)", lw=LINE_WIDTH)
 
     ax.grid(which="both", axis="y", ls=":")
     ax.grid(which="both", axis="x", ls=":")
@@ -92,7 +93,7 @@ def plot_scalability_dag():
                 t = N_TASKS / np.array(json.load(f))
                 _mean.append(np.mean(t))
                 _std.append(np.std(t))
-        ax.errorbar(x, _mean, _std, label=f"ExoFlow ({labels[i]})", color="tab:green", ls=ls[i])
+        ax.errorbar(x, _mean, _std, label=f"ExoFlow ({labels[i]})", color="tab:green", ls=ls[i], lw=LINE_WIDTH)
 
         _mean, _std = [], []
         for j in N_CONTROLLERS:
@@ -101,7 +102,7 @@ def plot_scalability_dag():
                 t = N_TASKS / np.array(json.load(f))
                 _mean.append(np.mean(t))
                 _std.append(np.std(t))
-        ax.errorbar(x, _mean, _std, label=f"Ray ({labels[i]})", color="tab:orange", ls=ls[i])
+        ax.errorbar(x, _mean, _std, label=f"Ray ({labels[i]})", color="tab:orange", ls=ls[i], lw=LINE_WIDTH)
 
     ax.grid(which="both", axis="y", ls=":")
     ax.grid(which="both", axis="x", ls=":")
@@ -120,7 +121,7 @@ def plot_scalability_dag():
         bbox_to_anchor=(0.52, 1),
         ncol=2,
         labelspacing=0.4,
-        columnspacing=0.2,
+        columnspacing=0.8,
         handlelength=1.5,
         handletextpad=0.4,
     )
@@ -150,7 +151,7 @@ def plot_scalability_task():
                 _mean.append(np.mean(t))
                 _std.append(np.std(t))
         # ax.errorbar(x, _mean, _std, label=f"ExoF. ({prefix}) ({N_PARALLEL_TASKS} tasks / DAG)", color="tab:green", ls=ls[i])
-        ax.errorbar(x, _mean, _std, label=f"ExoFlow ({labels[i]})", color="tab:green", ls=ls[i])
+        ax.errorbar(x, _mean, _std, label=f"ExoFlow ({labels[i]})", color="tab:green", ls=ls[i], lw=LINE_WIDTH)
 
         _mean, _std = [], []
         for j in N_CONTROLLERS:
@@ -160,7 +161,7 @@ def plot_scalability_task():
                 _mean.append(np.mean(t))
                 _std.append(np.std(t))
         # ax.errorbar(x, _mean, _std, label=f"Ray ({prefix}) ({N_PARALLEL_TASKS} tasks / batch)", color="tab:orange", ls=ls[i])
-        ax.errorbar(x, _mean, _std, label=f"Ray ({labels[i]})", color="tab:orange", ls=ls[i])
+        ax.errorbar(x, _mean, _std, label=f"Ray ({labels[i]})", color="tab:orange", ls=ls[i], lw=LINE_WIDTH)
 
     ax.grid(which="both", axis="y", ls=":")
     ax.grid(which="both", axis="x", ls=":")
@@ -179,7 +180,7 @@ def plot_scalability_task():
         bbox_to_anchor=(0.52, 1.01),
         ncol=2,
         labelspacing=0.4,
-        columnspacing=0.2,
+        columnspacing=0.8,
         handlelength=1.5,
         handletextpad=0.4,
     )
