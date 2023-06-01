@@ -1,5 +1,6 @@
 import asyncio
 import copy
+import json
 import logging
 import os
 import queue
@@ -7,7 +8,7 @@ import random
 from typing import Dict, List, Set, Optional, TYPE_CHECKING
 
 import ray
-from ray.experimental.internal_kv import _internal_kv_get, _internal_kv_put
+from ray.experimental.internal_kv import _internal_kv_put
 
 from exoflow import common
 from exoflow.common import WorkflowStatus, TaskID, SERVICE_SEP
@@ -24,6 +25,7 @@ from exoflow.task_executor import ActorController
 from exoflow.workflow_executor import WorkflowExecutor, TaskExecutionMetadata
 from exoflow.workflow_state import WorkflowExecutionState
 from exoflow.workflow_context import WorkflowTaskContext
+from exoflow import utils
 
 if TYPE_CHECKING:
     from ray.actor import ActorHandle
@@ -113,14 +115,8 @@ class WorkflowManagementActor:
         self._executed_workflows: Set[str] = set()
         self._service_workflows: Dict[str, WorkflowExecutionState] = {}
         self._actor_controller = ActorController()
-        import resource
-        import sys
 
-        try:
-            resource.setrlimit(resource.RLIMIT_STACK, (2 ** 29, -1))
-        except ValueError:
-            pass
-        sys.setrecursionlimit(10 ** 6)
+        utils.increase_recursion_limit()
 
     def validate_init_options(
         self, max_running_workflows: Optional[int], max_pending_workflows: Optional[int]
@@ -442,28 +438,47 @@ def init_management_actor(
         if max_pending_workflows is None:
             max_pending_workflows = -1
 
-        from ray._private.worker import global_worker
-        from ray.util.scheduling_strategies import NodeAffinitySchedulingStrategy
+        controller_resources = os.getenv("EXOFLOW_CONTROLLER_RESOURCES", default=None)
+        if controller_resources is None:
+            # If no resources are specified, then the default scheduling
+            # strategy is "local": the ExoFlow controller will be scheduled
+            # on the same node as the Ray driver.
+            scheduling_strategy = utils.local_binding_scheduling_strategy()
+            resources = None
+        else:
+            scheduling_strategy = None
+            resources = json.loads(controller_resources)
 
-        node_id = global_worker.core_worker.get_current_node_id().hex()
-        scheduling_strategy = NodeAffinitySchedulingStrategy(node_id, soft=False)
+        # start only local workers, this ensures the number of workers
+        # would only be proportional to the number of workflow shards
+        # instead of the number of ExoFlow workers
+        local_executors_only = int(os.getenv("EXOFLOW_LOCAL_EXECUTORS_ONLY", default=0))
+        _internal_kv_put(
+            "local_executors_only", str(local_executors_only), namespace="workflow"
+        )
 
-        n_workflow_shards = int(os.getenv("N_WORKFLOW_SHARDS", default=1))
-        _internal_kv_put("n_shards", str(n_workflow_shards), namespace="workflow")
-        n_workflow_workers = int(os.getenv("N_WORKFLOW_WORKERS", default=-1))
-        _internal_kv_put("n_workers", str(n_workflow_workers), namespace="workflow")
-        n_workflow_worker_threads = int(
-            os.getenv("N_WORKFLOW_WORKER_THREADS", default=1)
+        # Total number of workflow controllers.
+        n_controllers = int(os.getenv("EXOFLOW_N_CONTROLLERS", default=1))
+        _internal_kv_put("n_controllers", str(n_controllers), namespace="workflow")
+
+        # Number of workers per node. -1 means the number is proportional to
+        # the number of CPU cores. If "local_executors_only" is 1, then there is only
+        # one node.
+        n_executors = int(os.getenv("EXOFLOW_N_EXECUTORS", default=-1))
+        _internal_kv_put("n_executors", str(n_executors), namespace="workflow")
+
+        n_executor_threads = int(
+            os.getenv("EXOFLOW_N_EXECUTOR_THREADS", default=1)
         )
         _internal_kv_put(
-            "n_worker_threads", str(n_workflow_worker_threads), namespace="workflow"
+            "n_executor_threads", str(n_executor_threads), namespace="workflow"
         )
-        scheduler_max_concurrency = int(
-            os.getenv("WORKFLOW_SCHEDULER_MAX_CONCURRENCY", default=1000)
+        controller_max_concurrency = int(
+            os.getenv("EXOFLOW_CONTROLLER_MAX_CONCURRENCY", default=1000)
         )
 
         actors_ready = []
-        for i in range(n_workflow_shards):
+        for i in range(n_controllers):
             if i == 0:
                 name = common.MANAGEMENT_ACTOR_NAME
             else:
@@ -474,8 +489,9 @@ def init_management_actor(
                 namespace=common.MANAGEMENT_ACTOR_NAMESPACE,
                 lifetime="detached",
                 num_cpus=0,
-                max_concurrency=scheduler_max_concurrency,
+                max_concurrency=controller_max_concurrency,
                 scheduling_strategy=scheduling_strategy,
+                resources=resources,
             ).remote(max_running_workflows, max_pending_workflows)
             # No-op to ensure the actor is created before the driver exits.
             actors_ready.append(actor.ready.remote())
@@ -483,17 +499,20 @@ def init_management_actor(
 
 
 _workflow_manager_actor_index = None
+_actor_cache = utils.NamedActorCache()
+_kv_cache = utils.KVCache()
 
 
 def get_management_actor(index: Optional[int] = 0) -> "ActorHandle":
     global _workflow_manager_actor_index
     if index is None:
-        n_workflow_shards = int(_internal_kv_get("n_shards", namespace="workflow"))
+        n_controllers = int(_kv_cache.get("n_controllers"))
+        # round robin scheduling
         if _workflow_manager_actor_index is None:
-            _workflow_manager_actor_index = random.randrange(n_workflow_shards)
+            _workflow_manager_actor_index = random.randrange(n_controllers)
         else:
             _workflow_manager_actor_index += 1
-            _workflow_manager_actor_index %= n_workflow_shards
+            _workflow_manager_actor_index %= n_controllers
         index = _workflow_manager_actor_index
 
     if index == 0:
@@ -501,4 +520,4 @@ def get_management_actor(index: Optional[int] = 0) -> "ActorHandle":
     else:
         name = common.MANAGEMENT_ACTOR_NAME + f"_{index}"
 
-    return ray.get_actor(name, namespace=common.MANAGEMENT_ACTOR_NAMESPACE)
+    return _actor_cache.get(name)

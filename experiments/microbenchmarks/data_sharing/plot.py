@@ -1,20 +1,21 @@
 import json
 
 import numpy as np
+import matplotlib
 from matplotlib import pyplot as plt
 from matplotlib import cm
 
 LABELS_MAP = {
     "Airflow": "airflow",
-    # "ExoF. + NoSHM": "workflow_no_share",
-    "ExoF. + SyncCkpt": "workflow_sync",
-    "ExoF. + NoCkpt": "workflow_skip",
+    # "ExoFlow + NoSHM": "workflow_no_share",
+    "ExoFlow + SyncCkpt": "workflow_sync",
+    "ExoFlow + NoCkpt": "workflow_skip",
     "Spark": "spark",
 }
 
 
 def plot():
-    fig, ax = plt.subplots(figsize=(4, 6))
+    fig, ax = plt.subplots(figsize=(5, 5.5))
     labels = [1, 2, 4, 8]
     POINTS = np.array([1, 2, 3, 4])
     patterns = ["x" * 4, "\\" * 4, "/" * 4, None]
@@ -90,7 +91,10 @@ def plot():
 
 
 if __name__ == "__main__":
-    plt.rc("font", size=22, family="Times")
+    # Use Type 1 fonts
+    matplotlib.rcParams['pdf.fonttype'] = 42
+    matplotlib.rcParams['ps.fonttype'] = 42
+    plt.rc("font", size=22, family="Times New Roman")
     plt.rc("xtick", labelsize=20)
     plt.rc("ytick", labelsize=20)
     plt.rc("legend", fontsize=20)

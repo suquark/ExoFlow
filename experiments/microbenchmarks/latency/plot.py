@@ -1,6 +1,7 @@
 import json
 
 import numpy as np
+import matplotlib
 from matplotlib import pyplot as plt
 from matplotlib import cm
 
@@ -60,7 +61,7 @@ COLORS = {
 
 def plot_step_latency_v2():
     # linewidth = 20
-    fig, ax = plt.subplots(figsize=(11, 6))
+    fig, ax = plt.subplots(figsize=(14, 5.5))
     labels = ["Trigger"] + [_unit_conv(x) for x in POINTS]
 
     x = np.arange(len(labels))  # the label locations
@@ -137,7 +138,7 @@ def plot_step_latency_v2():
         labels,
         loc="upper center",
         bbox_to_anchor=(0.53, 1),
-        ncol=4,
+        ncol=6,
         labelspacing=0.2,
         columnspacing=0.5,
         handlelength=1,
@@ -150,10 +151,10 @@ def plot_step_latency_v2():
     box = ax.get_position()
     ax.set_position(
         [
-            box.x0 - box.width * 0.03,
-            box.y0 - box.height * 0.02,
-            box.width * 1.06,
-            box.height * 0.845,
+            box.x0 - box.width * 0.01,
+            box.y0 - box.height * 0.01,
+            box.width, #* 1.06,
+            box.height * 0.9,
         ]
     )
     fig.savefig("plots/microbenchmark-data-movement.png")
@@ -161,7 +162,10 @@ def plot_step_latency_v2():
 
 
 if __name__ == "__main__":
-    plt.rc("font", size=22, family="Times")
+    # Use Type 1 fonts
+    matplotlib.rcParams['pdf.fonttype'] = 42
+    matplotlib.rcParams['ps.fonttype'] = 42
+    plt.rc("font", size=22, family="Times New Roman")
     plt.rc("xtick", labelsize=20)
     plt.rc("ytick", labelsize=20)
     plt.rc("legend", fontsize=20)

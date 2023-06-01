@@ -48,10 +48,10 @@ class WorkflowTaskActor:
     def __init__(self):
         # A thread pool for checkpointing.
         sys.setrecursionlimit(10 ** 6)
-        n_worker_threads = int(
-            _internal_kv_get("n_worker_threads", namespace="workflow")
+        n_executor_threads = int(
+            _internal_kv_get("n_executor_threads", namespace="workflow")
         )
-        self._io_thread_pool = ThreadPoolExecutor(max_workers=n_worker_threads)
+        self._io_thread_pool = ThreadPoolExecutor(max_workers=n_executor_threads)
         self._futures: Dict[str, Dict] = {}
 
     def async_submit_task(
@@ -259,26 +259,45 @@ class ActorPool:
 
 class ActorController:
     def __init__(self):
-        from ray.experimental.state.api import (
-            StateApiClient,
-            StateResource,
-            ListApiOptions,
-        )
+        # from ray.experimental.state.api import (
+        #     StateApiClient,
+        #     StateResource,
+        #     ListApiOptions,
+        # )
+        # from ray.experimental.state.api import list_nodes
+        from ray._private.worker import global_worker
 
         self._pools: Dict[str, ActorPool] = {}
         self._task_tag: Dict[TaskHandle, str] = {}
 
-        n_workers = int(_internal_kv_get("n_workers", namespace="workflow"))
+        n_executors = int(_internal_kv_get("n_executors", namespace="workflow"))
+        local_executors_only = int(_internal_kv_get("local_executors_only", namespace="workflow"))
+
+        # client = StateApiClient(global_worker.node.gcs_address)
+        # nodes = client.list(
+        #     StateResource("nodes"), ListApiOptions(), raise_on_missing_output=False
+        # )
+        # head_node = global_worker.node.gcs_address.split(":")[0]
+        # nodes = list_nodes(f"http://{head_node}:8265")
+        nodes = []
+        for n in ray.nodes():
+            nodes.append({
+                "node_id": n["NodeID"],
+                "state": "ALIVE" if n["Alive"] else "FAILED",
+                "resources_total": n["Resources"],
+            })
+        if local_executors_only:
+            local_node_id = global_worker.core_worker.get_current_node_id().hex()
+            nodes = [node for node in nodes if node["node_id"] == local_node_id]
+            if not nodes:
+                raise RuntimeError("Local node is not found.")
+
         node_tags = {}
-        client = StateApiClient("auto")
-        nodes = client.list(
-            StateResource("nodes"), ListApiOptions(), raise_on_missing_output=False
-        )
         for node in nodes:
             if node["state"] != "ALIVE":
                 continue
-            if n_workers > 0:
-                n_cpus = n_workers
+            if n_executors > 0:
+                n_cpus = n_executors
             else:
                 n_cpus = int(node["resources_total"].get("CPU", 1))
             node_id = node["node_id"]

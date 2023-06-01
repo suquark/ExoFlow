@@ -172,7 +172,7 @@ class WorkflowTaskRuntimeOptions:
     # Isolate the worker this task is using. This helps prevent sharing
     # failure with later tasks.
     isolation: bool
-    # Wait tasks until they are committed.
+    # Wait a list of earlier tasks until they are committed.
     wait_until_committed: List[str]
     # ray_remote options
     ray_options: Dict[str, Any]

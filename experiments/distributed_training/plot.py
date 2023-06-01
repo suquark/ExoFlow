@@ -2,6 +2,7 @@ from collections import namedtuple, defaultdict
 import json
 
 import numpy as np
+import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib import cm
 
@@ -211,7 +212,10 @@ def plot_fault_tolerance(ax: plt.Axes):
 
 
 if __name__ == "__main__":
-    plt.rc("font", size=27.5, family="Times")
+    # Use Type 1 fonts
+    matplotlib.rcParams['pdf.fonttype'] = 42
+    matplotlib.rcParams['ps.fonttype'] = 42
+    plt.rc("font", size=27.5, family="Times New Roman")
     fig, (ax1, ax2) = plt.subplots(
         ncols=2, figsize=(20, 5.5), gridspec_kw={"width_ratios": [4, 5]}
     )
