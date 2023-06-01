@@ -1,5 +1,7 @@
 # ExoFlow: A universal workflow system for exactly-once DAGs
 
+Checkout the [artifact](https://github.com/suquark/ExoFlow/tree/artifact) branch for the original code/script for artifact evaluation.
+
 **OSDI'23 Artifact Evaluation**
 
 ## Abstract
